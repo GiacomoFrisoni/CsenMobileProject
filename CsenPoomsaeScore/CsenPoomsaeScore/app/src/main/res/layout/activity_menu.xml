@@ -19,19 +19,19 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CSEN Poomsae Score" />
+        android:text="@string/app_name" />
 
     <Button
         style="@style/MediumButtonText"
         android:id="@+id/btnList"
-        android:text="Lista"
+        android:text="@string/scores"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
         style="@style/MediumButtonText"
         android:id="@+id/btnSettings"
-        android:text="Impostazioni"
+        android:text="@string/settings"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/btnList" />
 
@@ -55,7 +55,7 @@
     <Button
         style="@style/MediumButtonText"
         android:id="@+id/btnLaunch"
-        android:text="Avvia"
+        android:text="@string/start"
         android:layout_alignBaseline="@+id/btnList"
         android:layout_alignBottom="@+id/btnList"
         android:layout_toLeftOf="@+id/btnList"

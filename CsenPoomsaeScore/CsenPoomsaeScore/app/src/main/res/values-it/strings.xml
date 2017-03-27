@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CsenPoomsaeScore</string>
+
+    <string name="start">Avvia</string>
+    <string name="scores">Lista</string>
+    <string name="settings">Impostazioni</string>
+
+    <string name="choose_language">Scegli la lingua</string>
+    <string-array name="languages">
+        <item>Seleziona la lingua</item>
+        <item>Inglese</item>
+        <item>Italiano</item>
+        <item>Polacco</item>
+    </string-array>
+</resources>
