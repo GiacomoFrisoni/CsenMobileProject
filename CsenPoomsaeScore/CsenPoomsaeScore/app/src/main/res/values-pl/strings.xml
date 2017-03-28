@@ -2,15 +2,15 @@
 <resources>
     <string name="app_name">CsenPoomsaeScore</string>
 
-    <string name="start">Avvia</string>
+    <string name="start">Start</string>
     <string name="scores">Lista</string>
-    <string name="settings">Impostazioni</string>
+    <string name="settings">Opcje</string>
 
-    <string name="choose_language">Choose the language</string>
+    <string name="choose_language">Wybierz język</string>
     <string-array name="languages">
-        <item>Select language</item>
-        <item>English</item>
-        <item>Italian</item>
-        <item>Polish</item>
+        <item>Wybierz język</item>
+        <item>Angielski</item>
+        <item>Włoski</item>
+        <item>Polski</item>
     </string-array>
 </resources>
