@@ -21,19 +21,34 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name" />
 
-    <Button
-        style="@style/MediumButtonText"
-        android:id="@+id/btnList"
-        android:text="@string/scores"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:id="@+id/lnlButtonContainer"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
 
-    <Button
-        style="@style/MediumButtonText"
-        android:id="@+id/btnSettings"
-        android:text="@string/settings"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/btnList" />
+        <Button
+            style="@style/MediumButtonText"
+            android:id="@+id/btnLaunch"
+            android:layout_weight="1"
+            android:text="@string/start" />
+
+        <Button
+            style="@style/MediumButtonText"
+            android:id="@+id/btnList"
+            android:layout_weight="1"
+            android:text="@string/scores" />
+
+        <Button
+            style="@style/MediumButtonText"
+            android:id="@+id/btnSettings"
+            android:layout_weight="1"
+            android:text="@string/settings" />
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:gravity="center"
@@ -52,13 +67,6 @@
             android:text="IMMAGINE UNO" />
     </LinearLayout>
 
-    <Button
-        style="@style/MediumButtonText"
-        android:id="@+id/btnLaunch"
-        android:text="@string/start"
-        android:layout_alignBaseline="@+id/btnList"
-        android:layout_alignBottom="@+id/btnList"
-        android:layout_toLeftOf="@+id/btnList"
-        android:layout_toStartOf="@+id/btnList" />
+
 
 </RelativeLayout>
