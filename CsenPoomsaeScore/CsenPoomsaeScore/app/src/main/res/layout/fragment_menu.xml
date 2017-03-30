@@ -30,18 +30,21 @@
             style="@style/MediumButtonText"
             android:id="@+id/btn_start"
             android:layout_weight="1"
+            android:background="@drawable/start"
             android:text="@string/start" />
 
         <Button
             style="@style/MediumButtonText"
             android:id="@+id/btn_list"
             android:layout_weight="1"
+            android:background="@drawable/scores"
             android:text="@string/scores" />
 
         <Button
             style="@style/MediumButtonText"
             android:id="@+id/btn_settings"
             android:layout_weight="1"
+            android:background="@drawable/settings"
             android:text="@string/settings" />
     </LinearLayout>
 
