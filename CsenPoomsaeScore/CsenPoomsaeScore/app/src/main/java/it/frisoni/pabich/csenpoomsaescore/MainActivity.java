@@ -24,6 +24,16 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
 
     @Override
     public void onStartClick() {
-        //Verrà inserito il codice per il passaggio all'altro fragment
+        //Verrà inserito il codice per il passaggio al fragment
+    }
+
+    @Override
+    public void onScoresClick() {
+        //Verrà inserito il codice per il passaggio al fragment
+    }
+
+    @Override
+    public void onSettingsClick() {
+        //Verrà inserito il codice per il passaggio al fragment
     }
 }

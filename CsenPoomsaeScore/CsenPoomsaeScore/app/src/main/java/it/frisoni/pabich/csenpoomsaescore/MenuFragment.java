@@ -20,6 +20,8 @@ public class MenuFragment extends Fragment {
      */
     public interface OnMenuInteraction {
         void onStartClick();
+        void onScoresClick();
+        void onSettingsClick();
     }
 
     /**
