@@ -30,7 +30,6 @@
             style="@style/MediumButtonText"
             android:id="@+id/btn_start"
             android:layout_weight="1"
-            android:background="@drawable/start"
             android:text="@string/start" />
 
         <Button

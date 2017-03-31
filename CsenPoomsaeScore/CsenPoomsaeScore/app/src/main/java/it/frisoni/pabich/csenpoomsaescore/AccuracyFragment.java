@@ -1,71 +1,65 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
- * Created by giacomofrisoni on 29/03/2017.
+ * Created by giacomofrisoni on 30/03/2017.
  */
 
-public class MenuFragment extends Fragment {
+public class AccuracyFragment extends Fragment {
 
     /**
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
-    public interface OnMenuInteraction {
-        void onStartClick();
-        void onScoresClick();
-        void onSettingsClick();
+    public interface OnAccuracyInteraction {
+        void onBackClick();
     }
 
     /**
      * Variabile per il mantenimento del collegamento con l'activity "ascoltatrice".
      * Cosente di segnalare l'intercettazione di eventi.
      */
-    private OnMenuInteraction listener;
+    private AccuracyFragment.OnAccuracyInteraction listener;
 
     /**
      * "Costruttore" statico del fragment.
      * L'utilizzo di questo metodo, che ritorna un oggetto della classe corrente, rappresenta la modalità standard per istanziare un oggetto
      * di una classe Fragment.
      *
-     * @return oggetto di classe MenuFragment
+     * @return oggetto di classe AccuracyFragment
      */
-    public static MenuFragment newInstance() {
-        MenuFragment fragment = new MenuFragment();
+    public static AccuracyFragment newInstance() {
+        AccuracyFragment fragment = new AccuracyFragment();
         return fragment;
     }
 
-    private Button btnStart;
-    private Button btnList;
-    private Button btnSettings;
+    private Button btnBack;
 
     //Costruttore vuoto richiesto dal sistema per poter funzionare correttamente in tutte le situazioni.
-    public MenuFragment() {
+    public AccuracyFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_accuracy, container, false);
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
-        btnStart = (Button) view.findViewById(R.id.btn_start);
-        btnList = (Button) view.findViewById(R.id.btn_list);
-        btnSettings = (Button) view.findViewById(R.id.btn_settings);
+        btnBack = (Button) view.findViewById(R.id.btn_back);
 
         //Creazione di un listener per intercettare il click sul bottone da parte dell'utente
-        btnStart.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onStartClick();
+                    listener.onBackClick();
                 }
             }
         });
@@ -81,8 +75,8 @@ public class MenuFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnMenuInteraction) {
-            listener = (OnMenuInteraction) context;
+        if (context instanceof AccuracyFragment.OnAccuracyInteraction) {
+            listener = (AccuracyFragment.OnAccuracyInteraction) context;
         }
     }
 
