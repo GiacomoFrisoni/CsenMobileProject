@@ -60,12 +60,20 @@ public class MenuFragment extends Fragment {
         btnList = (Button) view.findViewById(R.id.btn_list);
         btnSettings = (Button) view.findViewById(R.id.btn_settings);
 
-        //Creazione di un listener per intercettare il click sul bottone da parte dell'utente
+        //Creazione dei listener per intercettare i click sui bottoni da parte dell'utente
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
                     listener.onStartClick();
+                }
+            }
+        });
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onSettingsClick();
                 }
             }
         });

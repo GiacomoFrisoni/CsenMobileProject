@@ -6,6 +6,12 @@
     <string name="scores">Lista</string>
     <string name="settings">Impostazioni</string>
 
+    <string name="check_credentials">Verifica credenziali</string>
+    <string name="enter_password">Inserisci password</string>
+    <string name="confirm">Conferma</string>
+    <string name="cancel">Annulla</string>
+    <string name="wrong_password">Password non corretta</string>
+    
     <string name="choose_language">Scegli la lingua</string>
     <string-array name="languages">
         <item>Seleziona la lingua</item>

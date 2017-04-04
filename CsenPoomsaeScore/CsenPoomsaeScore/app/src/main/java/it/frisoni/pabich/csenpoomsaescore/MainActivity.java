@@ -21,18 +21,25 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
 
     @Override
     public void onStartClick() {
-        //Replace del fragment nel layout
+        /**
+         * Replace del fragment nel layout con l'istanza di AccuracyFragment.
+         */
         replaceFragment(AccuracyFragment.newInstance(), true);
     }
 
     @Override
     public void onScoresClick() {
-        //Verrà inserito il codice per il passaggio al fragment
+        /**
+         * Replace del fragment nel layout con l'istanza di ScoresFragment.
+         */
     }
 
     @Override
     public void onSettingsClick() {
-        //Verrà inserito il codice per il passaggio al fragment
+        /**
+         * Replace del fragment nel layout con l'istanza di SettingsFragment.
+         */
+        replaceFragment(SettingsFragment.newInstance(), true);
     }
 
     @Override
