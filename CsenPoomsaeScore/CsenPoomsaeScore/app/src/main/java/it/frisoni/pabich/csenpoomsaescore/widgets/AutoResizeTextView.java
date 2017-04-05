@@ -11,9 +11,8 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
-import android.widget.TextView;
 
-public class AutoResizeTextView extends TextView {
+public class AutoResizeTextView extends android.support.v7.widget.AppCompatTextView {
     private interface SizeTester {
         /**
          * @param suggestedSize  Size of text to be tested

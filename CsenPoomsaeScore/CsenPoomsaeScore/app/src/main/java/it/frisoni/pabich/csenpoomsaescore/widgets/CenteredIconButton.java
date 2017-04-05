@@ -14,7 +14,9 @@ import android.widget.Button;
  */
 
 public class CenteredIconButton extends AppCompatButton {
+
     private static final int LEFT = 0, TOP = 1, RIGHT = 2, BOTTOM = 3;
+
     // Pre-allocate objects for layout measuring
     private Rect textBounds = new Rect();
     private Rect drawableBounds = new Rect();

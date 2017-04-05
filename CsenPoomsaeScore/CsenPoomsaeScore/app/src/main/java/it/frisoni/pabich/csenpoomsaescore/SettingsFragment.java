@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,12 +20,15 @@ import android.widget.Toast;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 
+import static android.content.ContentValues.TAG;
+
 public class SettingsFragment extends Fragment {
 
     /**
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnSettingsInteraction {
+        void onBackClick();
     }
 
     /**
@@ -31,6 +36,12 @@ public class SettingsFragment extends Fragment {
      * Cosente di segnalare l'intercettazione di eventi.
      */
     private SettingsFragment.OnSettingsInteraction listener;
+
+    /**
+     * Costruttore vuoto richiesto dal sistema per poter funzionare correttamente in tutte le situazioni.
+     */
+    public SettingsFragment() {
+    }
 
     /**
      * "Costruttore" statico del fragment.
@@ -44,27 +55,42 @@ public class SettingsFragment extends Fragment {
         return fragment;
     }
 
-
     //Costanti
     private final static String PWD = "1972";
 
     //Variabili
+    private Button btnBack;
 
     //Database e Shared preferences
     private DbManager dbManager;
     private AppPreferences appPrefs;
 
-    //Costruttore vuoto richiesto dal sistema per poter funzionare correttamente in tutte le situazioni.
-    public SettingsFragment() {
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        dbManager = new DbManager(SettingsFragment.this.getContext());
-        appPrefs = new AppPreferences(SettingsFragment.this.getContext());
+        dbManager = new DbManager(getActivity());
+        appPrefs = new AppPreferences(getActivity());
+
+        //Gestione dell'accessibilità dei controlli
+        showCustomDialog();
+
+        //Altri controlli...
+
+        //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
+        btnBack = (Button) view.findViewById(R.id.btn_back);
+
+        //Creazione di un listener per intercettare il click sul bottone da parte dell'utente
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onBackClick();
+                }
+            }
+        });
 
         return view;
     }
@@ -79,6 +105,8 @@ public class SettingsFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof SettingsFragment.OnSettingsInteraction) {
             listener = (SettingsFragment.OnSettingsInteraction) context;
+        } else {
+            Log.e(TAG, "Not valid context for ScoresFragment");
         }
     }
 
@@ -91,7 +119,11 @@ public class SettingsFragment extends Fragment {
         listener = null;
     }
 
+    /**
+     * Rende visibili i componenti per la modifica delle impostazioni.
+     */
     private void showComponents() {
+        //Visibilità controlli
     }
 
     /**
@@ -100,22 +132,22 @@ public class SettingsFragment extends Fragment {
      */
     private void showCustomDialog() {
         AlertDialog.Builder myDialog
-                = new AlertDialog.Builder(SettingsFragment.this.getContext());
+                = new AlertDialog.Builder(getActivity());
         myDialog.setTitle(R.string.check_credentials);
 
-        TextView textView = new TextView(SettingsFragment.this.getContext());
+        TextView textView = new TextView(getActivity());
         textView.setText(R.string.enter_password);
         LayoutParams textViewLayoutParams
                 = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(textViewLayoutParams);
 
-        final EditText editText = new EditText(SettingsFragment.this.getContext());
+        final EditText editText = new EditText(getActivity());
         LayoutParams editTextLayoutParams
                 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(editTextLayoutParams);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        LinearLayout layout = new LinearLayout(SettingsFragment.this.getContext());
+        LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(textView);
         layout.addView(editText);
@@ -126,7 +158,7 @@ public class SettingsFragment extends Fragment {
                 if (editText.getText().toString().equals(PWD)) {
                     showComponents();
                 } else {
-                    Toast.makeText(SettingsFragment.this.getContext(),R.string.wrong_password, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),R.string.wrong_password, Toast.LENGTH_LONG).show();
                 }
             }
         });

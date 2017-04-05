@@ -4,10 +4,13 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by giacomofrisoni on 29/03/2017.
@@ -31,6 +34,12 @@ public class MenuFragment extends Fragment {
     private OnMenuInteraction listener;
 
     /**
+     * Costruttore vuoto richiesto dal sistema per poter funzionare correttamente in tutte le situazioni.
+     */
+    public MenuFragment() {
+    }
+
+    /**
      * "Costruttore" statico del fragment.
      * L'utilizzo di questo metodo, che ritorna un oggetto della classe corrente, rappresenta la modalità standard per istanziare un oggetto
      * di una classe Fragment.
@@ -46,9 +55,6 @@ public class MenuFragment extends Fragment {
     private Button btnList;
     private Button btnSettings;
 
-    //Costruttore vuoto richiesto dal sistema per poter funzionare correttamente in tutte le situazioni.
-    public MenuFragment() {
-    }
 
     @Nullable
     @Override
@@ -66,6 +72,14 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 if (listener != null) {
                     listener.onStartClick();
+                }
+            }
+        });
+        btnList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onScoresClick();
                 }
             }
         });
@@ -91,6 +105,8 @@ public class MenuFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnMenuInteraction) {
             listener = (OnMenuInteraction) context;
+        } else {
+            Log.e(TAG, "Not valid context for MenuFragment");
         }
     }
 
