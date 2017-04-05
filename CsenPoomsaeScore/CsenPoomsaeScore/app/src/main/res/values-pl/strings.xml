@@ -12,6 +12,8 @@
     <string name="cancel">Annulla</string>
     <string name="wrong_password">Password non corretta</string>
 
+    <string name="no_scores">No stored score</string>
+
     <string name="choose_language">Wybierz język</string>
     <string-array name="languages">
         <item>Wybierz język</item>

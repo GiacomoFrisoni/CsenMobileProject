@@ -60,7 +60,7 @@ public class AthleteScore implements BaseColumns {
         cv.put(COLUMN_ACCURACY, accuracy);
         cv.put(COLUMN_PRESENTATION, presentation);
         cv.put(COLUMN_TOTAL, total);
-        cv.put(COLUMN_DATETIME, new SimpleDateFormat(DATETIME_FORMAT, Locale.getDefault()).format(dateTime));
+        cv.put(COLUMN_DATETIME, new SimpleDateFormat(DATETIME_FORMAT, Locale.getDefault()).format(dateTime.getTime()));
         return cv;
     }
 
