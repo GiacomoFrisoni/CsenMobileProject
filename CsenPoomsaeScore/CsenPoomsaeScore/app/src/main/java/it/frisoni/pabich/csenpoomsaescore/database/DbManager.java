@@ -51,4 +51,9 @@ public class DbManager {
         }
         return athleteScores;
     }
+
+    public void clearAthleteScores() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("DELETE FROM " + AthleteScore.TABLE_NAME);
+    }
 }

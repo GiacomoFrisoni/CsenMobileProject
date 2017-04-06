@@ -13,6 +13,7 @@
     <string name="wrong_password">Wrong password</string>
 
     <string name="no_scores">No stored score</string>
+    <string name="clear_scores_list">Delete saved scores</string>
 
     <string name="choose_language">Choose the language</string>
     <string-array name="languages">

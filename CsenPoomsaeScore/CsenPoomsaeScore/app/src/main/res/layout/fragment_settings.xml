@@ -7,6 +7,14 @@
     android:padding="16dp">
 
     <Button
+        android:id="@+id/btn_clear_list"
+        android:text="@string/clear_scores_list"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_back"/>
+
+    <Button
         android:id="@+id/btn_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

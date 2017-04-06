@@ -58,13 +58,13 @@ public class SettingsFragment extends Fragment {
     //Costanti
     private final static String PWD = "1972";
 
-    //Variabili
-    private Button btnBack;
-
     //Database e Shared preferences
     private DbManager dbManager;
     private AppPreferences appPrefs;
 
+    //Variabili
+    private Button btnBack;
+    private Button btnClearList;
 
     @Nullable
     @Override
@@ -81,6 +81,7 @@ public class SettingsFragment extends Fragment {
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
         btnBack = (Button) view.findViewById(R.id.btn_back);
+        btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
         //Creazione di un listener per intercettare il click sul bottone da parte dell'utente
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +90,12 @@ public class SettingsFragment extends Fragment {
                 if (listener != null) {
                     listener.onBackClick();
                 }
+            }
+        });
+        btnClearList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbManager.clearAthleteScores();
             }
         });
 
@@ -123,7 +130,7 @@ public class SettingsFragment extends Fragment {
      * Rende visibili i componenti per la modifica delle impostazioni.
      */
     private void showComponents() {
-        //Visibilità controlli
+        btnClearList.setVisibility(View.VISIBLE);
     }
 
     /**
