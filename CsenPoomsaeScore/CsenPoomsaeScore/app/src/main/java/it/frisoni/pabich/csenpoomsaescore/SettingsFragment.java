@@ -83,7 +83,7 @@ public class SettingsFragment extends Fragment {
         btnBack = (Button) view.findViewById(R.id.btn_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
-        //Creazione di un listener per intercettare il click sul bottone da parte dell'utente
+        //Creazione dei listener per l'intercettazione dei click sui bottoni da parte dell'utente
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

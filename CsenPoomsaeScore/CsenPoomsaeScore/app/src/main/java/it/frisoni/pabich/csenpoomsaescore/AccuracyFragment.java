@@ -2,6 +2,7 @@ package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.math.BigDecimal;
 
 import static android.content.ContentValues.TAG;
 
@@ -16,7 +20,7 @@ import static android.content.ContentValues.TAG;
  * Created by giacomofrisoni on 30/03/2017.
  */
 
-public class AccuracyFragment extends Fragment {
+public class AccuracyFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
@@ -49,7 +53,29 @@ public class AccuracyFragment extends Fragment {
         return fragment;
     }
 
+    //Constants
+    public final static int VIBR_DURATION = 100;
+    public final static double START_POINTS = 4.0;
+    public final static double MIN_POINTS = 0.0;
+    public final static double MAX_POINTS = START_POINTS;
+    public final static double SMALL_PENALTY = 0.3;
+    public final static double BIG_PENALTY = 0.1;
+
+    //Counter TextView
+    private TextView txvCounter;
+
+    //Buttons
+    private Button btnAddBigPenalty;
+    private Button btnAddSmallPenalty;
+    private Button btnRemoveBigPenalty;
+    private Button btnRemoveSmallPenalty;
     private Button btnBack;
+
+    //Counter
+    private BigDecimal cur_points;
+
+    //Vibrator
+    private Vibrator vibrator;
 
 
     @Nullable
@@ -57,20 +83,72 @@ public class AccuracyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accuracy, container, false);
 
-        //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
-        btnBack = (Button) view.findViewById(R.id.btn_back);
+        //Settaggio del componente per la vibrazione
+        vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
-        //Creazione di un listener per intercettare il click sul bottone da parte dell'utente
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
+        //txvCounter = (TextView) findViewById(R.id.txv_counter);
+        btnBack = (Button) view.findViewById(R.id.btn_back);
+        //btnAddBigPenalty = (Button) findViewById(R.id.btn_add_big_penalty);
+        //btnAddSmallPenalty = (Button) findViewById(R.id.btn_add_small_penalty);
+        //btnRemoveBigPenalty = (Button) findViewById(R.id.btn_remove_big_penalty);
+        //btnRemoveSmallPenalty = (Button) findViewById(R.id.btn_remove_small_penalty);
+
+        //Intercettazione dei click sui bottoni da parte dell'utente
+        btnAddBigPenalty.setOnClickListener(this);
+        btnAddSmallPenalty.setOnClickListener(this);
+        btnRemoveBigPenalty.setOnClickListener(this);
+        btnRemoveSmallPenalty.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+
+        //Inizializzazione del contatore
+        this.cur_points = BigDecimal.valueOf(START_POINTS);
+        refreshPoints();
+
+        return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            /*
+            case R.id.btn_add_big_penalty:
+                addPenalty(BIG_PENALTY);
+                break;
+            case R.id.btn_add_small_penalty:
+                addPenalty(SMALL_PENALTY);
+                break;
+            case R.id.btn_remove_big_penalty:
+                removePenalty(BIG_PENALTY);
+                break;
+            case R.id.btn_remove_small_penalty:
+                removePenalty(SMALL_PENALTY);
+                break;
+                */
+            case R.id.btn_back:
                 if (listener != null) {
                     listener.onBackClick();
                 }
-            }
-        });
+                break;
+            default:
+                vibrator.vibrate(VIBR_DURATION);
+                refreshPoints();
+                break;
+        }
+    }
 
-        return view;
+    private void refreshPoints() {
+        txvCounter.setText(cur_points.toString());
+    }
+
+    private void addPenalty(double value) {
+        cur_points = cur_points.subtract(BigDecimal.valueOf(value));
+        cur_points = cur_points.max(BigDecimal.valueOf(MIN_POINTS));
+    }
+
+    private void removePenalty(double value) {
+        cur_points = cur_points.add(BigDecimal.valueOf(value));
+        cur_points = cur_points.min(BigDecimal.valueOf(MAX_POINTS));
     }
 
     /**
