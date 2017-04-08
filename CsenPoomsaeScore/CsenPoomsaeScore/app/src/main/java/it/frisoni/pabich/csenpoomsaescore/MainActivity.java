@@ -12,7 +12,8 @@ import java.util.Calendar;
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 
 public class MainActivity extends AppCompatActivity implements MenuFragment.OnMenuInteraction,
-        AccuracyFragment.OnAccuracyInteraction, SettingsFragment.OnSettingsInteraction,
+        AccuracyFragment.OnAccuracyInteraction, PresentationFragment.OnPresentationInteraction,
+        ResultsFragment.OnResultsInteraction, SettingsFragment.OnSettingsInteraction,
         ScoresFragment.OnScoresInteraction {
 
     @Override
