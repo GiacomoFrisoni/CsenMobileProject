@@ -145,13 +145,16 @@ public class SettingsFragment extends Fragment {
         LayoutParams editTextLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(editTextLayoutParams);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editText.setHint(R.string.enter_password);
 
+        myDialog.setView(editText);
 
         myDialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 if (editText.getText().toString().equals(PWD)) {
                     showComponents();
                 } else {
+                    Toast.makeText(getActivity(), R.string.wrong_password, Toast.LENGTH_LONG).show();
                 }
             }
         });
