@@ -4,11 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_gravity="center"
+    android:padding="10dp">
 
-    <Button
-        android:id="@+id/btn_back"
+
+
+    <it.frisoni.pabich.csenpoomsaescore.widgets.AutoResizeTextView
+        android:id="@+id/txv_counter"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4.0"
+        android:layout_centerInParent="true"
+        android:textColor="@color/text_dark"
+        android:textSize="100sp" />
+
+    <LinearLayout
+        android:id="@+id/lnl_button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:gravity="center"
+        android:layout_below="@id/txv_counter"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
+            android:id="@+id/btn_start"
+            style="@style/medium_button_text"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="- 0,1"/>
+
+        <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
+            android:id="@+id/btn_list"
+            style="@style/medium_button_text"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="- 0,3" />
+    </LinearLayout>
+
 </RelativeLayout>
