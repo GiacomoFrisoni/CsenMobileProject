@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESHelper {
 
-    private static final String SEED_KEY = "71293DE3B4A434477BB1EC2B3417D";
+    private static final String SEED_KEY = "YourSecKey";
 
     public static String encrypt(String seed, String cleartext) throws Exception {
         byte[] rawKey = getRawKey(seed.getBytes());
@@ -30,7 +30,7 @@ public class AESHelper {
 
     private static byte[] getRawKey(byte[] seed) throws Exception {
         KeyGenerator kgen = KeyGenerator.getInstance("AES");
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG","Crypto");
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         sr.setSeed(seed);
         kgen.init(128, sr); // 192 and 256 bits may not be available
         SecretKey skey = kgen.generateKey();
@@ -97,7 +97,7 @@ public class AESHelper {
     public static String decryption(String strEncryptedText){
         String strDecryptedText="";
         try {
-            strDecryptedText = AESHelper.decrypt(SEED_KEY, strEncryptedText);
+            strDecryptedText = AESHelper.decrypt(SEED_KEY, fromHex(strEncryptedText));
         } catch (Exception e) {
             e.printStackTrace();
         }

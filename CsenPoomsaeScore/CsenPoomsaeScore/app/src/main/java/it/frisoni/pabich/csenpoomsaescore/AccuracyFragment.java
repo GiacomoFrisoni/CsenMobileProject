@@ -10,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+
+import com.lb.auto_fit_textview.AutoResizeTextView;
 
 import java.math.BigDecimal;
+
+import it.frisoni.pabich.csenpoomsaescore.widgets._AutoResizeTextView;
+import me.grantland.widget.AutofitTextView;
 
 import static android.content.ContentValues.TAG;
 
@@ -62,7 +66,7 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     public final static double BIG_PENALTY = 0.1;
 
     //Counter TextView
-    private TextView txvCounter;
+    private AutoResizeTextView txvCounter;
 
     //Buttons
     private Button btnAddBigPenalty;
@@ -82,24 +86,23 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accuracy, container, false);
-
         //Settaggio del componente per la vibrazione
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
-        //txvCounter = (TextView) findViewById(R.id.txv_counter);
-        btnBack = (Button) view.findViewById(R.id.btn_back);
-        //btnAddBigPenalty = (Button) findViewById(R.id.btn_add_big_penalty);
-        //btnAddSmallPenalty = (Button) findViewById(R.id.btn_add_small_penalty);
-        //btnRemoveBigPenalty = (Button) findViewById(R.id.btn_remove_big_penalty);
-        //btnRemoveSmallPenalty = (Button) findViewById(R.id.btn_remove_small_penalty);
+        txvCounter = (AutoResizeTextView ) view.findViewById(R.id.txv_counter);
+        //btnBack = (Button) view.findViewById(R.id.btn_back);
+        btnAddBigPenalty = (Button) view.findViewById(R.id.btn_add_big_penalty);
+        btnAddSmallPenalty = (Button) view.findViewById(R.id.btn_add_small_penalty);
+        btnRemoveBigPenalty = (Button) view.findViewById(R.id.btn_remove_big_penalty);
+        btnRemoveSmallPenalty = (Button) view.findViewById(R.id.btn_remove_small_penalty);
 
         //Intercettazione dei click sui bottoni da parte dell'utente
         btnAddBigPenalty.setOnClickListener(this);
         btnAddSmallPenalty.setOnClickListener(this);
         btnRemoveBigPenalty.setOnClickListener(this);
         btnRemoveSmallPenalty.setOnClickListener(this);
-        btnBack.setOnClickListener(this);
+        //btnBack.setOnClickListener(this);
 
         //Inizializzazione del contatore
         this.cur_points = BigDecimal.valueOf(START_POINTS);
@@ -111,7 +114,7 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            /*
+
             case R.id.btn_add_big_penalty:
                 addPenalty(BIG_PENALTY);
                 break;
@@ -124,12 +127,7 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_remove_small_penalty:
                 removePenalty(SMALL_PENALTY);
                 break;
-                */
-            case R.id.btn_back:
-                if (listener != null) {
-                    listener.onBackClick();
-                }
-                break;
+
             default:
                 vibrator.vibrate(VIBR_DURATION);
                 refreshPoints();

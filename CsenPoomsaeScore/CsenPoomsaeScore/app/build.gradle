@@ -20,6 +20,7 @@ android {
 }
 repositories {
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -29,6 +30,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'me.grantland:autofittextview:0.2.+'
-    compile ('org.adw.library:discrete-seekbar:1.0.1')
+
+    compile 'org.adw.library:discrete-seekbar:1.0.1'
+    compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
     testCompile 'junit:junit:4.12'
 }

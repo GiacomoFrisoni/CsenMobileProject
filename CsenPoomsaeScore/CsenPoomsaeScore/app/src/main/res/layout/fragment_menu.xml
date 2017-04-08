@@ -12,7 +12,7 @@
     android:weightSum="6">
 
 
-    <it.frisoni.pabich.csenpoomsaescore.widgets.AutoResizeTextView
+    <it.frisoni.pabich.csenpoomsaescore.widgets._AutoResizeTextView
         android:id="@+id/txt_title"
         android:layout_weight="4"
         android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
             android:id="@+id/btn_start"
             style="@style/medium_button_text"
             android:layout_weight="1"
-            android:drawableBottom="@drawable/menu_button_background"
+            android:drawableBottom="@drawable/gray_button_background"
             android:drawableTop="@drawable/start"
             android:text="@string/start" />
 

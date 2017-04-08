@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 
-public class AutoResizeTextView extends android.support.v7.widget.AppCompatTextView {
+public class _AutoResizeTextView extends android.support.v7.widget.AppCompatTextView {
     private interface SizeTester {
         /**
          * @param suggestedSize  Size of text to be tested
@@ -48,17 +48,17 @@ public class AutoResizeTextView extends android.support.v7.widget.AppCompatTextV
     private boolean mEnableSizeCache = true;
     private boolean mInitializedDimens;
 
-    public AutoResizeTextView(Context context) {
+    public _AutoResizeTextView(Context context) {
         super(context);
         initialize();
     }
 
-    public AutoResizeTextView(Context context, AttributeSet attrs) {
+    public _AutoResizeTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize();
     }
 
-    public AutoResizeTextView(Context context, AttributeSet attrs, int defStyle) {
+    public _AutoResizeTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initialize();
     }
