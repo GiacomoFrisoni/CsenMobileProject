@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         DbManager dbManager = new DbManager(this);
         dbManager.addAthleteScore(new AthleteScore(4.0, 2.0, 6.0, Calendar.getInstance()));
 
+        String encrypted = AESHelper.encryption("1972");
+        String decrypted = AESHelper.decryption(encrypted);
+
         /**
          * Popolazione del layout con l'istanza di MenuFragment.
          */
