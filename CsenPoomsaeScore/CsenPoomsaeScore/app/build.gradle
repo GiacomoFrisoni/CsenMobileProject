@@ -18,6 +18,9 @@ android {
         }
     }
 }
+repositories {
+    jcenter()
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -26,5 +29,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'me.grantland:autofittextview:0.2.+'
+    compile ('org.adw.library:discrete-seekbar:1.0.1')
     testCompile 'junit:junit:4.12'
 }

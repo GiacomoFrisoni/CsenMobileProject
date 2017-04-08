@@ -80,18 +80,18 @@ public class SettingsFragment extends Fragment {
         //Altri controlli...
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
-        btnBack = (Button) view.findViewById(R.id.btn_back);
+        //btnBack = (Button) view.findViewById(R.id.btn_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
         //Creazione dei listener per l'intercettazione dei click sui bottoni da parte dell'utente
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        /*btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
                     listener.onBackClick();
                 }
             }
-        });
+        });*/
         btnClearList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,34 +138,20 @@ public class SettingsFragment extends Fragment {
      * costituenti l'interfaccia.
      */
     private void showCustomDialog() {
-        AlertDialog.Builder myDialog
-                = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(getActivity());
         myDialog.setTitle(R.string.check_credentials);
 
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.enter_password);
-        LayoutParams textViewLayoutParams
-                = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        textView.setLayoutParams(textViewLayoutParams);
-
         final EditText editText = new EditText(getActivity());
-        LayoutParams editTextLayoutParams
-                = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams editTextLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(editTextLayoutParams);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        LinearLayout layout = new LinearLayout(getActivity());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(textView);
-        layout.addView(editText);
 
-        myDialog.setView(layout);
         myDialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 if (editText.getText().toString().equals(PWD)) {
                     showComponents();
                 } else {
-                    Toast.makeText(getActivity(),R.string.wrong_password, Toast.LENGTH_LONG).show();
                 }
             }
         });
