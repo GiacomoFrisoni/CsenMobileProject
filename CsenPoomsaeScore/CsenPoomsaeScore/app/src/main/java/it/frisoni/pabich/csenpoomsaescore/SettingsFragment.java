@@ -77,6 +77,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private ToggleButton tgbBack;
     private Button btnClearList;
 
+    //Variabile per la gestione dei permessi
+    private boolean writeSettingsPermission = false;
+
+    
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -96,16 +100,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 progress = value;
-                /*
-                 * Interrogazione del sistema circa il permesso di scrittura delle impostazioni.
-                 */
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED) {
+                if (writeSettingsPermission) {
                     android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
-                } else {
-                    /*
-                     * Nel caso il permesso non risulti garantito, viene richiesto all'utente.
-                     */
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{ Manifest.permission.WRITE_SETTINGS }, WRITE_SETTINGS_PERMISSION);
                 }
             }
 
@@ -135,6 +131,19 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         //Gestione del pulsante per la cancellazione del db
         btnClearList.setOnClickListener(this);
+
+        /*
+         * Interrogazione del sistema circa il permesso di scrittura delle impostazioni.
+         */
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED) {
+            writeSettingsPermission = true;
+        } else {
+            /*
+             * Nel caso il permesso non risulti garantito, viene richiesto all'utente.
+             */
+            writeSettingsPermission = false;
+            ActivityCompat.requestPermissions(getActivity(), new String[]{ Manifest.permission.WRITE_SETTINGS }, WRITE_SETTINGS_PERMISSION);
+        }
 
         return view;
     }
@@ -196,10 +205,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == WRITE_SETTINGS_PERMISSION) {
-
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                writeSettingsPermission = true;
                 Toast.makeText(getActivity(), "Permesso concesso!", Toast.LENGTH_SHORT).show();
             } else {
+                writeSettingsPermission = false;
                 Toast.makeText(getActivity(), "È necessario concedere il permesso per la regolazione della luminosità!", Toast.LENGTH_SHORT).show();
             }
         }
