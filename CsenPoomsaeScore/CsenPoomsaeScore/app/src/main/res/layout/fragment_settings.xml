@@ -3,52 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/info_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:text="@string/regulate_brightness"
-        android:textColor="@color/primary"
-        android:textSize="25sp" />
-
-    <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-        android:id="@+id/seek_bar_brightness"
-        android:layout_below="@id/info_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        app:dsb_max="255"
-        app:dsb_min="10"
-        app:dsb_value="255" />
-
-
-    <ToggleButton
-        android:id="@+id/tgb_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@+id/info_text_2"
-        android:layout_alignStart="@+id/info_text_2"
-        android:layout_alignRight="@+id/info_text_2"
-        android:layout_alignEnd="@+id/info_text_2" />
-
-    <TextView
-        android:id="@+id/info_text_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/auth_back_text"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/primary"
-        android:textSize="25sp"
-        android:layout_above="@id/tgb_back" />
-
+    android:padding="20dp">
 
 
     <TextView
@@ -62,16 +17,86 @@
         android:textColor="@color/text_dark"
         android:text="@string/powered_by"/>
 
-    <Button
-        android:id="@+id/btn_clear_list"
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/info_text_3"
+        android:id="@+id/lnl_settings_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/clear_scores_list"
-        android:layout_centerInParent="true"
-        android:layout_above="@id/info_text_3"
-        android:layout_alignLeft="@+id/info_text_3"
-        android:layout_alignStart="@+id/info_text_3"
-        android:layout_alignRight="@+id/info_text_3"
-        android:layout_alignEnd="@+id/info_text_3" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal|fill_vertical">
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:id="@+id/info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:text="@string/regulate_brightness"
+                android:textColor="@color/primary"
+                android:textSize="25sp" />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/seek_bar_brightness"
+                android:layout_below="@id/info_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                app:dsb_max="255"
+                app:dsb_min="10"
+                app:dsb_value="255" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/info_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auth_back_text"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/primary"
+                android:textSize="25sp" />
+
+            <ToggleButton
+                android:id="@+id/tgb_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/info_text_2"
+                android:layout_alignLeft="@+id/info_text_2"
+                android:layout_alignStart="@+id/info_text_2"
+                android:layout_alignRight="@+id/info_text_2"
+                android:layout_alignEnd="@+id/info_text_2" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_centerVertical="true"
+                android:id="@+id/btn_clear_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/clear_scores_list" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

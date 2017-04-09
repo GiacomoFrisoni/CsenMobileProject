@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:padding="15dp"
+            android:padding="30dp"
             android:src="@drawable/taekw_logo"
             android:contentDescription="@string/small_logo"/>
 
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:padding="15dp"
+            android:padding="30dp"
             android:src="@drawable/taekw_text_logo"
             android:contentDescription="@string/small_logo"/>
         />

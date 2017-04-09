@@ -77,18 +77,18 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:contentDescription="@string/small_logo"
-            android:padding="5dp"
+            android:padding="10dp"
             android:src="@drawable/taekw_logo" />
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:contentDescription="@string/big_logo"
-            android:padding="5dp"
+            android:padding="10dp"
             android:src="@drawable/taekw_text_logo" />
         />
     </LinearLayout>

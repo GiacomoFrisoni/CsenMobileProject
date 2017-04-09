@@ -59,8 +59,8 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     public final static double START_POINTS = 4.0;
     public final static double MIN_POINTS = 0.0;
     public final static double MAX_POINTS = START_POINTS;
-    public final static double SMALL_PENALTY = 0.3;
-    public final static double BIG_PENALTY = 0.1;
+    public final static double SMALL_PENALTY = 0.1;
+    public final static double BIG_PENALTY = 0.3;
 
     //Counter TextView
     private AutoResizeTextView txvCounter;
