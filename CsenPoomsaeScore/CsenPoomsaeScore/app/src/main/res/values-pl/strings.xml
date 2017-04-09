@@ -15,6 +15,7 @@
     <string name="regulate_brightness">Regulacja jasności</string>
     <string name="auth_back_text">Zezwól modyfikacje punktów</string>
     <string name="clear_scores_list">Opróżnij listę punktów</string>
+    <string name="cleared_list">Lista opróżniona</string>
 
     <string name="no_scores">Brak punktacji</string>
 

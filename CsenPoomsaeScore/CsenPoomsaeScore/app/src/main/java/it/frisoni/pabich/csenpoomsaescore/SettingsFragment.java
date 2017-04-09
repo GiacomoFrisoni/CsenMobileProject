@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -64,8 +65,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private AppPreferences appPrefs;
 
     //Variabili
+    private RelativeLayout rlBrightness, rlBack, rlClearScores;
     private DiscreteSeekBar discreteSeekBar;
-    private TextView txvInfoEnabling;
     private ToggleButton tgbBack;
     private Button btnClearList;
 
@@ -88,6 +89,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 progress = value;
+                android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
             }
 
             @Override
@@ -95,14 +97,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-                android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
                 appPrefs.setKeyPrefsBrightness(progress);
             }
         };
 
         //Creazione dei riferimenti
+        rlBrightness = (RelativeLayout) view.findViewById(R.id.rl_brightness);
+        rlBack = (RelativeLayout) view.findViewById(R.id.rl_back);
+        rlClearScores = (RelativeLayout) view.findViewById(R.id.rl_clear_scores);
         discreteSeekBar = (DiscreteSeekBar) view.findViewById(R.id.seek_bar_brightness);
-        txvInfoEnabling = (TextView) view.findViewById(R.id.info_text_2);
         tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
@@ -112,6 +115,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         //Gestione del toggle button per l'abilitazione del back
         tgbBack.setChecked(appPrefs.getKeyPrefsBackButton());
+        tgbBack.setOnClickListener(this);
+
+        //Gestione del pulsante per la cancellazione del db
+        btnClearList.setOnClickListener(this);
 
         return view;
     }
@@ -124,6 +131,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_clear_list:
                 dbManager.clearAthleteScores();
+                Toast.makeText(getActivity(), R.string.cleared_list, Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;
@@ -158,9 +166,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
      * Rende visibili i componenti per la modifica delle impostazioni.
      */
     private void showComponents() {
-        txvInfoEnabling.setVisibility(View.VISIBLE);
-        tgbBack.setVisibility(View.VISIBLE);
-        btnClearList.setVisibility(View.VISIBLE);
+        rlBack.setVisibility(View.VISIBLE);
+        rlClearScores.setVisibility(View.VISIBLE);
     }
 
     /**

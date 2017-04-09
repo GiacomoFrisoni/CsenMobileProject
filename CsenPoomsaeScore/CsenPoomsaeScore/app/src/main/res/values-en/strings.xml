@@ -16,6 +16,7 @@
     <string name="regulate_brightness">Regulate brightness</string>
     <string name="auth_back_text">Authorize score changes</string>
     <string name="clear_scores_list">Delete saved scores</string>
+    <string name="cleared_list">Cleared list</string>
 
     <string name="no_scores">No stored score</string>
 

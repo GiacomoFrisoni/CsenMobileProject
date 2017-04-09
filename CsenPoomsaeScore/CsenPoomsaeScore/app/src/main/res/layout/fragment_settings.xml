@@ -28,6 +28,7 @@
         android:gravity="center_horizontal|fill_vertical">
 
         <RelativeLayout
+            android:id="@+id/rl_brightness"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -55,9 +56,11 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_back"
             android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/info_text_2"
@@ -85,9 +88,11 @@
 
 
         <RelativeLayout
+            android:id="@+id/rl_clear_scores"
             android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
 
             <Button
                 android:layout_centerVertical="true"
