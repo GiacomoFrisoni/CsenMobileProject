@@ -7,13 +7,16 @@
     <string name="settings">Opcje</string>
 
     <string name="check_credentials">Verifica credenziali</string>
-    <string name="enter_password">Inserisci password</string>
-    <string name="confirm">Conferma</string>
-    <string name="cancel">Annulla</string>
-    <string name="wrong_password">Password non corretta</string>
+    <string name="enter_password">Wpisz hasło</string>
+    <string name="confirm">OK</string>
+    <string name="cancel">Anuluj</string>
+    <string name="wrong_password">Błędne hasło</string>
 
-    <string name="no_scores">No stored score</string>
-    <string name="clear_scores_list">Delete saved scores</string>
+    <string name="regulate_brightness">Regulacja jasności</string>
+    <string name="auth_back_text">Zezwól modyfikacje punktów</string>
+    <string name="clear_scores_list">Opróżnij listę punktów</string>
+
+    <string name="no_scores">Brak punktacji</string>
 
     <string name="choose_language">Wybierz język</string>
     <string-array name="languages">

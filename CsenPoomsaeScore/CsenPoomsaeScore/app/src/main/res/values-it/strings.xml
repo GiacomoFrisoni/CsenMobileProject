@@ -12,8 +12,11 @@
     <string name="cancel">Annulla</string>
     <string name="wrong_password">Password non corretta</string>
 
+    <string name="regulate_brightness">Regolazione luminosità</string>
+    <string name="auth_back_text">Autorizza modifica punteggi</string>
+    <string name="clear_scores_list">Svuota lista punteggi</string>
+
     <string name="no_scores">Nessun punteggio salvato</string>
-    <string name="clear_scores_list">Cancella punteggi salvati</string>
 
     <string name="choose_language">Scegli la lingua</string>
     <string-array name="languages">

@@ -4,10 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/home_background"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:weightSum="6">
 
@@ -73,17 +71,19 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:padding="10dp"
-            android:src="@drawable/taekw_logo" />
+            android:padding="15dp"
+            android:src="@drawable/taekw_logo"
+            android:contentDescription="@string/small_logo"/>
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:padding="10dp"
-            android:src="@drawable/taekw_text_logo" />
+            android:padding="15dp"
+            android:src="@drawable/taekw_text_logo"
+            android:contentDescription="@string/small_logo"/>
         />
     </LinearLayout>
 

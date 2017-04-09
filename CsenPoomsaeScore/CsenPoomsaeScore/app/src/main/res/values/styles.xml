@@ -16,7 +16,7 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:gravity">center</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">32dp</item>
+        <item name="android:textSize">26dp</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
@@ -31,7 +31,7 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">60dp</item>
+        <item name="android:textSize">56dp</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>

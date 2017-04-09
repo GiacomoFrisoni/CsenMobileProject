@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CsenPoomsaeScore</string>
+    <string name="powered_by">Powered by Giacomo Frisoni &amp; Marcin Pabich"</string>
 
     <string name="start">Start</string>
     <string name="scores">Scores</string>
@@ -12,8 +13,11 @@
     <string name="cancel">Cancel</string>
     <string name="wrong_password">Wrong password</string>
 
-    <string name="no_scores">No stored score</string>
+    <string name="regulate_brightness">Regulate brightness</string>
+    <string name="auth_back_text">Authorize score changes</string>
     <string name="clear_scores_list">Delete saved scores</string>
+
+    <string name="no_scores">No stored score</string>
 
     <string name="choose_language">Choose the language</string>
 
@@ -21,6 +25,9 @@
     <string name="remove_big_penality">+ 0,3</string>
     <string name="add_small_penality">- 0,1</string>
     <string name="remove_small_penality">+ 0,1</string>
+
+    <string name="small_logo">Logo CSEN</string>
+    <string name="big_logo">Logo CSEN</string>
 
 
     <string-array name="languages">

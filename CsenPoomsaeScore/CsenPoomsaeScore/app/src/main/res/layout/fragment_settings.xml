@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:text="Regola luminosità:"
+        android:text="@string/regulate_brightness"
         android:textColor="@color/primary"
         android:textSize="25sp" />
 
@@ -28,8 +28,7 @@
 
 
     <ToggleButton
-        android:id="@+id/toggle_button"
-        android:text="ToggleButton"
+        android:id="@+id/tgb_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -44,11 +43,11 @@
         android:id="@+id/info_text_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Autorizza modifica punteggi:"
+        android:text="@string/auth_back_text"
         android:layout_centerHorizontal="true"
         android:textColor="@color/primary"
         android:textSize="25sp"
-        android:layout_above="@id/toggle_button" />
+        android:layout_above="@id/tgb_back" />
 
 
 
@@ -61,13 +60,13 @@
         android:padding="5sp"
         android:textStyle="italic"
         android:textColor="@color/text_dark"
-        android:text="Powered by Giacomo Frisoni &amp; Marcin Pabich"/>
+        android:text="@string/powered_by"/>
 
     <Button
         android:id="@+id/btn_clear_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Svuota Lista Punteggi"
+        android:text="@string/clear_scores_list"
         android:layout_centerInParent="true"
         android:layout_above="@id/info_text_3"
         android:layout_alignLeft="@+id/info_text_3"
