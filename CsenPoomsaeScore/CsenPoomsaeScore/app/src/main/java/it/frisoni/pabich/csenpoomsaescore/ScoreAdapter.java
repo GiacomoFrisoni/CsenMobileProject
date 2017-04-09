@@ -1,6 +1,7 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,9 @@ public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
         super(context, 0, scores);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         //Ottiene l'elemento per la posizione corrente
         AthleteScore score = getItem(position);
 

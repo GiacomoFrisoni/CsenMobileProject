@@ -40,8 +40,7 @@ public class ResultsFragment extends Fragment {
      * @return oggetto di classe ResultsFragment
      */
     public static ResultsFragment newInstance() {
-        ResultsFragment fragment = new ResultsFragment();
-        return fragment;
+        return new ResultsFragment();
     }
 
     @Nullable
@@ -54,7 +53,7 @@ public class ResultsFragment extends Fragment {
     /**
      * Metodo del ciclo di vita del fragment che viene richiamato quando lo stesso viene "collegato" ad un'activity.
      *
-     * @param context
+     * @param context activity context
      */
     @Override
     public void onAttach(Context context) {

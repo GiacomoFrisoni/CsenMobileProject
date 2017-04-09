@@ -3,13 +3,11 @@ package it.frisoni.pabich.csenpoomsaescore;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import static android.content.ContentValues.TAG;
 
@@ -41,8 +39,7 @@ public class PresentationFragment extends Fragment {
      * @return oggetto di classe PresentationFragment
      */
     public static PresentationFragment newInstance() {
-        PresentationFragment fragment = new PresentationFragment();
-        return fragment;
+        return new PresentationFragment();
     }
 
     @Nullable
@@ -55,7 +52,7 @@ public class PresentationFragment extends Fragment {
     /**
      * Metodo del ciclo di vita del fragment che viene richiamato quando lo stesso viene "collegato" ad un'activity.
      *
-     * @param context
+     * @param context activity context
      */
     @Override
     public void onAttach(Context context) {

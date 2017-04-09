@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup.LayoutParams;
@@ -14,9 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Arrays;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 
@@ -28,7 +29,6 @@ public class SettingsFragment extends Fragment {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnSettingsInteraction {
-        void onBackClick();
     }
 
     /**
@@ -51,12 +51,8 @@ public class SettingsFragment extends Fragment {
      * @return oggetto di classe SettingsFragment
      */
     public static SettingsFragment newInstance() {
-        SettingsFragment fragment = new SettingsFragment();
-        return fragment;
+        return new SettingsFragment();
     }
-
-    //Costanti
-    private final static String PWD = "1972";
 
     //Database e Shared preferences
     private DbManager dbManager;
@@ -80,18 +76,9 @@ public class SettingsFragment extends Fragment {
         //Altri controlli...
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
-        //btnBack = (Button) view.findViewById(R.id.btn_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
         //Creazione dei listener per l'intercettazione dei click sui bottoni da parte dell'utente
-        /*btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onBackClick();
-                }
-            }
-        });*/
         btnClearList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +92,7 @@ public class SettingsFragment extends Fragment {
     /**
      * Metodo del ciclo di vita del fragment che viene richiamato quando lo stesso viene "collegato" ad un'activity.
      *
-     * @param context
+     * @param context activity context
      */
     @Override
     public void onAttach(Context context) {
@@ -151,7 +138,16 @@ public class SettingsFragment extends Fragment {
 
         myDialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                if (editText.getText().toString().equals(PWD)) {
+                boolean visible = false;
+                try {
+                    byte[] pw = Base64.decode(appPrefs.getPwSettingsKey(), Base64.NO_WRAP);
+                    byte[] dataUser = CipherHandler.getHandler().encryptBytes(editText.getText().toString().getBytes());
+                    if (Arrays.equals(pw, dataUser))
+                        visible = true;
+                } catch (Exception e) {
+                    Log.e(TAG, "Error during encryption: " + e.getMessage());
+                }
+                if (visible) {
                     showComponents();
                 } else {
                     Toast.makeText(getActivity(), R.string.wrong_password, Toast.LENGTH_LONG).show();

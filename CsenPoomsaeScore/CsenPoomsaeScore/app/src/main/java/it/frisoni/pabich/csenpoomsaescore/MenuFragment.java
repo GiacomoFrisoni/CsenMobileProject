@@ -47,8 +47,7 @@ public class MenuFragment extends Fragment {
      * @return oggetto di classe MenuFragment
      */
     public static MenuFragment newInstance() {
-        MenuFragment fragment = new MenuFragment();
-        return fragment;
+        return new MenuFragment();
     }
 
     private Button btnStart;
@@ -98,7 +97,7 @@ public class MenuFragment extends Fragment {
     /**
      * Metodo del ciclo di vita del fragment che viene richiamato quando lo stesso viene "collegato" ad un'activity.
      *
-     * @param context
+     * @param context activity context
      */
     @Override
     public void onAttach(Context context) {
