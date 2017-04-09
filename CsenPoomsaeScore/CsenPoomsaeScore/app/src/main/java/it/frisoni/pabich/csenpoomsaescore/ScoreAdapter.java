@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        //Ottiene l'elemento per la posizione corrente
+        //Ottiene il punteggio associato alla posizione corrente
         AthleteScore score = getItem(position);
 
         //Controlla se una vista esistente viene riutilizzata, altrimenti la definisce
@@ -31,22 +32,21 @@ public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.score_row_layout, parent, false);
         }
 
-        // Lookup view for data population
-        /*
-        TextView tvNumber = (TextView) convertView.findViewById(R.id.number);
-        TextView tvDate = (TextView) convertView.findViewById(R.id.date);
-        TextView tvTime = (TextView) convertView.findViewById(R.id.time);
-        TextView tvAccuracy = (TextView) convertView.findViewById(R.id.accuracy);
-        TextView tvPresentation = (TextView) convertView.findViewById(R.id.presentation);
-        TextView tvTotal = (TextView) convertView.findViewById(R.id.total);
+        //Ottiene i riferimenti al row layout
+        TextView txvNumber = (TextView) convertView.findViewById(R.id.number);
+        TextView txvDate = (TextView) convertView.findViewById(R.id.txv_date);
+        TextView txvTime = (TextView) convertView.findViewById(R.id.txv_time);
+        TextView txvAccuracy = (TextView) convertView.findViewById(R.id.txv_accuracy);
+        TextView txvPresentation = (TextView) convertView.findViewById(R.id.txv_presentation);
+        TextView txvTotal = (TextView) convertView.findViewById(R.id.txv_total);
 
-        // Populate the data into the template view using the data object
-        tvNumber.setText(String.valueOf(position + 1));
-        tvDate.setText(score.date);
-        tvTime.setText(score.time);
-        tvAccuracy.setText(score.accuracy);
-        tvPresentation.setText(score.presentation);
-        tvTotal.setText(score.total);*/
+        //Popola il template coi dati da visualizzare
+        txvNumber.setText(String.valueOf(position + 1));
+        txvDate.setText(score.getDateString());
+        txvTime.setText(score.getTimeString());
+        txvAccuracy.setText(String.valueOf(score.getAccuracy()));
+        txvPresentation.setText(String.valueOf(score.getPresentation()));
+        txvTotal.setText(String.valueOf(score.getTotal()));
 
         // Return the completed view to render on screen
         return convertView;
