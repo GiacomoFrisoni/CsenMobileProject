@@ -3,7 +3,10 @@ package it.frisoni.pabich.csenpoomsaescore;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,6 +69,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
 
     private static final int WRITE_SETTINGS_PERMISSION = 100;
+    private static final int WRITE_SETTINGS_REQUEST = 200;
 
     //Database e Shared preferences
     private DbManager dbManager;
@@ -80,7 +84,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     //Variabile per la gestione dei permessi
     private boolean writeSettingsPermission = false;
 
-    
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -143,6 +147,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
              */
             writeSettingsPermission = false;
             ActivityCompat.requestPermissions(getActivity(), new String[]{ Manifest.permission.WRITE_SETTINGS }, WRITE_SETTINGS_PERMISSION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.System.canWrite(getActivity().getApplicationContext())) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getActivity().getPackageName()));
+                    startActivityForResult(intent, WRITE_SETTINGS_REQUEST);
+                }
+            }
         }
 
         return view;
