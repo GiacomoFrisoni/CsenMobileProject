@@ -65,7 +65,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private AppPreferences appPrefs;
 
     //Variabili
-    private RelativeLayout rlBrightness, rlBack, rlClearScores;
+    private RelativeLayout rlBack, rlClearScores;
     private DiscreteSeekBar discreteSeekBar;
     private ToggleButton tgbBack;
     private Button btnClearList;
@@ -102,7 +102,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         };
 
         //Creazione dei riferimenti
-        rlBrightness = (RelativeLayout) view.findViewById(R.id.rl_brightness);
         rlBack = (RelativeLayout) view.findViewById(R.id.rl_back);
         rlClearScores = (RelativeLayout) view.findViewById(R.id.rl_clear_scores);
         discreteSeekBar = (DiscreteSeekBar) view.findViewById(R.id.seek_bar_brightness);

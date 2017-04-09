@@ -27,6 +27,8 @@ public class AthleteScore implements BaseColumns {
     public static final String COLUMN_DATETIME = "datetime";
 
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
+    private static final String TIME_FORMAT = "HH:mm:ss";
 
     private int id;
     private double accuracy;
@@ -82,5 +84,13 @@ public class AthleteScore implements BaseColumns {
 
     public Calendar getDateTime() {
         return dateTime;
+    }
+
+    public String getDateString() {
+        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateTime.getTime());
+    }
+
+    public String getTimeString() {
+        return new SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(dateTime.getTime());
     }
 }

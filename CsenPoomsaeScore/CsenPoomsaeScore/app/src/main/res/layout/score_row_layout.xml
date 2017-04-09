@@ -24,17 +24,17 @@
         android:layout_toRightOf="@id/number">
 
         <TextView
-            android:id="@+id/txt_date"
+            android:id="@+id/txv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="09/04/2017"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/txt_hour"
+            android:id="@+id/txv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txt_date"
+            android:layout_below="@id/txv_date"
             android:text="12:59"
             android:textSize="15sp" />
     </RelativeLayout>
@@ -47,22 +47,23 @@
         android:layout_toRightOf="@id/rtl_date">
 
         <TextView
-            android:id="@+id/txt_accuracy"
+            android:id="@+id/txv_accuracy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accuratezza: 9.0"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/txt_presentation"
+            android:id="@+id/txv_presentation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txt_accuracy"
+            android:layout_below="@id/txv_accuracy"
             android:text="Presentazione: 5.6"
             android:textSize="15sp" />
     </RelativeLayout>
 
     <com.lb.auto_fit_textview.AutoResizeTextView
+        android:id="@+id/txv_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/rtl_points"
