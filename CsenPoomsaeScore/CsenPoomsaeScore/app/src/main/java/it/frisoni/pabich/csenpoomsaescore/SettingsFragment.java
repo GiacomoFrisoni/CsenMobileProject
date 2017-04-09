@@ -3,6 +3,7 @@ package it.frisoni.pabich.csenpoomsaescore;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -15,7 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.util.Arrays;
 
@@ -23,7 +28,7 @@ import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 
 import static android.content.ContentValues.TAG;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
@@ -59,7 +64,9 @@ public class SettingsFragment extends Fragment {
     private AppPreferences appPrefs;
 
     //Variabili
-    private Button btnBack;
+    private DiscreteSeekBar discreteSeekBar;
+    private TextView txvInfoEnabling;
+    private ToggleButton tgbBack;
     private Button btnClearList;
 
     @Nullable
@@ -67,26 +74,60 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        //Inizializzazione delle variabili per la gestione del database e delle SharedPreferences
         dbManager = new DbManager(getActivity());
         appPrefs = new AppPreferences(getActivity());
 
         //Gestione dell'accessibilità dei controlli
         showCustomDialog();
 
-        //Altri controlli...
+        //Creazione del listner per la seek bar
+        final DiscreteSeekBar.OnProgressChangeListener listener = new DiscreteSeekBar.OnProgressChangeListener() {
+            int progress = 0;
 
-        //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                progress = value;
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+                android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
+                appPrefs.setKeyPrefsBrightness(progress);
+            }
+        };
+
+        //Creazione dei riferimenti
+        discreteSeekBar = (DiscreteSeekBar) view.findViewById(R.id.seek_bar_brightness);
+        txvInfoEnabling = (TextView) view.findViewById(R.id.info_text_2);
+        tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
-        //Creazione dei listener per l'intercettazione dei click sui bottoni da parte dell'utente
-        btnClearList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbManager.clearAthleteScores();
-            }
-        });
+        //Gestione della seek bar
+        discreteSeekBar.setOnProgressChangeListener(listener);
+        discreteSeekBar.setProgress(appPrefs.getKeyPrefsBrightness());
+
+        //Gestione del toggle button per l'abilitazione del back
+        tgbBack.setChecked(appPrefs.getKeyPrefsBackButton());
 
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tgb_back:
+                appPrefs.setKeyPrefsBackButton(tgbBack.isChecked());
+                break;
+            case R.id.btn_clear_list:
+                dbManager.clearAthleteScores();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -117,6 +158,8 @@ public class SettingsFragment extends Fragment {
      * Rende visibili i componenti per la modifica delle impostazioni.
      */
     private void showComponents() {
+        txvInfoEnabling.setVisibility(View.VISIBLE);
+        tgbBack.setVisibility(View.VISIBLE);
         btnClearList.setVisibility(View.VISIBLE);
     }
 
