@@ -3,10 +3,14 @@ package it.frisoni.pabich.csenpoomsaescore;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
@@ -17,13 +21,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.util.Arrays;
+import android.Manifest;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 
@@ -60,6 +64,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         return new SettingsFragment();
     }
 
+
+    private static final int WRITE_SETTINGS_PERMISSION = 100;
+
     //Database e Shared preferences
     private DbManager dbManager;
     private AppPreferences appPrefs;
@@ -89,7 +96,17 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 progress = value;
-                android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
+                /*
+                 * Interrogazione del sistema circa il permesso di scrittura delle impostazioni.
+                 */
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED) {
+                    android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
+                } else {
+                    /*
+                     * Nel caso il permesso non risulti garantito, viene richiesto all'utente.
+                     */
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{ Manifest.permission.WRITE_SETTINGS }, WRITE_SETTINGS_PERMISSION);
+                }
             }
 
             @Override
@@ -167,6 +184,25 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private void showComponents() {
         rlBack.setVisibility(View.VISIBLE);
         rlClearScores.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Funzione per poter gestire le risposte dell'utente circa i permessi richiesti.
+     *
+     * @param requestCode codice di richiesta con il quale è stata effettuata la richiesta
+     * @param permissions lista dei permessi richiesti
+     * @param grantResults lista delle risposte per i permessi richiesti
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == WRITE_SETTINGS_PERMISSION) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Permesso concesso!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "È necessario concedere il permesso per la regolazione della luminosità!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /**
