@@ -1,19 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:weightSum="10"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:gravity="fill"
+    android:weightSum="6">
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.lb.auto_fit_textview.AutoResizeTextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rtl_date"
+        android:layout_marginRight="15dp"
         android:text="1"
-        android:layout_gravity="center"
-        android:textColor="@color/gray"/>
+        android:textColor="@color/gray"
+        android:textSize="40sp"
+        android:layout_alignTop="@+id/rtl_date" />
 
-</LinearLayout>
-<!--
+    <RelativeLayout
+        android:id="@+id/rtl_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_toRightOf="@id/number">
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="09/04/2017"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txt_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_date"
+            android:text="12:59"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rtl_points"
+        android:layout_marginRight="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/rtl_date">
+
+        <TextView
+            android:id="@+id/txt_accuracy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accuratezza: 9.0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txt_presentation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_accuracy"
+            android:text="Presentazione: 5.6"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <com.lb.auto_fit_textview.AutoResizeTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rtl_points"
+        android:layout_toRightOf="@id/rtl_points"
+        android:text="5.2"
+        android:textColor="@color/gray"
+        android:textSize="40sp" />
+
+
+</RelativeLayout><!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="90sp"
