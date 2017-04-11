@@ -2,7 +2,6 @@ package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,6 +19,9 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by giacomofrisoni on 30/03/2017.
+ *
+ * Questa classe è dedidata alla gestione delle valutazioni attribuite da parte dei giudici
+ * in merito ai fattori di precisione dell'atleta in esame.
  */
 
 public class AccuracyFragment extends Fragment implements View.OnClickListener {
@@ -28,7 +30,6 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnAccuracyInteraction {
-        void onBackClick();
     }
 
     /**
@@ -54,37 +55,28 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
         return new AccuracyFragment();
     }
 
-    //Constants
-    public final static int VIBR_DURATION = 100;
-    public final static double START_POINTS = 4.0;
-    public final static double MIN_POINTS = 0.0;
-    public final static double MAX_POINTS = START_POINTS;
-    public final static double SMALL_PENALTY = 0.1;
-    public final static double BIG_PENALTY = 0.3;
+    //Costanti
+    private final static double START_POINTS = 4.0;
+    private final static double MIN_POINTS = 0.0;
+    private final static double MAX_POINTS = START_POINTS;
+    private final static double SMALL_PENALTY = 0.1;
+    private final static double BIG_PENALTY = 0.3;
 
-    //Counter TextView
-    private AutoResizeTextView txvCounter;
-
-    //Buttons
+    //Bottoni
     private Button btnAddBigPenalty;
     private Button btnAddSmallPenalty;
     private Button btnRemoveBigPenalty;
     private Button btnRemoveSmallPenalty;
 
-    //Counter
+    //Contatore
     private BigDecimal cur_points;
-
-    //Vibrator
-    private Vibrator vibrator;
+    private AutoResizeTextView txvCounter;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accuracy, container, false);
-
-        //Settaggio del componente per la vibrazione
-        vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
         txvCounter = (AutoResizeTextView ) view.findViewById(R.id.txv_counter);
@@ -111,22 +103,22 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.btn_add_big_penalty:
                 addPenalty(BIG_PENALTY);
-                vibrator.vibrate(VIBR_DURATION);
+                VibrationHandler.getHandler().vibrate();
                 refreshPoints();
                 break;
             case R.id.btn_add_small_penalty:
                 addPenalty(SMALL_PENALTY);
-                vibrator.vibrate(VIBR_DURATION);
+                VibrationHandler.getHandler().vibrate();
                 refreshPoints();
                 break;
             case R.id.btn_remove_big_penalty:
                 removePenalty(BIG_PENALTY);
-                vibrator.vibrate(VIBR_DURATION);
+                VibrationHandler.getHandler().vibrate();
                 refreshPoints();
                 break;
             case R.id.btn_remove_small_penalty:
                 removePenalty(SMALL_PENALTY);
-                vibrator.vibrate(VIBR_DURATION);
+                VibrationHandler.getHandler().vibrate();
                 refreshPoints();
                 break;
             default:
@@ -150,8 +142,8 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Metodo del ciclo di vita del fragment che viene richiamato quando lo stesso viene "collegato" ad un'activity.
-     *
-     * @param context activity context
+     * @param context
+     *      activity context
      */
     @Override
     public void onAttach(Context context) {

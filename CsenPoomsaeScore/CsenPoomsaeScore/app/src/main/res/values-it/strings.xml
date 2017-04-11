@@ -12,6 +12,13 @@
     <string name="cancel">Annulla</string>
     <string name="wrong_password">Password non corretta</string>
 
+    <string name="perfect">Perfetto</string>
+    <string name="excellent">Eccellente</string>
+    <string name="very_good">Molto bravo</string>
+    <string name="good">Bravo</string>
+    <string name="poor">Scarso</string>
+    <string name="very_poor">Molto scarso</string>
+
     <string name="regulate_brightness">Regolazione luminosità</string>
     <string name="auth_back_text">Autorizza modifica punteggi</string>
     <string name="clear_scores_list">Svuota lista punteggi</string>

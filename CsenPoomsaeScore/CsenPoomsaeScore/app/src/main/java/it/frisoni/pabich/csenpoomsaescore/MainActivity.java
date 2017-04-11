@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         appPrefs = new AppPreferences(MainActivity.this);
 
         /*
+         * Inizializza l'oggetto per la gestione della vibrazione.
+         */
+        VibrationHandler.getHandler().initialize(MainActivity.this);
+
+        /*
          * Test db (codice temporaneo)
          */
         DbManager dbManager = new DbManager(this);
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         /*
          * Salva nelle SharedPreferences la password criptata al primo avvio dell'applicazione.
          */
-        if (appPrefs.getKeyFirstTime()) {
+        if (appPrefs.getFirstTimeKey()) {
             try {
                 byte[] pw_bytes = new byte[] { -115, -46, -60, 14, 56, 115, -88, 112, -84, -118, 116, 103, 100, 33, -128, 74 };
                 appPrefs.setKeyPrefsPwSettings(Base64.encodeToString(pw_bytes, Base64.NO_WRAP));
@@ -60,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
          * Replace del fragment nel layout con l'istanza di AccuracyFragment.
          */
         replaceFragment(AccuracyFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
     }
 
     @Override
@@ -68,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
          * Replace del fragment nel layout con l'istanza di ScoresFragment.
          */
         replaceFragment(ScoresFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
     }
 
     @Override
@@ -76,15 +83,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
          * Replace del fragment nel layout con l'istanza di SettingsFragment.
          */
         replaceFragment(SettingsFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
     }
 
+    /*
     @Override
     public void onBackClick() {
         FragmentManager manager = getSupportFragmentManager();
         if (manager.getBackStackEntryCount() > 0) {
             manager.popBackStack();
         }
-    }
+    }*/
 
     protected void addFragment(Fragment fragment, boolean back) {
         FragmentManager manager = getSupportFragmentManager();

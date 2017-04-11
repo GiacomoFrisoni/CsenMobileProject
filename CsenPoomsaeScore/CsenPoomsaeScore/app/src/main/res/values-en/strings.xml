@@ -13,6 +13,13 @@
     <string name="cancel">Cancel</string>
     <string name="wrong_password">Wrong password</string>
 
+    <string name="perfect">Perfect</string>
+    <string name="excellent">Excellent</string>
+    <string name="very_good">Very good</string>
+    <string name="good">Good</string>
+    <string name="poor">Poor</string>
+    <string name="very_poor">Very poor</string>
+
     <string name="regulate_brightness">Regulate brightness</string>
     <string name="auth_back_text">Authorize score changes</string>
     <string name="clear_scores_list">Delete saved scores</string>

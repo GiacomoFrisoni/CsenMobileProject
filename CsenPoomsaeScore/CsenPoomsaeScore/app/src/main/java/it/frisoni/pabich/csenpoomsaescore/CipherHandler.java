@@ -10,6 +10,8 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by giacomofrisoni on 08/04/2017.
+ *
+ * Questa classe mette a disposizione metodi per la gestione di crittografia AES a 128 bit.
  */
 
 final class CipherHandler {

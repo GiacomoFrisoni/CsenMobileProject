@@ -15,17 +15,22 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by giacomofrisoni on 27/03/2017.
+ *
+ * Questa classe modella un punteggio associato a un atleta e tutte le informazioni correlate.
  */
 
 public class AthleteScore implements BaseColumns {
 
+    //Nome della tabella
     public static final String TABLE_NAME = "athlete_scores";
 
+    //Nomi delle colonne
     public static final String COLUMN_ACCURACY = "accuracy";
     public static final String COLUMN_PRESENTATION = "presentation";
     public static final String COLUMN_TOTAL = "total";
     public static final String COLUMN_DATETIME = "datetime";
 
+    //Formati per la data e l'ora
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT = "dd/MM/yyyy";
     private static final String TIME_FORMAT = "HH:mm:ss";
@@ -36,6 +41,18 @@ public class AthleteScore implements BaseColumns {
     private double total;
     private Calendar dateTime;
 
+    /**
+     * Creazione di un nuovo punteggio.
+     *
+     * @param accuracy
+     *      precisione
+     * @param presentation
+     *      presentazione
+     * @param total
+     *      totale
+     * @param dateTime
+     *      data e ora di registrazione
+     */
     public AthleteScore(double accuracy, double presentation, double total, Calendar dateTime) {
         this.accuracy = accuracy;
         this.presentation = presentation;

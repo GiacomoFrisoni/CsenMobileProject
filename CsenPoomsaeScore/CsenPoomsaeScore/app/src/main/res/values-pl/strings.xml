@@ -12,6 +12,13 @@
     <string name="cancel">Anuluj</string>
     <string name="wrong_password">Błędne hasło</string>
 
+    <string name="perfect">Perfect</string>
+    <string name="excellent">Excellent</string>
+    <string name="very_good">Very good</string>
+    <string name="good">Good</string>
+    <string name="poor">Poor</string>
+    <string name="very_poor">Very poor</string>
+
     <string name="regulate_brightness">Regulacja jasności</string>
     <string name="auth_back_text">Zezwól modyfikacje punktów</string>
     <string name="clear_scores_list">Opróżnij listę punktów</string>
