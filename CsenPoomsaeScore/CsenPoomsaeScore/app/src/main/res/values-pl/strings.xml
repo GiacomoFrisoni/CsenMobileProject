@@ -12,6 +12,10 @@
     <string name="cancel">Anuluj</string>
     <string name="wrong_password">Błędne hasło</string>
 
+    <string name="speed_power">Speed and Power</string>
+    <string name="strength_pace">Strength and Pace</string>
+    <string name="energy">Energy expression</string>
+
     <string name="perfect">Perfect</string>
     <string name="excellent">Excellent</string>
     <string name="very_good">Very good</string>
