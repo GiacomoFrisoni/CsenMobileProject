@@ -1,134 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="9"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:weightSum="9">
 
     <com.lb.auto_fit_textview.AutoResizeTextView
         android:id="@+id/txv_counter"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
+        android:gravity="center"
         android:text="4.0"
-        android:textSize="300sp"
-        android:gravity="center" />
+        android:textSize="300sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:weightSum="3"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="3">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center">
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/skb_speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/skb_speed"/>
+                app:dsb_indicatorTextAppearance="@style/ThumbText"
+                app:dsb_max="20"
+                app:dsb_min="5"
+                app:dsb_thumbSize="@dimen/seekbar_ball" />
 
             <TextView
                 android:id="@+id/txv_speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/skb_speed"
-                android:text="Velocità e Potenza"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:text="@string/speed_power" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.5"
-                android:layout_below="@id/skb_speed"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/skb_speed"
+                android:text="0.5" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.0"
-                android:layout_below="@id/skb_speed"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_below="@id/skb_speed"
+                android:text="2.0" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center">
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/skb_strenght"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/skb_strenght"/>
+                app:dsb_indicatorTextAppearance="@style/ThumbText"
+                app:dsb_max="20"
+                app:dsb_min="5"
+                app:dsb_thumbSize="@dimen/seekbar_ball" />
 
             <TextView
                 android:id="@+id/txv_strenght"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/skb_strenght"
-                android:text="Velocità e Potenza"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:text="@string/strength_pace" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.5"
-                android:layout_below="@id/skb_strenght"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/skb_strenght"
+                android:text="0.5" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.0"
-                android:layout_below="@id/skb_strenght"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_below="@id/skb_strenght"
+                android:text="2.0" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center">
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/skb_expression"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/skb_expression"/>
+                app:dsb_indicatorTextAppearance="@style/ThumbText"
+                app:dsb_max="20"
+                app:dsb_min="5"
+                app:dsb_thumbSize="@dimen/seekbar_ball" />
 
             <TextView
                 android:id="@+id/txv_expression"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/skb_expression"
-                android:text="Velocità e Potenza"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:text="@string/energy" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.5"
-                android:layout_below="@id/skb_expression"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/skb_expression"
+                android:text="0.5" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.0"
-                android:layout_below="@id/skb_expression"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_below="@id/skb_expression"
+                android:text="2.0" />
         </RelativeLayout>
     </LinearLayout>
 
