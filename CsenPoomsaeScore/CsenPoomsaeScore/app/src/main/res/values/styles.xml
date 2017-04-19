@@ -1,13 +1,13 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Tema di base per l'applicazione -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
     </style>
 
-
+    <!-- Stile per i bottoni di media dimensione -->
     <style name="medium_button_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -24,6 +24,7 @@
         <item name="android:background">@drawable/gray_button_background</item>
     </style>
 
+    <!-- Stile per i bottini di grande dimensione -->
     <style name="big_button_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -38,7 +39,7 @@
         <item name="android:shadowRadius">2</item>
     </style>
 
-
+    <!-- Stile per la componente testuale del thumb per le DescreteSeekBar -->
     <style name="ThumbText" parent="android:TextAppearance.Small">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_white</item>
@@ -47,6 +48,5 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">3</item>
     </style>
-
 
 </resources>

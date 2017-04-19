@@ -90,7 +90,6 @@
             android:contentDescription="@string/big_logo"
             android:padding="10dp"
             android:src="@drawable/taekw_text_logo" />
-        />
     </LinearLayout>
 
 </LinearLayout>

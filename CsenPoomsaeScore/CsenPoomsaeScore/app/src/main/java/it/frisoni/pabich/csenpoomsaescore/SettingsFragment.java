@@ -77,7 +77,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     //Variabili
     private RelativeLayout rlBack, rlClearScores;
-    private DiscreteSeekBar skBrightness;
+    private DiscreteSeekBar skbBrightness;
     private ToggleButton tgbBack;
     private Button btnClearList;
 
@@ -121,13 +121,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         //Creazione dei riferimenti
         rlBack = (RelativeLayout) view.findViewById(R.id.rl_back);
         rlClearScores = (RelativeLayout) view.findViewById(R.id.rl_clear_scores);
-        skBrightness = (DiscreteSeekBar) view.findViewById(R.id.seek_bar_brightness);
+        skbBrightness = (DiscreteSeekBar) view.findViewById(R.id.skb_brightness);
         tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
         //Gestione della seek bar
-        skBrightness.setOnProgressChangeListener(listener);
-        skBrightness.setProgress(appPrefs.getKeyPrefsBrightness());
+        skbBrightness.setOnProgressChangeListener(listener);
+        skbBrightness.setProgress(appPrefs.getKeyPrefsBrightness());
 
         //Gestione del toggle button per l'abilitazione del back
         tgbBack.setChecked(appPrefs.getKeyPrefsBackButton());

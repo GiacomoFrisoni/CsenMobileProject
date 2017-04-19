@@ -60,6 +60,12 @@ public class AthleteScore implements BaseColumns {
         this.dateTime = dateTime;
     }
 
+    /**
+     * Creazione di un nuovo punteggio.
+     *
+     * @param cursor
+     *      cursore da cui prelevare i dati
+     */
     public AthleteScore(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex(_ID));
         this.accuracy = cursor.getDouble(cursor.getColumnIndex(COLUMN_ACCURACY));
@@ -83,30 +89,44 @@ public class AthleteScore implements BaseColumns {
         return cv;
     }
 
+    /**
+     * @return l'id per il punteggio complessivo.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * @return il punteggio di accuracy.
+     */
     public double getAccuracy() {
         return accuracy;
     }
 
+    /**
+     * @return il punteggio di presentazione.
+     */
     public double getPresentation() {
         return presentation;
     }
 
+    /**
+     * @return il punteggio totale.
+     */
     public double getTotal() {
         return total;
     }
 
-    public Calendar getDateTime() {
-        return dateTime;
-    }
-
+    /**
+     * @return la data di registrazione del punteggio in formato testuale.
+     */
     public String getDateString() {
         return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateTime.getTime());
     }
 
+    /**
+     * @return l'ora di registrazione del punteggio in formato testuale.
+     */
     public String getTimeString() {
         return new SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(dateTime.getTime());
     }

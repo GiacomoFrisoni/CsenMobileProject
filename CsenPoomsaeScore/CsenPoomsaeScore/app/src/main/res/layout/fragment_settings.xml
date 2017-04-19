@@ -44,7 +44,7 @@
                 android:textSize="25sp" />
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/seek_bar_brightness"
+                android:id="@+id/skb_brightness"
                 android:layout_below="@id/info_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -84,10 +84,7 @@
             android:padding="30dp"
             android:src="@drawable/taekw_text_logo"
             android:contentDescription="@string/small_logo"/>
-        />
     </LinearLayout>
-
-
 </LinearLayout>
 <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:autofit="http://schemas.android.com/apk/res-auto"
