@@ -18,11 +18,12 @@ public class AppPreferences {
     private static final String PW_SETTINGS_KEY = "pwSettings";
     private static final String BACK_BUTTON_KEY = "backButtonEnabling";
     private static final String BRIGHTNESS_CONTROL_KEY = "brightnessControlValue";
+    private static final String ACCURACY_KEY = "accuracyPoints";
+    private static final String PRESENTATION_KEY = "presentationPoints";
 
     private static final String APP_SHARED_PREFS = "MyPrefs";
 
-    private SharedPreferences _sharedPrefs;
-    private SharedPreferences.Editor _prefsEditor;
+    private SharedPreferences sharedPrefs;
 
     /**
      * All'interno del costruttore vengono recuperate le SharedPreferences mediante il metodo di sistema.
@@ -33,22 +34,21 @@ public class AppPreferences {
      *      il contesto dell'applicazione
      */
     public AppPreferences(Context context) {
-        this._sharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
-        this._prefsEditor = _sharedPrefs.edit();
+        this.sharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
     }
 
     /**
      * @return true se è la prima volta che si avvia l'applicazione, false altrimenti.
      */
     public Boolean getFirstTimeKey() {
-        return _sharedPrefs.getBoolean(FIRST_TIME_KEY, true);
+        return sharedPrefs.getBoolean(FIRST_TIME_KEY, true);
     }
 
     /**
      * @return la password criptata per l'accesso alle impostazioni avanzate.
      */
     public String getPwSettingsKey() {
-        return _sharedPrefs.getString(PW_SETTINGS_KEY, EMPTY_STRING);
+        return sharedPrefs.getString(PW_SETTINGS_KEY, EMPTY_STRING);
     }
 
     /**
@@ -56,14 +56,22 @@ public class AppPreferences {
      * false altrimenti.
      */
     public Boolean getKeyPrefsBackButton() {
-        return _sharedPrefs.getBoolean(BACK_BUTTON_KEY, false);
+        return sharedPrefs.getBoolean(BACK_BUTTON_KEY, false);
     }
 
     /**
      * @return il valore percentuale di luminosità desiderata.
      */
     public int getKeyPrefsBrightness() {
-        return _sharedPrefs.getInt(BRIGHTNESS_CONTROL_KEY, 100);
+        return sharedPrefs.getInt(BRIGHTNESS_CONTROL_KEY, 100);
+    }
+
+
+    /**
+     * @return il corrente punteggio di accuracy salvato.
+     */
+    public float getKeyPrefsAccuracy() {
+        return sharedPrefs.getFloat(ACCURACY_KEY, 0);
     }
 
     /**
@@ -72,8 +80,7 @@ public class AppPreferences {
      *      valore indicante il primo avvio
      */
     public void setKeyPrefsFirstTime(Boolean firstTime) {
-        _prefsEditor.putBoolean(FIRST_TIME_KEY, firstTime);
-        _prefsEditor.commit();
+        sharedPrefs.edit().putBoolean(FIRST_TIME_KEY, firstTime).apply();
     }
 
     /**
@@ -82,8 +89,7 @@ public class AppPreferences {
      *      password
      */
     public void setKeyPrefsPwSettings(String pw) {
-        _prefsEditor.putString(PW_SETTINGS_KEY, pw);
-        _prefsEditor.commit();
+        sharedPrefs.edit().putString(PW_SETTINGS_KEY, pw).apply();
     }
 
     /**
@@ -92,8 +98,7 @@ public class AppPreferences {
      *      abilitazione modalità back
      */
     public void setKeyPrefsBackButton(Boolean mode) {
-        _prefsEditor.putBoolean(BACK_BUTTON_KEY, mode);
-        _prefsEditor.commit();
+        sharedPrefs.edit().putBoolean(BACK_BUTTON_KEY, mode).apply();
     }
 
     /**
@@ -102,7 +107,15 @@ public class AppPreferences {
      *      percentuale di luminosità
      */
     public void setKeyPrefsBrightness(int value) {
-        _prefsEditor.putInt(BRIGHTNESS_CONTROL_KEY, value);
-        _prefsEditor.commit();
+        sharedPrefs.edit().putInt(BRIGHTNESS_CONTROL_KEY, value).apply();
+    }
+
+    /**
+     * Imposta il punteggio di accuracy corrente.
+     * @param value
+     *      punteggio
+     */
+    public void setKeyPrefsAccuracy(float value) {
+        sharedPrefs.edit().putFloat(ACCURACY_KEY, value).apply();
     }
 }
