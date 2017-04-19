@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -48,11 +49,16 @@ public class PresentationFragment extends Fragment {
         return new PresentationFragment();
     }
 
+
+    //Costanti
+    private final static double RANGE_SCALE = 10d;
+    private final static int START_PROGRESS = 20;
+
     //Variabili
     private TextView txvCounter;
     private TextView txvSpeedPower, txvStrengthPace, txvEnergy;
-    private DiscreteSeekBar skSpeedPower, skStrengthPace, skEnergy;
-    private BigDecimal curPoints, curPointsOld;
+    private DiscreteSeekBar skbSpeedPower, skbStrengthPace, skbEnergy;
+    private BigDecimal curPoints;
 
     @Nullable
     @Override
@@ -60,17 +66,81 @@ public class PresentationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_presentation, container, false);
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
-        //txvCounter = (TextView) view.findViewById(R.id.txv_counter);
-        //txvSpeedPower = (TextView) view.findViewById(R.id.txv_speed_power);
-        //txvEnergy = (TextView) view.findViewById(R.id.txv_energy);
-        //skSpeedPower = (DiscreteSeekBar) view.findViewById(R.id.seek_bar_speed_power);
-        //skStrengthPace = (DiscreteSeekBar) view.findViewById(R.id.seek_bar_strength_pace);
-        //skEnergy = (DiscreteSeekBar) view.findViewById(R.id.seek_bar_energy);
+        txvCounter = (TextView) view.findViewById(R.id.txv_counter);
+        txvSpeedPower = (TextView) view.findViewById(R.id.txv_speed_power);
+        txvStrengthPace = (TextView) view.findViewById(R.id.txv_strength_pace);
+        txvEnergy = (TextView) view.findViewById(R.id.txv_energy);
+        skbSpeedPower = (DiscreteSeekBar) view.findViewById(R.id.skb_speed_power);
+        skbStrengthPace = (DiscreteSeekBar) view.findViewById(R.id.skb_strength_pace);
+        skbEnergy = (DiscreteSeekBar) view.findViewById(R.id.skb_energy);
 
-        //Ottenimento dei dati dalla precedente schermata
-        //... Codice...
+        //Listener per la gestione delle seekbar
+        //region seekBarListenersDefinition
+        final DiscreteSeekBar.OnProgressChangeListener listener_speed_power = new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                txvSpeedPower.setText(getDescriptionFromValue(value));
+                txvSpeedPower.setTextColor(getColorFromValue(value));
+                seekBar.setIndicatorFormatter(String.valueOf(value/RANGE_SCALE));
+                changeSeekBarColors(seekBar, value);
+                refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
+            }
 
-        //Listener seekbar e inizializzazioni
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
+        };
+        final DiscreteSeekBar.OnProgressChangeListener listener_strength_pace = new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                txvStrengthPace.setText(getDescriptionFromValue(value));
+                txvStrengthPace.setTextColor(getColorFromValue(value));
+                seekBar.setIndicatorFormatter(String.valueOf(value/RANGE_SCALE));
+                changeSeekBarColors(seekBar, value);
+                refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
+        };
+        final DiscreteSeekBar.OnProgressChangeListener listener_energy = new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                txvEnergy.setText(getDescriptionFromValue(value));
+                txvEnergy.setTextColor(getColorFromValue(value));
+                seekBar.setIndicatorFormatter(String.valueOf(value/RANGE_SCALE));
+                changeSeekBarColors(seekBar, value);
+                refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
+        };
+        //endregion
+
+        //Inizializzazione delle seekbar
+        skbSpeedPower.setProgress(START_PROGRESS);
+        skbStrengthPace.setProgress(START_PROGRESS);
+        skbEnergy.setProgress(START_PROGRESS);
+        changeSeekBarColors(skbSpeedPower, START_PROGRESS);
+        changeSeekBarColors(skbStrengthPace, START_PROGRESS);
+        changeSeekBarColors(skbEnergy, START_PROGRESS);
+
+        //Inizializzazione del contatore
+        refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
+
+        //Inizializzazione delle textview
+        txvSpeedPower.setText(getDescriptionFromValue(skbSpeedPower.getProgress()));
+        txvStrengthPace.setText(getDescriptionFromValue(skbStrengthPace.getProgress()));
+        txvEnergy.setText(getDescriptionFromValue(skbEnergy.getProgress()));
 
         return view;
     }
@@ -94,7 +164,7 @@ public class PresentationFragment extends Fragment {
         for (int value : values) {
             curPoints = curPoints.add((BigDecimal.valueOf(value/10d)));
         }
-        txvCounter.setText(curPoints.toString());
+        txvCounter.setText(String.format(Locale.getDefault(), "%f", curPoints));
     }
 
     private void changeSeekBarColors(final DiscreteSeekBar seekBar, final int value) {
