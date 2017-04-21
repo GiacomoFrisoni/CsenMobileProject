@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomNavBar">
+        <attr name="titleText" format="string" />
+        <attr name="backText" format="string" />
+        <attr name="forwardText" format="string" />
+    </declare-styleable>
+</resources>

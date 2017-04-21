@@ -1,171 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:weightSum="9">
+    android:layout_height="match_parent">
 
-    <com.lb.auto_fit_textview.AutoResizeTextView
-        android:id="@+id/txv_counter"
+    <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:text="4.0"
-        android:textSize="300sp" />
+        android:layout_height="wrap_content"
+        app:titleText="Presentazione"
+        app:backText="Accuratezza"
+        app:forwardText="Risultati"
+        android:id="@+id/nav_bar">
+    </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
+
 
     <LinearLayout
+        android:layout_below="@id/nav_bar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:weightSum="3">
+        android:padding="16dp"
+        android:weightSum="9">
 
-        <RelativeLayout
+        <com.lb.auto_fit_textview.AutoResizeTextView
+            android:id="@+id/txv_counter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="4.0"
+            android:textSize="300sp" />
 
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/skb_speed_power"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:weightSum="3">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dsb_indicatorTextAppearance="@style/ThumbText"
-                app:dsb_max="20"
-                app:dsb_min="5"
-                app:dsb_thumbSize="@dimen/seekbar_ball" />
+                android:layout_weight="1"
+                android:gravity="center">
 
-            <TextView
-                android:id="@+id/txv_speed_power"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/skb_speed_power"
-                android:layout_centerInParent="true"
-                android:text="@string/speed_power" />
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/skb_speed_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dsb_indicatorTextAppearance="@style/ThumbText"
+                    app:dsb_max="20"
+                    app:dsb_min="5"
+                    app:dsb_thumbSize="@dimen/seekbar_ball" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@id/skb_speed_power"
-                android:text="0.5" />
+                <TextView
+                    android:id="@+id/txv_speed_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/skb_speed_power"
+                    android:layout_centerInParent="true"
+                    android:text="@string/speed_power" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/skb_speed_power"
-                android:text="2.0" />
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/skb_speed_power"
+                    android:text="0.5" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/skb_speed_power"
+                    android:text="2.0" />
+            </RelativeLayout>
 
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/skb_strength_pace"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dsb_indicatorTextAppearance="@style/ThumbText"
-                app:dsb_max="20"
-                app:dsb_min="5"
-                app:dsb_thumbSize="@dimen/seekbar_ball" />
+                android:layout_weight="1"
+                android:gravity="center">
 
-            <TextView
-                android:id="@+id/txv_strength_pace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/skb_strength_pace"
-                android:layout_centerInParent="true"
-                android:text="@string/strength_pace" />
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/skb_strength_pace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dsb_indicatorTextAppearance="@style/ThumbText"
+                    app:dsb_max="20"
+                    app:dsb_min="5"
+                    app:dsb_thumbSize="@dimen/seekbar_ball" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@id/skb_strength_pace"
-                android:text="0.5" />
+                <TextView
+                    android:id="@+id/txv_strength_pace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/skb_strength_pace"
+                    android:layout_centerInParent="true"
+                    android:text="@string/strength_pace" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/skb_strength_pace"
-                android:text="2.0" />
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/skb_strength_pace"
+                    android:text="0.5" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/skb_strength_pace"
+                    android:text="2.0" />
+            </RelativeLayout>
 
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/skb_energy"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dsb_indicatorTextAppearance="@style/ThumbText"
-                app:dsb_max="20"
-                app:dsb_min="5"
-                app:dsb_thumbSize="@dimen/seekbar_ball" />
+                android:layout_weight="1"
+                android:gravity="center">
 
-            <TextView
-                android:id="@+id/txv_energy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/skb_energy"
-                android:layout_centerInParent="true"
-                android:text="@string/energy" />
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/skb_energy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dsb_indicatorTextAppearance="@style/ThumbText"
+                    app:dsb_max="20"
+                    app:dsb_min="5"
+                    app:dsb_thumbSize="@dimen/seekbar_ball" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@id/skb_energy"
-                android:text="0.5" />
+                <TextView
+                    android:id="@+id/txv_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/skb_energy"
+                    android:layout_centerInParent="true"
+                    android:text="@string/energy" />
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/skb_energy"
+                    android:text="0.5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/skb_energy"
+                    android:text="2.0" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnl_logos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center">
+
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/skb_energy"
-                android:text="2.0" />
-        </RelativeLayout>
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/small_logo"
+                android:padding="10dp"
+                android:src="@drawable/taekw_logo" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/big_logo"
+                android:padding="10dp"
+                android:src="@drawable/taekw_text_logo" />
+            />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/lnl_logos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/small_logo"
-            android:padding="10dp"
-            android:src="@drawable/taekw_logo" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/big_logo"
-            android:padding="10dp"
-            android:src="@drawable/taekw_text_logo" />
-        />
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

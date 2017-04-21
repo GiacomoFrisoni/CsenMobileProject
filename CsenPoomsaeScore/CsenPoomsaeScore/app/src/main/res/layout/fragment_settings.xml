@@ -1,106 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/info_text_3"
-        android:layout_width="wrap_content"
+    <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:padding="5sp"
-        android:textStyle="italic"
-        android:textColor="@color/text_dark"
-        android:text="@string/powered_by"/>
+        app:titleText="Impostazini"
+        app:backText="Menu"
+        app:forwardText=" "
+        android:id="@+id/nav_bar">
+    </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
 
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/info_text_3"
-        android:id="@+id/lnl_settings_container"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_below="@id/nav_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal|fill_vertical">
+        android:padding="20dp">
 
-        <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_marginTop="15dp"
-                android:id="@+id/info_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:text="@string/regulate_brightness"
-                android:textColor="@color/primary"
-                android:textSize="25sp" />
-
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/skb_brightness"
-                android:layout_below="@id/info_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                app:dsb_max="255"
-                app:dsb_min="10"
-                app:dsb_value="255" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_back"
-            android:layout_weight="1"
+        <TextView
+            android:id="@+id/info_text_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible">
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:padding="5sp"
+            android:text="@string/powered_by"
+            android:textColor="@color/text_dark"
+            android:textStyle="italic" />
 
-            <TextView
-                android:id="@+id/info_text_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auth_back_text"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/primary"
-                android:textSize="25sp" />
-
-            <ToggleButton
-                android:id="@+id/tgb_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_centerInParent="true"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/info_text_2"
-                android:layout_alignLeft="@+id/info_text_2"
-                android:layout_alignStart="@+id/info_text_2"
-                android:layout_alignRight="@+id/info_text_2"
-                android:layout_alignEnd="@+id/info_text_2" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_clear_scores"
-            android:layout_weight="1"
+        <LinearLayout
+            android:id="@+id/lnl_settings_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible">
+            android:layout_above="@id/info_text_3"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal|fill_vertical"
+            android:orientation="vertical">
 
-            <Button
-                android:layout_centerVertical="true"
-                android:id="@+id/btn_clear_list"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/clear_scores_list" />
-        </RelativeLayout>
+                android:layout_weight="1">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/regulate_brightness"
+                    android:textColor="@color/primary"
+                    android:textSize="25sp" />
+
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/skb_brightness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/info_text"
+                    android:paddingBottom="10dp"
+                    app:dsb_max="255"
+                    app:dsb_min="10"
+                    app:dsb_value="255" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/info_text_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/auth_back_text"
+                    android:textColor="@color/primary"
+                    android:textSize="25sp" />
+
+                <ToggleButton
+                    android:id="@+id/tgb_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/info_text_2"
+                    android:layout_alignLeft="@+id/info_text_2"
+                    android:layout_alignRight="@+id/info_text_2"
+                    android:layout_alignStart="@+id/info_text_2"
+                    android:layout_below="@id/info_text_2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_clear_scores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible">
+
+                <Button
+                    android:id="@+id/btn_clear_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/clear_scores_list" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>
+

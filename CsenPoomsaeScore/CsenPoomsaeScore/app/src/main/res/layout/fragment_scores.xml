@@ -2,9 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleText="Lista"
+        android:id="@+id/nav_bar">
+    </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
+
     <ListView
+        android:layout_below="@id/nav_bar"
         android:id="@+id/lsv_scores"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

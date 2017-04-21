@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="10dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleText="Accuratezza"
+        app:backText="Menu"
+        app:forwardText="Presentazione"
+        android:id="@+id/nav_bar">
+    </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
+
+    <LinearLayout
+        android:layout_below="@id/nav_bar"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="6"
+        android:orientation="vertical" >
 
     <com.lb.auto_fit_textview.AutoResizeTextView
         android:id="@+id/txv_counter"
@@ -23,7 +39,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:layout_margin="10dp"
+            android:layout_margin="7dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -33,7 +49,7 @@
             android:text="@string/add_big_penality" />
 
         <Button
-            android:layout_margin="10dp"
+            android:layout_margin="7dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -50,7 +66,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:layout_margin="10dp"
+            android:layout_margin="7dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -59,7 +75,7 @@
             android:text="@string/remove_big_penality"/>
 
         <Button
-            android:layout_margin="10dp"
+            android:layout_margin="7dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -93,3 +109,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+</RelativeLayout>
