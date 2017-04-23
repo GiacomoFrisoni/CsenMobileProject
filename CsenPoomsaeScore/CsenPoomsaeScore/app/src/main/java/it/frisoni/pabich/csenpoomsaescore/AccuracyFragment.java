@@ -15,6 +15,8 @@ import com.lb.auto_fit_textview.AutoResizeTextView;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
+
 import static android.content.ContentValues.TAG;
 
 /**
@@ -30,6 +32,8 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnAccuracyInteraction {
+        void onMenuClick();
+        void onPresentationClick();
     }
 
     /**
@@ -62,6 +66,9 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     private final static double SMALL_PENALTY = 0.1;
     private final static double BIG_PENALTY = 0.3;
 
+    //Barra di navigazione
+    private CustomNavBar navBar;
+
     //Bottoni
     private Button btnAddBigPenalty;
     private Button btnAddSmallPenalty;
@@ -79,11 +86,32 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_accuracy, container, false);
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
+        navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
         txvCounter = (AutoResizeTextView ) view.findViewById(R.id.txv_counter);
         btnAddBigPenalty = (Button) view.findViewById(R.id.btn_add_big_penalty);
         btnAddSmallPenalty = (Button) view.findViewById(R.id.btn_add_small_penalty);
         btnRemoveBigPenalty = (Button) view.findViewById(R.id.btn_remove_big_penalty);
         btnRemoveSmallPenalty = (Button) view.findViewById(R.id.btn_remove_small_penalty);
+
+        //Gestione della navbar
+        //region NavBarListeners
+        navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onMenuClick();
+                }
+            }
+        });
+        navBar.getForwardButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onPresentationClick();
+                }
+            }
+        });
+        //endregion
 
         //Intercettazione dei click sui bottoni da parte dell'utente
         btnAddBigPenalty.setOnClickListener(this);

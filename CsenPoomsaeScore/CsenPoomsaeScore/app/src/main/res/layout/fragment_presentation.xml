@@ -7,9 +7,9 @@
     <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="Presentazione"
-        app:backText="Accuratezza"
-        app:forwardText="Risultati"
+        app:titleText="@string/presentation"
+        app:backText="@string/accuracy"
+        app:forwardText="@string/results"
         android:id="@+id/nav_bar">
     </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
 
@@ -181,7 +181,6 @@
                 android:contentDescription="@string/big_logo"
                 android:padding="10dp"
                 android:src="@drawable/taekw_text_logo" />
-            />
         </LinearLayout>
     </LinearLayout>
 

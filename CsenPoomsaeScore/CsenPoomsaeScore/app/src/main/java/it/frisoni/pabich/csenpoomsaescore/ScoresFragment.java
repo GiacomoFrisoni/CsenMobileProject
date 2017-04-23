@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
+import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
 
@@ -23,6 +24,7 @@ public class ScoresFragment extends Fragment {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnScoresInteraction {
+        void onMenuClick();
     }
 
     /**
@@ -54,6 +56,9 @@ public class ScoresFragment extends Fragment {
     //Adapter
     private ScoreAdapter adapter;
 
+    //Barra di navigazione
+    private CustomNavBar navBar;
+
     //Variabili
     private ListView lsvScores;
     private TextView txvPlaceholder;
@@ -66,10 +71,26 @@ public class ScoresFragment extends Fragment {
 
         dbManager = new DbManager(getActivity());
 
+        //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
+        navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
         lsvScores = (ListView) view.findViewById(R.id.lsv_scores);
         txvPlaceholder = (TextView) view.findViewById(R.id.txv_placeholder);
 
+        //Caricamento dei dati nella lista dei punteggi
         populateListView();
+
+        //Gestione della navbar
+        //region NavBarListeners
+        navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onMenuClick();
+                }
+            }
+        });
+        navBar.setForwardButtonEnabled(false);
+        //endregion
 
         return view;
     }

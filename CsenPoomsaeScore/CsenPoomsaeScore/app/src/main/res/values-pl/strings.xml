@@ -6,6 +6,11 @@
     <string name="scores">Lista</string>
     <string name="settings">Opcje</string>
 
+    <string name="menu">Menu</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="presentation">Presentation</string>
+    <string name="results">Results</string>
+
     <string name="check_credentials">Verifica credenziali</string>
     <string name="enter_password">Wpisz hasło</string>
     <string name="confirm">OK</string>

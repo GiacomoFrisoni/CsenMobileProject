@@ -7,9 +7,8 @@
     <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="Impostazini"
-        app:backText="Menu"
-        app:forwardText=" "
+        app:titleText="@string/settings"
+        app:backText="@string/menu"
         android:id="@+id/nav_bar">
     </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
 

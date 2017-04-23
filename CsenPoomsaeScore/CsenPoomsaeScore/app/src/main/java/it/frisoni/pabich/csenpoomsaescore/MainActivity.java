@@ -87,6 +87,42 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         VibrationHandler.getHandler().vibrate();
     }
 
+    @Override
+    public void onMenuClick() {
+        /*
+         * Replace del fragment nel layout con l'istanza di MenuFragment.
+         */
+        replaceFragment(MenuFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
+    }
+
+    @Override
+    public void onAccuracyClick() {
+        /*
+         * Replace del fragment nel layout con l'istanza di AccuracyFragment.
+         */
+        replaceFragment(AccuracyFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
+    }
+
+    @Override
+    public void onPresentationClick() {
+        /*
+         * Replace del fragment nel layout con l'istanza di PresentationFragment.
+         */
+        replaceFragment(PresentationFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
+    }
+
+    @Override
+    public void onResultsClick() {
+        /*
+         * Replace del fragment nel layout con l'istanza di ResultsFragment.
+         */
+        replaceFragment(ResultsFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
+    }
+
     /*
     @Override
     public void onBackClick() {

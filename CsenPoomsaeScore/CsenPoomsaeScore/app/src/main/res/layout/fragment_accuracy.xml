@@ -7,9 +7,9 @@
     <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="Accuratezza"
-        app:backText="Menu"
-        app:forwardText="Presentazione"
+        app:titleText="@string/accuracy"
+        app:backText="@string/menu"
+        app:forwardText="@string/presentation"
         android:id="@+id/nav_bar">
     </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
 

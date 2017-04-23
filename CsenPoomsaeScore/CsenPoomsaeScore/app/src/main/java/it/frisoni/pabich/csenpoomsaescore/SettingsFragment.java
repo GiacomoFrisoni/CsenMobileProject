@@ -33,6 +33,7 @@ import java.util.Arrays;
 import android.Manifest;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
+import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
 
@@ -42,6 +43,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnSettingsInteraction {
+        void onMenuClick();
     }
 
     /**
@@ -75,6 +77,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private DbManager dbManager;
     private AppPreferences appPrefs;
 
+    //Barra di navigazione
+    private CustomNavBar navBar;
+
     //Variabili
     private RelativeLayout rlBack, rlClearScores;
     private DiscreteSeekBar skbBrightness;
@@ -98,7 +103,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         showCustomDialog();
 
         //Creazione del listner per la seek bar
-        final DiscreteSeekBar.OnProgressChangeListener listener = new DiscreteSeekBar.OnProgressChangeListener() {
+        final DiscreteSeekBar.OnProgressChangeListener skbListener = new DiscreteSeekBar.OnProgressChangeListener() {
             int progress = 0;
 
             @Override
@@ -119,14 +124,28 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         };
 
         //Creazione dei riferimenti
+        navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
         rlBack = (RelativeLayout) view.findViewById(R.id.rl_back);
         rlClearScores = (RelativeLayout) view.findViewById(R.id.rl_clear_scores);
         skbBrightness = (DiscreteSeekBar) view.findViewById(R.id.skb_brightness);
         tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
+        //Gestione della navbar
+        //region NavBarListeners
+        navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onMenuClick();
+                }
+            }
+        });
+        navBar.setForwardButtonEnabled(false);
+        //endregion
+
         //Gestione della seek bar
-        skbBrightness.setOnProgressChangeListener(listener);
+        skbBrightness.setOnProgressChangeListener(skbListener);
         skbBrightness.setProgress(appPrefs.getKeyPrefsBrightness());
 
         //Gestione del toggle button per l'abilitazione del back

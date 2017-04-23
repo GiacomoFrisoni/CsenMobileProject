@@ -16,6 +16,8 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
+
 import static android.content.ContentValues.TAG;
 
 public class PresentationFragment extends Fragment {
@@ -24,6 +26,8 @@ public class PresentationFragment extends Fragment {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnPresentationInteraction {
+        void onAccuracyClick();
+        void onResultsClick();
     }
 
     /**
@@ -54,6 +58,9 @@ public class PresentationFragment extends Fragment {
     private final static double RANGE_SCALE = 10d;
     private final static int START_PROGRESS = 20;
 
+    //Barra di navigazione
+    private CustomNavBar navBar;
+
     //Variabili
     private TextView txvCounter;
     private TextView txvSpeedPower, txvStrengthPace, txvEnergy;
@@ -66,6 +73,7 @@ public class PresentationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_presentation, container, false);
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
+        navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
         txvCounter = (TextView) view.findViewById(R.id.txv_counter);
         txvSpeedPower = (TextView) view.findViewById(R.id.txv_speed_power);
         txvStrengthPace = (TextView) view.findViewById(R.id.txv_strength_pace);
@@ -73,6 +81,26 @@ public class PresentationFragment extends Fragment {
         skbSpeedPower = (DiscreteSeekBar) view.findViewById(R.id.skb_speed_power);
         skbStrengthPace = (DiscreteSeekBar) view.findViewById(R.id.skb_strength_pace);
         skbEnergy = (DiscreteSeekBar) view.findViewById(R.id.skb_energy);
+
+        //Gestione della navbar
+        //region NavBarListeners
+        navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onAccuracyClick();
+                }
+            }
+        });
+        navBar.getForwardButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onResultsClick();
+                }
+            }
+        });
+        //endregion
 
         //Listener per la gestione delle seekbar
         //region seekBarListenersDefinition

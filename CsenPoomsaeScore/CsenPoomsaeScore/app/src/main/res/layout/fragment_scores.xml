@@ -8,7 +8,8 @@
     <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="Lista"
+        app:titleText="@string/scores"
+        app:backText="@string/menu"
         android:id="@+id/nav_bar">
     </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
 

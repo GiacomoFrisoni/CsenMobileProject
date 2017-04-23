@@ -82,11 +82,11 @@ public class CustomNavBar extends RelativeLayout {
 
 
     public void setBackText(String text) {
-        backButton.setText("<   " + text);
+        backButton.setText(getResources().getString(R.string.back_symbol, text));
     }
 
     public void setForwardText(String text) {
-        forwardButton.setText(text + "   >");
+        forwardButton.setText(getResources().getString(R.string.forward_symbol, text));
     }
 
     public void setTitle(String text) {
@@ -105,4 +105,11 @@ public class CustomNavBar extends RelativeLayout {
     }
 
 
+    public Button getBackButton() {
+        return backButton;
+    }
+
+    public Button getForwardButton() {
+        return forwardButton;
+    }
 }

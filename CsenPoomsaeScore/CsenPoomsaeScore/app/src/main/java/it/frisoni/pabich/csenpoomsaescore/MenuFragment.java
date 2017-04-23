@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
+
 import static android.content.ContentValues.TAG;
 
 /**
@@ -50,6 +52,7 @@ public class MenuFragment extends Fragment {
         return new MenuFragment();
     }
 
+    //Bottoni di interazione
     private Button btnStart;
     private Button btnList;
     private Button btnSettings;
