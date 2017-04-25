@@ -24,10 +24,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.util.Arrays;
 import android.Manifest;
@@ -36,6 +35,7 @@ import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
+import static it.frisoni.pabich.csenpoomsaescore.RangeMappingUtilities.map;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
@@ -70,6 +70,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    private static final int MAX_BRIGHTNESS = 255;
+    private static final int MIN_BRIGHTNESS = 10;
     private static final int WRITE_SETTINGS_PERMISSION = 100;
     private static final int WRITE_SETTINGS_REQUEST = 200;
 
@@ -82,7 +84,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     //Variabili
     private RelativeLayout rlBack, rlClearScores;
-    private DiscreteSeekBar skbBrightness;
+    private SeekBar skbBrightness;
     private ToggleButton tgbBack;
     private Button btnClearList;
 
@@ -103,22 +105,23 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         showCustomDialog();
 
         //Creazione del listner per la seek bar
-        final DiscreteSeekBar.OnProgressChangeListener skbListener = new DiscreteSeekBar.OnProgressChangeListener() {
+        final SeekBar.OnSeekBarChangeListener skbListener = new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-                progress = value;
+            public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
+                progress = map(value, 0, MAX_BRIGHTNESS, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
                 if (writeSettingsPermission) {
+                    Log.d("PROGRESS", String.valueOf(progress));
                     android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+            public void onStopTrackingTouch(SeekBar seekBar) {
                 appPrefs.setKeyPrefsBrightness(progress);
             }
         };
@@ -127,7 +130,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
         rlBack = (RelativeLayout) view.findViewById(R.id.rl_back);
         rlClearScores = (RelativeLayout) view.findViewById(R.id.rl_clear_scores);
-        skbBrightness = (DiscreteSeekBar) view.findViewById(R.id.skb_brightness);
+        skbBrightness = (SeekBar) view.findViewById(R.id.skb_brightness);
         tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
 
@@ -145,7 +148,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         //endregion
 
         //Gestione della seek bar
-        skbBrightness.setOnProgressChangeListener(skbListener);
+        skbBrightness.setMax(MAX_BRIGHTNESS);
+        skbBrightness.setOnSeekBarChangeListener(skbListener);
         skbBrightness.setProgress(appPrefs.getKeyPrefsBrightness());
 
         //Gestione del toggle button per l'abilitazione del back

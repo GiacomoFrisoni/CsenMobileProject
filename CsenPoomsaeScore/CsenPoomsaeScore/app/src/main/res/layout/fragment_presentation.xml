@@ -10,10 +10,7 @@
         android:layout_height="wrap_content"
         app:titleText="@string/presentation"
         app:backText="@string/accuracy"
-        app:forwardText="@string/results"
-        android:id="@+id/nav_bar">
-    </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
-
+        app:forwardText="@string/results"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,21 +42,12 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-
                 <SeekBar
                     android:id="@+id/skb_speed_power"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:thumb="@drawable/thumb"
-                    />
-                <!--<org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                    android:id="@+id/skb_speed_power"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:dsb_indicatorTextAppearance="@style/ThumbText"
-                    app:dsb_max="20"
-                    app:dsb_min="5"
-                    app:dsb_thumbSize="@dimen/seekbar_ball" />-->
+                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete" />
 
                 <TextView
                     android:id="@+id/txv_speed_power"
@@ -92,14 +80,12 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                <SeekBar
                     android:id="@+id/skb_strength_pace"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dsb_indicatorTextAppearance="@style/ThumbText"
-                    app:dsb_max="20"
-                    app:dsb_min="5"
-                    app:dsb_thumbSize="@dimen/seekbar_ball" />
+                    android:thumb="@drawable/thumb"
+                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete" />
 
                 <TextView
                     android:id="@+id/txv_strength_pace"
@@ -132,14 +118,12 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                <SeekBar
                     android:id="@+id/skb_energy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dsb_indicatorTextAppearance="@style/ThumbText"
-                    app:dsb_max="20"
-                    app:dsb_min="5"
-                    app:dsb_thumbSize="@dimen/seekbar_ball" />
+                    android:thumb="@drawable/thumb"
+                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete" />
 
                 <TextView
                     android:id="@+id/txv_energy"

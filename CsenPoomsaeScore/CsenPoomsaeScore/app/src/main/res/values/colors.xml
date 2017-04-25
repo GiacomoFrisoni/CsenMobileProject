@@ -11,7 +11,10 @@
     <color name="window_background">#f5f3f5</color>
 
     <color name="button_background">#4F4F4F</color>
+    <color name="button_shadow">#000000</color>
 
+    <color name="seek_bar_shape_start">#888888</color>
+    <color name="seek_bar_shape_end">#666666</color>
 
     <color name="blue">#0072bc</color>
     <color name="blue_pressed">#dc0072bc</color>

@@ -1,6 +1,7 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,14 +13,13 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-
 import java.math.BigDecimal;
 import java.util.Locale;
 
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
+import static it.frisoni.pabich.csenpoomsaescore.RangeMappingUtilities.map;
 
 public class PresentationFragment extends Fragment {
 
@@ -56,8 +56,9 @@ public class PresentationFragment extends Fragment {
 
 
     //Costanti
-    private final static double RANGE_SCALE = 10d;
-    private final static int START_PROGRESS = 20;
+    private final static double SCALE_FACTOR = 10d;
+    private final static int MIN_PROGRESS = 5;
+    private final static int MAX_PROGRESS = 20;
 
     //Barra di navigazione
     private CustomNavBar navBar;
@@ -65,10 +66,8 @@ public class PresentationFragment extends Fragment {
     //Variabili
     private TextView txvCounter;
     private TextView txvSpeedPower, txvStrengthPace, txvEnergy;
-    //private DiscreteSeekBar skbSpeedPower, skbStrengthPace, skbEnergy;
-    private DiscreteSeekBar skbStrengthPace, skbEnergy;
+    private SeekBar skbSpeedPower, skbStrengthPace, skbEnergy;
     private BigDecimal curPoints;
-    private SeekBar skbSpeedPower;
 
     @Nullable
     @Override
@@ -82,8 +81,8 @@ public class PresentationFragment extends Fragment {
         txvStrengthPace = (TextView) view.findViewById(R.id.txv_strength_pace);
         txvEnergy = (TextView) view.findViewById(R.id.txv_energy);
         skbSpeedPower = (SeekBar) view.findViewById(R.id.skb_speed_power);
-        skbStrengthPace = (DiscreteSeekBar) view.findViewById(R.id.skb_strength_pace);
-        skbEnergy = (DiscreteSeekBar) view.findViewById(R.id.skb_energy);
+        skbStrengthPace = (SeekBar) view.findViewById(R.id.skb_strength_pace);
+        skbEnergy = (SeekBar) view.findViewById(R.id.skb_energy);
 
         //Gestione della navbar
         //region NavBarListeners
@@ -107,63 +106,66 @@ public class PresentationFragment extends Fragment {
 
         //Listener per la gestione delle seekbar
         //region seekBarListenersDefinition
-        final DiscreteSeekBar.OnProgressChangeListener listener_speed_power = new DiscreteSeekBar.OnProgressChangeListener() {
+        final SeekBar.OnSeekBarChangeListener listener_speed_power = new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
                 txvSpeedPower.setText(getDescriptionFromValue(value));
                 txvSpeedPower.setTextColor(getColorFromValue(value));
-                seekBar.setIndicatorFormatter(String.valueOf(value/RANGE_SCALE));
-                changeSeekBarColors(seekBar, value);
+                changeSeekBarColor(seekBar, value);
                 refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
             }
 
             @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         };
-        final DiscreteSeekBar.OnProgressChangeListener listener_strength_pace = new DiscreteSeekBar.OnProgressChangeListener() {
+        final SeekBar.OnSeekBarChangeListener listener_strength_pace = new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
                 txvStrengthPace.setText(getDescriptionFromValue(value));
                 txvStrengthPace.setTextColor(getColorFromValue(value));
-                seekBar.setIndicatorFormatter(String.valueOf(value/RANGE_SCALE));
-                changeSeekBarColors(seekBar, value);
+                changeSeekBarColor(seekBar, value);
                 refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
             }
 
             @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         };
-        final DiscreteSeekBar.OnProgressChangeListener listener_energy = new DiscreteSeekBar.OnProgressChangeListener() {
+        final SeekBar.OnSeekBarChangeListener listener_energy = new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
                 txvEnergy.setText(getDescriptionFromValue(value));
                 txvEnergy.setTextColor(getColorFromValue(value));
-                seekBar.setIndicatorFormatter(String.valueOf(value/RANGE_SCALE));
-                changeSeekBarColors(seekBar, value);
+                changeSeekBarColor(seekBar, value);
                 refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
             }
 
             @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         };
         //endregion
 
         //Inizializzazione delle seekbar
-        skbSpeedPower.setProgress(START_PROGRESS);
-        skbStrengthPace.setProgress(START_PROGRESS);
-        skbEnergy.setProgress(START_PROGRESS);
-        //changeSeekBarColors(skbSpeedPower, START_PROGRESS);
-        changeSeekBarColors(skbStrengthPace, START_PROGRESS);
-        changeSeekBarColors(skbEnergy, START_PROGRESS);
+        skbSpeedPower.setOnSeekBarChangeListener(listener_speed_power);
+        skbStrengthPace.setOnSeekBarChangeListener(listener_strength_pace);
+        skbEnergy.setOnSeekBarChangeListener(listener_energy);
+        skbSpeedPower.setMax(MAX_PROGRESS - MIN_PROGRESS);
+        skbStrengthPace.setMax(MAX_PROGRESS - MIN_PROGRESS);
+        skbEnergy.setMax(MAX_PROGRESS - MIN_PROGRESS);
+        skbSpeedPower.setProgress(MAX_PROGRESS - MIN_PROGRESS);
+        skbStrengthPace.setProgress(MAX_PROGRESS - MIN_PROGRESS);
+        skbEnergy.setProgress(MAX_PROGRESS - MIN_PROGRESS);
+        changeSeekBarColor(skbSpeedPower, MAX_PROGRESS - MIN_PROGRESS);
+        changeSeekBarColor(skbStrengthPace, MAX_PROGRESS - MIN_PROGRESS);
+        changeSeekBarColor(skbEnergy, MAX_PROGRESS - MIN_PROGRESS);
 
         //Inizializzazione del contatore
         refreshCounter(skbSpeedPower.getProgress(), skbStrengthPace.getProgress(), skbEnergy.getProgress());
@@ -179,51 +181,62 @@ public class PresentationFragment extends Fragment {
     /**
      * Questo metodo verifica se un numero è incluso in un certo range.
      * @param x
-     *      il valore
+     *      valore
      * @param lower
-     *      il valore minimo dell'intervallo
+     *      valore minimo dell'intervallo
      * @param upper
-     *      il valore massimo dell'intervallo
+     *      valore massimo dell'intervallo
      * @return true se il numero specificato è incluso nel range, false altrimenti.
      */
     public static boolean isBetween(int x, int lower, int upper) {
         return lower <= x && x <= upper;
     }
 
+    /*
+     * Aggiorna il contatore effettuando la somma dei valori passati come parametro,
+     * operando le opportune mappature e scale.
+     */
     private void refreshCounter(int... values) {
         curPoints = BigDecimal.ZERO;
         for (int value : values) {
-            curPoints = curPoints.add((BigDecimal.valueOf(value/10d)));
+            curPoints = curPoints.add((BigDecimal.valueOf(map(value, 0, MAX_PROGRESS - MIN_PROGRESS, MIN_PROGRESS, MAX_PROGRESS)/SCALE_FACTOR)));
         }
-        txvCounter.setText(String.format(Locale.getDefault(), "%f", curPoints));
+        txvCounter.setText(String.format(Locale.getDefault(), "%.1f", curPoints));
     }
 
-    private void changeSeekBarColors(final DiscreteSeekBar seekBar, final int value) {
-        seekBar.setScrubberColor(getColorFromValue(value));
-        seekBar.setRippleColor(getColorFromValue(value));
-        seekBar.setThumbColor(getColorFromValue(value), getColorFromValue(value));
+    /*
+     * Aggiorna il colore della seekbar sulla base del valore indicato come parametro.
+     */
+    private void changeSeekBarColor(final SeekBar seekBar, final int value) {
+        seekBar.getProgressDrawable().setColorFilter(getColorFromValue(value), PorterDuff.Mode.SRC_IN);
     }
 
+    /*
+     * Restituisce la descrizione associata al valore di avanzamento indicato.
+     */
     private String getDescriptionFromValue(int value) {
         String description = getString(R.string.very_poor);
-        if (isBetween(value, 18, 20)) {
+        if (isBetween(value, 13, 15)) {
             description = getString(R.string.perfect);
-        } else if (isBetween(value, 15, 17)) {
+        } else if (isBetween(value, 10, 12)) {
             description = getString(R.string.excellent);
-        } else if (isBetween(value, 12, 14)) {
+        } else if (isBetween(value, 7, 9)) {
             description = getString(R.string.very_good);
-        } else if (isBetween(value, 9, 11)) {
+        } else if (isBetween(value, 4, 6)) {
             description = getString(R.string.good);
-        } else if (isBetween(value, 6, 8)) {
+        } else if (isBetween(value, 1, 3)) {
             description = getString(R.string.poor);
         }
-        return  value/10d + " - " + description;
+        return map(value, 0, MAX_PROGRESS - MIN_PROGRESS, MIN_PROGRESS, MAX_PROGRESS)/SCALE_FACTOR + " - " + description;
     }
 
+    /*
+     * Restituisce il colore associato al valore di avanzamento indicato.
+     */
     private int getColorFromValue(int value) {
-        if (isBetween(value, 16, 20)) {
+        if (isBetween(value, 10, 15)) {
             return ContextCompat.getColor(getActivity(), R.color.green);
-        } else if (isBetween(value, 11, 16)) {
+        } else if (isBetween(value, 4, 9)) {
             return ContextCompat.getColor(getActivity(), R.color.orange);
         } else {
             return ContextCompat.getColor(getActivity(), R.color.red_pressed);

@@ -30,8 +30,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'me.grantland:autofittextview:0.2.+'
-
-    compile 'org.adw.library:discrete-seekbar:1.0.1'
     compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
     testCompile 'junit:junit:4.12'
 }
