@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -57,8 +58,10 @@ public class PresentationFragment extends Fragment {
     //Variabili
     private TextView txvCounter;
     private TextView txvSpeedPower, txvStrengthPace, txvEnergy;
-    private DiscreteSeekBar skbSpeedPower, skbStrengthPace, skbEnergy;
+    //private DiscreteSeekBar skbSpeedPower, skbStrengthPace, skbEnergy;
+    private DiscreteSeekBar skbStrengthPace, skbEnergy;
     private BigDecimal curPoints;
+    private SeekBar skbSpeedPower;
 
     @Nullable
     @Override
@@ -70,7 +73,7 @@ public class PresentationFragment extends Fragment {
         txvSpeedPower = (TextView) view.findViewById(R.id.txv_speed_power);
         txvStrengthPace = (TextView) view.findViewById(R.id.txv_strength_pace);
         txvEnergy = (TextView) view.findViewById(R.id.txv_energy);
-        skbSpeedPower = (DiscreteSeekBar) view.findViewById(R.id.skb_speed_power);
+        skbSpeedPower = (SeekBar) view.findViewById(R.id.skb_speed_power);
         skbStrengthPace = (DiscreteSeekBar) view.findViewById(R.id.skb_strength_pace);
         skbEnergy = (DiscreteSeekBar) view.findViewById(R.id.skb_energy);
 
@@ -130,7 +133,7 @@ public class PresentationFragment extends Fragment {
         skbSpeedPower.setProgress(START_PROGRESS);
         skbStrengthPace.setProgress(START_PROGRESS);
         skbEnergy.setProgress(START_PROGRESS);
-        changeSeekBarColors(skbSpeedPower, START_PROGRESS);
+        //changeSeekBarColors(skbSpeedPower, START_PROGRESS);
         changeSeekBarColors(skbStrengthPace, START_PROGRESS);
         changeSeekBarColors(skbEnergy, START_PROGRESS);
 

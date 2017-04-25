@@ -1,8 +1,7 @@
 <resources>
 
-    <!-- Tema di base per l'applicazione -->
+    <!-- Tema di base per l'applicazione-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
     </style>
@@ -46,5 +45,4 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">3</item>
     </style>
-
 </resources>

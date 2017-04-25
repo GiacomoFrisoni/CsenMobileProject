@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         /*
          * Replace del fragment nel layout con l'istanza di AccuracyFragment.
          */
-        replaceFragment(AccuracyFragment.newInstance(), true);
-        //replaceFragment(PresentationFragment.newInstance(), true);
+        //replaceFragment(AccuracyFragment.newInstance(), true);
+        replaceFragment(PresentationFragment.newInstance(), true);
         VibrationHandler.getHandler().vibrate();
     }
 
