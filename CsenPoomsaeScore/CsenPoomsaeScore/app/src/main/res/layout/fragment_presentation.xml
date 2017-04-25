@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
+        android:id="@+id/nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleText="@string/presentation"
@@ -15,9 +16,9 @@
 
 
     <LinearLayout
-        android:layout_below="@id/nav_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_bar"
         android:orientation="vertical"
         android:padding="16dp"
         android:weightSum="9">
@@ -29,7 +30,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="4.0"
-            android:textSize="300sp" />
+            android:textSize="100sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,14 +45,21 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+
+                <SeekBar
+                    android:id="@+id/skb_speed_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb"
+                    />
+                <!--<org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                     android:id="@+id/skb_speed_power"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:dsb_indicatorTextAppearance="@style/ThumbText"
                     app:dsb_max="20"
                     app:dsb_min="5"
-                    app:dsb_thumbSize="@dimen/seekbar_ball" />
+                    app:dsb_thumbSize="@dimen/seekbar_ball" />-->
 
                 <TextView
                     android:id="@+id/txv_speed_power"
@@ -139,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/skb_energy"
                     android:layout_centerInParent="true"
-                    android:text="@string/energy" />
+                    android:text="@string/energy"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -164,7 +172,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:gravity="center">
+            android:paddingTop="10dp"
+            android:gravity="bottom|center">
 
             <ImageView
                 android:layout_width="wrap_content"

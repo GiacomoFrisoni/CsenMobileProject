@@ -11,8 +11,9 @@
         android:text="Indietro"
         android:textColor="@color/text_white"
         android:background="@drawable/gray_minimal_button_background"
-        android:width="150dp"
-        android:height="30dp"
+        android:width="170dp"
+        android:height="35dp"
+        android:textSize="13sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -32,8 +33,9 @@
         android:text="Avanti"
         android:textColor="@color/text_white"
         android:background="@drawable/gray_minimal_button_background"
-        android:width="150dp"
-        android:height="30dp"
+        android:width="170dp"
+        android:height="35dp"
+        android:textSize="13sp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 </RelativeLayout>
