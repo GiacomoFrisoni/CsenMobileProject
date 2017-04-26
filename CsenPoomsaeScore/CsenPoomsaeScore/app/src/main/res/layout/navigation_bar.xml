@@ -9,11 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Indietro"
-        android:textColor="@color/text_white"
-        android:background="@drawable/gray_minimal_button_background"
-        android:width="170dp"
-        android:height="35dp"
-        android:textSize="13sp"
+        style="@style/nav_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -31,11 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Avanti"
-        android:textColor="@color/text_white"
-        android:background="@drawable/gray_minimal_button_background"
-        android:width="170dp"
-        android:height="35dp"
-        android:textSize="13sp"
+        style="@style/nav_button"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 </RelativeLayout>

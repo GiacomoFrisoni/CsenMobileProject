@@ -7,26 +7,26 @@
     <string name="settings">Opcje</string>
 
     <string name="menu">Menu</string>
-    <string name="accuracy">Accuracy</string>
-    <string name="presentation">Presentation</string>
-    <string name="results">Results</string>
+    <string name="accuracy">Dokładność</string>
+    <string name="presentation">Prezentacja</string>
+    <string name="results">Wyniki</string>
 
-    <string name="check_credentials">Verifica credenziali</string>
+    <string name="check_credentials">Sprawdź referencję</string>
     <string name="enter_password">Wpisz hasło</string>
     <string name="confirm">OK</string>
     <string name="cancel">Anuluj</string>
     <string name="wrong_password">Błędne hasło</string>
 
-    <string name="speed_power">Speed and Power</string>
-    <string name="strength_pace">Strength and Pace</string>
-    <string name="energy">Energy expression</string>
+    <string name="speed_power">Szybkość i moc</string>
+    <string name="strength_pace">Siła i rytm</string>
+    <string name="energy">Ekspresja energii</string>
 
-    <string name="perfect">Perfect</string>
-    <string name="excellent">Excellent</string>
-    <string name="very_good">Very good</string>
-    <string name="good">Good</string>
-    <string name="poor">Poor</string>
-    <string name="very_poor">Very poor</string>
+    <string name="perfect">Idealny</string>
+    <string name="excellent">Doskonły</string>
+    <string name="very_good">Bardzo dobry</string>
+    <string name="good">Dobry</string>
+    <string name="poor">Słaby</string>
+    <string name="very_poor">Bardzo słaby</string>
 
     <string name="regulate_brightness">Regulacja jasności</string>
     <string name="auth_back_text">Zezwól modyfikacje punktów</string>

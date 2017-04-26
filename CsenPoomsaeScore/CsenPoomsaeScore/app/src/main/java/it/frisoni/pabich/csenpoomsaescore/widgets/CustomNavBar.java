@@ -60,6 +60,8 @@ public class CustomNavBar extends RelativeLayout {
                 String back = array.getString(R.styleable.CustomNavBar_backText);
                 String forward = array.getString(R.styleable.CustomNavBar_forwardText);
                 String title = array.getString(R.styleable.CustomNavBar_titleText);
+                Boolean backEnabled = array.getBoolean(R.styleable.CustomNavBar_backEnabled, true);
+                Boolean forwardEnabled = array.getBoolean(R.styleable.CustomNavBar_forwardEnabled, true);
 
                 if (back != null) {
                     setBackText(back);
@@ -72,6 +74,10 @@ public class CustomNavBar extends RelativeLayout {
                 if (title != null) {
                     setTitle(title);
                 }
+
+                setBackButtonEnabled(backEnabled);
+                setForwardButtonEnabled(forwardEnabled);
+
             } catch (Exception e) {
                 Log.e("CustomNavBar", "Problema con lettura di attributi: " + e.getMessage());
             } finally {
@@ -96,12 +102,22 @@ public class CustomNavBar extends RelativeLayout {
 
     public void setBackButtonEnabled(boolean enabled) {
         backButton.setEnabled(enabled);
-        backButton.setVisibility(GONE);
+
+        if (!enabled) {
+            backButton.setVisibility(GONE);
+        } else {
+            backButton.setVisibility(VISIBLE);
+        }
     }
 
     public void setForwardButtonEnabled(boolean enabled) {
         forwardButton.setEnabled(enabled);
-        forwardButton.setVisibility(GONE);
+
+        if (!enabled) {
+            forwardButton.setVisibility(GONE);
+        } else {
+            forwardButton.setVisibility(VISIBLE);
+        }
     }
 
 

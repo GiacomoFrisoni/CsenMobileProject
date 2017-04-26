@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         app:titleText="@string/settings"
         app:backText="@string/menu"
+        app:forwardEnabled="false"
         android:id="@+id/nav_bar">
     </it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
 

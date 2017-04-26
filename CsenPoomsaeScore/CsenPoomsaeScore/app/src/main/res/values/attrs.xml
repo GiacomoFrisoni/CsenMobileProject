@@ -4,5 +4,7 @@
         <attr name="titleText" format="string" />
         <attr name="backText" format="string" />
         <attr name="forwardText" format="string" />
+        <attr name="backEnabled" format="boolean" />
+        <attr name="forwardEnabled" format="boolean" />
     </declare-styleable>
 </resources>

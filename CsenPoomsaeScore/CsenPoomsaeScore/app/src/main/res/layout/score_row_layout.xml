@@ -10,11 +10,11 @@
 
     <TextView
         android:id="@+id/number"
-        android:layout_width="wrap_content"
+        android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/rtl_date"
-        android:layout_marginRight="12dp"
-        android:text="1"
+        android:layout_marginRight="20dp"
+        android:text="255"
         android:textColor="@color/gray"
         android:textSize="25sp"
         android:layout_alignTop="@+id/rtl_date" />
@@ -24,7 +24,7 @@
         android:id="@+id/rtl_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="20dp"
         android:layout_toRightOf="@id/number">
 
         <TextView
@@ -46,24 +46,41 @@
     <RelativeLayout
         android:layout_weight="1"
         android:id="@+id/rtl_points"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/rtl_date">
 
         <TextView
-            android:id="@+id/txv_accuracy"
+            android:id="@+id/txv_accuracy_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accuratezza: 9.0"
+            android:text="Accuratezza: "
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txv_accuracy"
+            android:layout_toRightOf="@id/txv_accuracy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9.0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txv_presentation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txv_accuracy"
+            android:text="Presentazione: "
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/txv_presentation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txv_presentation_title"
             android:layout_below="@id/txv_accuracy"
-            android:text="Presentazione: 5.6"
+            android:text="5.6"
             android:textSize="15sp" />
     </RelativeLayout>
 
@@ -75,6 +92,8 @@
         android:layout_alignBottom="@+id/rtl_points"
         android:layout_toRightOf="@id/rtl_points"
         android:text="5.2"
+        android:gravity="right"
+        android:layout_marginRight="5dp"
         android:textColor="@color/gray"
         android:textSize="40sp" />
 

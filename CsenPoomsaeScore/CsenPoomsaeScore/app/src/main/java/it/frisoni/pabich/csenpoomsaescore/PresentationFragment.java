@@ -209,6 +209,7 @@ public class PresentationFragment extends Fragment {
      */
     private void changeSeekBarColor(final SeekBar seekBar, final int value) {
         seekBar.getProgressDrawable().setColorFilter(getColorFromValue(value), PorterDuff.Mode.SRC_IN);
+        seekBar.getThumb().setColorFilter(getColorFromValue(value), PorterDuff.Mode.SRC_IN);
     }
 
     /*
