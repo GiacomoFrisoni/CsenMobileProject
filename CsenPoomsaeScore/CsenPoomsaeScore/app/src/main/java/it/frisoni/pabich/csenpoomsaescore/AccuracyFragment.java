@@ -66,6 +66,9 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     private final static double SMALL_PENALTY = 0.1;
     private final static double BIG_PENALTY = 0.3;
 
+    //Shared preferences
+    private AppPreferences appPrefs;
+
     //Barra di navigazione
     private CustomNavBar navBar;
 
@@ -85,6 +88,9 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accuracy, container, false);
 
+        //Inizializzazione della variabile per la gestione delle shared preferences
+        appPrefs = new AppPreferences(getActivity());
+
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
         navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
         txvCounter = (AutoResizeTextView ) view.findViewById(R.id.txv_counter);
@@ -98,7 +104,7 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
+                if (listener != null && appPrefs.getBackButtonKey()) {
                     listener.onMenuClick();
                 }
             }
@@ -108,6 +114,7 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 if (listener != null) {
                     listener.onPresentationClick();
+                    appPrefs.setAccuracyKey(cur_points.floatValue());
                 }
             }
         });

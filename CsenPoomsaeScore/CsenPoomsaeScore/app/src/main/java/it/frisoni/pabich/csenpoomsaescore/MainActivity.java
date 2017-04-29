@@ -14,6 +14,12 @@ import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 
 import static android.content.ContentValues.TAG;
 
+
+/**
+ * Questa classe è dedidata alla gestione dell'activity principale in cui vengono mostrati i vari fragment
+ * dell'applicazione.
+ */
+
 public class MainActivity extends AppCompatActivity implements MenuFragment.OnMenuInteraction,
         AccuracyFragment.OnAccuracyInteraction, PresentationFragment.OnPresentationInteraction,
         ResultsFragment.OnResultsInteraction, SettingsFragment.OnSettingsInteraction,
@@ -27,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
+         * Inizializza l'oggetto per la gestione delle SharedPreferences.
+         */
         appPrefs = new AppPreferences(MainActivity.this);
 
         /*
@@ -35,19 +44,13 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         VibrationHandler.getHandler().initialize(MainActivity.this);
 
         /*
-         * Test db (codice temporaneo)
-         */
-        DbManager dbManager = new DbManager(this);
-        dbManager.addAthleteScore(new AthleteScore(4.0, 2.0, 6.0, Calendar.getInstance()));
-
-        /*
          * Salva nelle SharedPreferences la password criptata al primo avvio dell'applicazione.
          */
         if (appPrefs.getFirstTimeKey()) {
             try {
                 byte[] pw_bytes = new byte[] { -115, -46, -60, 14, 56, 115, -88, 112, -84, -118, 116, 103, 100, 33, -128, 74 };
-                appPrefs.setKeyPrefsPwSettings(Base64.encodeToString(pw_bytes, Base64.NO_WRAP));
-                appPrefs.setKeyPrefsFirstTime(false);
+                appPrefs.setPwSettingsKey(Base64.encodeToString(pw_bytes, Base64.NO_WRAP));
+                appPrefs.setFirstTimeKey(false);
             } catch (Exception e) {
                 Log.e(TAG, "Error during encryption: " + e.getMessage());
             }
@@ -122,14 +125,16 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         VibrationHandler.getHandler().vibrate();
     }
 
-    /*
     @Override
-    public void onBackClick() {
+    public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
-        if (manager.getBackStackEntryCount() > 0) {
-            manager.popBackStack();
+        Fragment f = manager.findFragmentById(R.id.fragment_container);
+        if (appPrefs.getBackButtonKey() || ((f instanceof ScoresFragment) || (f instanceof SettingsFragment))) {
+            if (manager.getBackStackEntryCount() > 0) {
+                manager.popBackStack();
+            }
         }
-    }*/
+    }
 
     protected void addFragment(Fragment fragment, boolean back) {
         FragmentManager manager = getSupportFragmentManager();

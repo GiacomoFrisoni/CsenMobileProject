@@ -37,6 +37,13 @@ import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 import static android.content.ContentValues.TAG;
 import static it.frisoni.pabich.csenpoomsaescore.RangeMappingUtilities.map;
 
+
+/**
+ * Created by giacomofrisoni on 30/03/2017.
+ *
+ * Questa classe è dedidata alla gestione della schermata di impostazioni.
+ */
+
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     /**
@@ -70,6 +77,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    //Costanti
     private static final int MAX_BRIGHTNESS = 255;
     private static final int MIN_BRIGHTNESS = 10;
     private static final int WRITE_SETTINGS_PERMISSION = 100;
@@ -122,7 +130,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                appPrefs.setKeyPrefsBrightness(progress);
+                appPrefs.setBrightnessKey(progress);
             }
         };
 
@@ -150,10 +158,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         //Gestione della seek bar
         skbBrightness.setMax(MAX_BRIGHTNESS);
         skbBrightness.setOnSeekBarChangeListener(skbListener);
-        skbBrightness.setProgress(appPrefs.getKeyPrefsBrightness());
+        skbBrightness.setProgress(appPrefs.getBrightnessKey());
 
         //Gestione del toggle button per l'abilitazione del back
-        tgbBack.setChecked(appPrefs.getKeyPrefsBackButton());
+        tgbBack.setChecked(appPrefs.getBackButtonKey());
         tgbBack.setOnClickListener(this);
 
         //Gestione del pulsante per la cancellazione del db
@@ -185,7 +193,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tgb_back:
-                appPrefs.setKeyPrefsBackButton(tgbBack.isChecked());
+                appPrefs.setBackButtonKey(tgbBack.isChecked());
                 break;
             case R.id.btn_clear_list:
                 dbManager.clearAthleteScores();

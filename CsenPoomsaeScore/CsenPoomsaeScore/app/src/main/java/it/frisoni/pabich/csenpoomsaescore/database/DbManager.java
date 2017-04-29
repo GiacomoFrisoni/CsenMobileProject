@@ -14,6 +14,9 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by giacomofrisoni on 27/03/2017.
+ *
+ * Questa classe è dedicata all'interazione col database per il salvataggio di nuovi dati, l'ottenimento di quelli
+ * memorizzati e la loro eventuale cancellazione.
  */
 
 public class DbManager {
@@ -24,12 +27,24 @@ public class DbManager {
         dbHelper = new DbHelper(context);
     }
 
+    /**
+     * Salva un nuovo punteggio di gara.
+     *
+     * @param score
+     *      AthleteScore contenente le varie informazioni sui punteggi otenuti dall'atleta
+     * @return numero di righe interessate
+     */
     public boolean addAthleteScore(AthleteScore score) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long row = db.insert(AthleteScore.TABLE_NAME, null, score.getContentValues());
         return row > 0;
     }
 
+    /**
+     * Fornisce l'elenco dei punteggi di gara memorizzati, ottenuti dai vari atleti.
+     *
+     * @return elenco di punteggi
+     */
     public List<AthleteScore> getAthleteScores() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<AthleteScore> athleteScores = new ArrayList<>();
@@ -52,6 +67,9 @@ public class DbManager {
         return athleteScores;
     }
 
+    /**
+     * Elimina il contenuto della tabella dedicata alla memorizzazione dei punteggi di gara.
+     */
     public void clearAthleteScores() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("DELETE FROM " + AthleteScore.TABLE_NAME);

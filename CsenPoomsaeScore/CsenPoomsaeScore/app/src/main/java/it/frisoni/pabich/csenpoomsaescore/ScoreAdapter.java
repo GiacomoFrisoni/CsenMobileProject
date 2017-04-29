@@ -13,6 +13,9 @@ import java.util.List;
 
 /**
  * Created by giacomofrisoni on 05/04/2017.
+ *
+ * Questa classe modella un adapter per la realizzazione di una lista costituita da elementi personalizzati
+ * finalizzati alla visualizzazione dei punteggi di gara memorizzati.
  */
 
 public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
@@ -31,6 +34,12 @@ public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.score_row_layout, parent, false);
         }
+
+        //Imposta il testo delle descrizioni
+        ((TextView) convertView.findViewById(R.id.txv_accuracy_title)).setText(
+                this.getContext().getString(R.string.score_description, this.getContext().getString(R.string.accuracy)));
+        ((TextView) convertView.findViewById(R.id.txv_presentation_title)).setText(
+                this.getContext().getString(R.string.score_description, this.getContext().getString(R.string.presentation)));
 
         //Ottiene i riferimenti al row layout
         TextView txvNumber = (TextView) convertView.findViewById(R.id.number);

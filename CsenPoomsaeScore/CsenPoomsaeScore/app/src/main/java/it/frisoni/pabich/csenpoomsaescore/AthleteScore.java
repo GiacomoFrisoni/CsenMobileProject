@@ -36,9 +36,9 @@ public class AthleteScore implements BaseColumns {
     private static final String TIME_FORMAT = "HH:mm:ss";
 
     private int id;
-    private double accuracy;
-    private double presentation;
-    private double total;
+    private float accuracy;
+    private float presentation;
+    private float total;
     private Calendar dateTime;
 
     /**
@@ -53,7 +53,7 @@ public class AthleteScore implements BaseColumns {
      * @param dateTime
      *      data e ora di registrazione
      */
-    public AthleteScore(double accuracy, double presentation, double total, Calendar dateTime) {
+    public AthleteScore(float accuracy, float presentation, float total, Calendar dateTime) {
         this.accuracy = accuracy;
         this.presentation = presentation;
         this.total = total;
@@ -68,9 +68,9 @@ public class AthleteScore implements BaseColumns {
      */
     public AthleteScore(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex(_ID));
-        this.accuracy = cursor.getDouble(cursor.getColumnIndex(COLUMN_ACCURACY));
-        this.presentation = cursor.getDouble(cursor.getColumnIndex(COLUMN_PRESENTATION));
-        this.total = cursor.getDouble(cursor.getColumnIndex(COLUMN_TOTAL));
+        this.accuracy = cursor.getFloat(cursor.getColumnIndex(COLUMN_ACCURACY));
+        this.presentation = cursor.getFloat(cursor.getColumnIndex(COLUMN_PRESENTATION));
+        this.total = cursor.getFloat(cursor.getColumnIndex(COLUMN_TOTAL));
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(DATETIME_FORMAT, Locale.getDefault());
             Date date = sdf.parse(cursor.getString(cursor.getColumnIndex(COLUMN_DATETIME)));
@@ -99,21 +99,21 @@ public class AthleteScore implements BaseColumns {
     /**
      * @return il punteggio di accuracy.
      */
-    public double getAccuracy() {
+    public float getAccuracy() {
         return accuracy;
     }
 
     /**
      * @return il punteggio di presentazione.
      */
-    public double getPresentation() {
+    public float getPresentation() {
         return presentation;
     }
 
     /**
      * @return il punteggio totale.
      */
-    public double getTotal() {
+    public float getTotal() {
         return total;
     }
 

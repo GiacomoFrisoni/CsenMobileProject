@@ -19,6 +19,11 @@ import it.frisoni.pabich.csenpoomsaescore.R;
 
 /**
  * Created by marti on 21/04/2017.
+ *
+ * Questa classe si occupa di gestire una navigation bar costituita da 3 elementi personalizzabili:
+ * - un titolo
+ * - un pulsante di back
+ * - un pulsante di forward
  */
 
 public class CustomNavBar extends RelativeLayout {
@@ -79,7 +84,7 @@ public class CustomNavBar extends RelativeLayout {
                 setForwardButtonEnabled(forwardEnabled);
 
             } catch (Exception e) {
-                Log.e("CustomNavBar", "Problema con lettura di attributi: " + e.getMessage());
+                Log.e("CustomNavBar", "Problem during attributes' reading: " + e.getMessage());
             } finally {
                 array.recycle();
             }

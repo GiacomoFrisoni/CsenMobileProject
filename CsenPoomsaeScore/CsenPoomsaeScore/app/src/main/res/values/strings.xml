@@ -13,12 +13,17 @@
     <string name="accuracy">Accuracy</string>
     <string name="presentation">Presentation</string>
     <string name="results">Results</string>
+    <string name="end_valutation">End valutation</string>
+    <string name="score_description">%1s: </string>
 
     <string name="check_credentials">Check credentials</string>
     <string name="enter_password">Enter password</string>
     <string name="confirm">Confirm</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="cancel">Cancel</string>
     <string name="wrong_password">Wrong password</string>
+    <string name="end_valutation_message">Are you sure you want to close your current valutation?</string>
 
     <string name="speed_power">Speed and Power</string>
     <string name="strength_pace">Strength and Pace</string>

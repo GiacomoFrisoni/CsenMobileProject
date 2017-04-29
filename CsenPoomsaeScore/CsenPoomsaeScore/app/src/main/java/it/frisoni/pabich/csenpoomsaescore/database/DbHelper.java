@@ -8,6 +8,9 @@ import it.frisoni.pabich.csenpoomsaescore.AthleteScore;
 
 /**
  * Created by giacomofrisoni on 27/03/2017.
+ *
+ * Questa classe costituisce un helper per la gestione del database e la creazione / cancellazione
+ * delle relative tabelle.
  */
 
 public class DbHelper extends SQLiteOpenHelper {

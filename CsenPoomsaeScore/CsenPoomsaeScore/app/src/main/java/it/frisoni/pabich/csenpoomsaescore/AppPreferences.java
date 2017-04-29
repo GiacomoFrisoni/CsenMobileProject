@@ -55,23 +55,30 @@ public class AppPreferences {
      * @return true se è abilitata la possibilità di poter compiere modifiche su punteggi inseriti,
      * false altrimenti.
      */
-    public Boolean getKeyPrefsBackButton() {
+    public Boolean getBackButtonKey() {
         return sharedPrefs.getBoolean(BACK_BUTTON_KEY, false);
     }
 
     /**
      * @return il valore percentuale di luminosità desiderata.
      */
-    public int getKeyPrefsBrightness() {
+    public int getBrightnessKey() {
         return sharedPrefs.getInt(BRIGHTNESS_CONTROL_KEY, 100);
     }
 
 
     /**
-     * @return il corrente punteggio di accuracy salvato.
+     * @return il corrente punteggio di accuratezza salvato.
      */
-    public float getKeyPrefsAccuracy() {
+    public float getAccuracyKey() {
         return sharedPrefs.getFloat(ACCURACY_KEY, 0);
+    }
+
+    /**
+     * @return il corrente punteggio di presentazione salvato.
+     */
+    public float getPresentationKey() {
+        return sharedPrefs.getFloat(PRESENTATION_KEY, 0);
     }
 
     /**
@@ -79,7 +86,7 @@ public class AppPreferences {
      * @param firstTime
      *      valore indicante il primo avvio
      */
-    public void setKeyPrefsFirstTime(Boolean firstTime) {
+    public void setFirstTimeKey(Boolean firstTime) {
         sharedPrefs.edit().putBoolean(FIRST_TIME_KEY, firstTime).apply();
     }
 
@@ -88,7 +95,7 @@ public class AppPreferences {
      * @param pw
      *      password
      */
-    public void setKeyPrefsPwSettings(String pw) {
+    public void setPwSettingsKey(String pw) {
         sharedPrefs.edit().putString(PW_SETTINGS_KEY, pw).apply();
     }
 
@@ -97,7 +104,7 @@ public class AppPreferences {
      * @param mode
      *      abilitazione modalità back
      */
-    public void setKeyPrefsBackButton(Boolean mode) {
+    public void setBackButtonKey(Boolean mode) {
         sharedPrefs.edit().putBoolean(BACK_BUTTON_KEY, mode).apply();
     }
 
@@ -106,16 +113,25 @@ public class AppPreferences {
      * @param value
      *      percentuale di luminosità
      */
-    public void setKeyPrefsBrightness(int value) {
+    public void setBrightnessKey(int value) {
         sharedPrefs.edit().putInt(BRIGHTNESS_CONTROL_KEY, value).apply();
     }
 
     /**
-     * Imposta il punteggio di accuracy corrente.
+     * Imposta il punteggio di accuratezza corrente.
      * @param value
      *      punteggio
      */
-    public void setKeyPrefsAccuracy(float value) {
+    public void setAccuracyKey(float value) {
         sharedPrefs.edit().putFloat(ACCURACY_KEY, value).apply();
+    }
+
+    /**
+     * Imposta il punteggio di presentazione corrente.
+     * @param value
+     *      punteggio
+     */
+    public void setPresentationKey(float value) {
+        sharedPrefs.edit().putFloat(PRESENTATION_KEY, value).apply();
     }
 }

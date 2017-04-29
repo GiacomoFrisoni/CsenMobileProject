@@ -16,6 +16,9 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by giacomofrisoni on 29/03/2017.
+ *
+ * Questa classe è dedidata alla gestione del menù da cui è possibile accedere alle varie
+ * funzionalità messe a disposizione dall'applicazione.
  */
 
 public class MenuFragment extends Fragment {

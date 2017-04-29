@@ -21,6 +21,14 @@ import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 import static android.content.ContentValues.TAG;
 import static it.frisoni.pabich.csenpoomsaescore.RangeMappingUtilities.map;
 
+
+/**
+ * Created by giacomofrisoni on 30/03/2017.
+ *
+ * Questa classe è dedidata alla gestione delle valutazioni attribuite da parte dei giudici
+ * in merito alle espressioni di velocità, potenza, forza, ritmo ed energia dell'atleta in esame.
+ */
+
 public class PresentationFragment extends Fragment {
 
     /**
@@ -60,6 +68,9 @@ public class PresentationFragment extends Fragment {
     private final static int MIN_PROGRESS = 5;
     private final static int MAX_PROGRESS = 20;
 
+    //Shared preferences
+    private AppPreferences appPrefs;
+
     //Barra di navigazione
     private CustomNavBar navBar;
 
@@ -73,6 +84,9 @@ public class PresentationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_presentation, container, false);
+
+        //Inizializzazione della variabile per la gestione delle shared preferences
+        appPrefs = new AppPreferences(getActivity());
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
         navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
@@ -89,7 +103,7 @@ public class PresentationFragment extends Fragment {
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
+                if (listener != null && appPrefs.getBackButtonKey()) {
                     listener.onAccuracyClick();
                 }
             }
@@ -99,6 +113,7 @@ public class PresentationFragment extends Fragment {
             public void onClick(View v) {
                 if (listener != null) {
                     listener.onResultsClick();
+                    appPrefs.setPresentationKey(curPoints.floatValue());
                 }
             }
         });

@@ -2,6 +2,8 @@ package it.frisoni.pabich.csenpoomsaescore;
 
 /**
  * Created by giacomofrisoni on 25/04/2017.
+ *
+ * Questa classe di utilità mette a disposizione utili metodi di mapping di valori tra due range.
  */
 
 public final class RangeMappingUtilities {

@@ -18,6 +18,13 @@ import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
 
+
+/**
+ * Created by giacomofrisoni on 30/03/2017.
+ *
+ * Questa classe è dedidata alla visualizzazione dei punteggi di gara memorizzati.
+ */
+
 public class ScoresFragment extends Fragment {
 
     /**
@@ -69,6 +76,7 @@ public class ScoresFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scores, container, false);
 
+        //Inizializzazione della variabile per la gestione del database
         dbManager = new DbManager(getActivity());
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato

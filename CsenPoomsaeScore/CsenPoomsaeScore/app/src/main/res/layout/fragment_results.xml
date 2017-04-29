@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backText="@string/presentation"
-        app:forwardText="some text"
+        app:forwardText="@string/end_valutation"
         app:titleText="@string/results" />
 
 
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Accuratezza"
+                android:text="@string/accuracy"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/text_dark"
@@ -122,9 +122,6 @@
         </LinearLayout>
 
 
-
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -139,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="Presentazione"
+                android:text="@string/presentation"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/text_dark"
@@ -157,178 +154,6 @@
                 android:textSize="150sp" />
         </LinearLayout>
 
-
     </LinearLayout>
-    -->
-    <!--
-        <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
-            android:id="@+id/nav_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:backText="@string/presentation"
-            app:forwardText="some text"
-            app:titleText="@string/results" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nav_bar"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <RelativeLayout
-                android:id="@+id/rtl_small_scores"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_presentation_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:textSize="100sp"
-                    android:text="Presentazione" />
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_presentation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txv_presentation_title"
-                    android:layout_centerHorizontal="true"
-                    android:text="4.0"
-                    android:textSize="100sp"
-                    android:textAlignment="center" />
-
-
-
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_accuracy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:text="4.0"
-                    android:textSize="100sp"
-                    android:textAlignment="center" />
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_accuracy_title"
-                    android:layout_above="@id/txv_accuracy"
-                    android:layout_centerHorizontal="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="100sp"
-                    android:text="Accuratezza" />
-            </RelativeLayout>
-
-            <com.lb.auto_fit_textview.AutoResizeTextView
-                android:id="@+id/txv_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="4.0"
-                android:textAlignment="center"
-                android:textSize="300sp"/>
-
-        </LinearLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rtl_small_scores"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nav_bar">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_presentation_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Presentazione" />
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_presentation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/txv_presentation_title"
-                    android:layout_alignLeft="@id/txv_presentation_title"
-                    android:layout_alignRight="@+id/txv_presentation_title"
-                    android:layout_alignStart="@id/txv_presentation_title"
-                    android:layout_below="@id/txv_presentation_title"
-                    android:text="4.0"
-                    android:textAlignment="center" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_accuracy_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Accuratezza" />
-
-                <com.lb.auto_fit_textview.AutoResizeTextView
-                    android:id="@+id/txv_accuracy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/txv_accuracy_title"
-                    android:layout_alignLeft="@id/txv_accuracy_title"
-                    android:layout_alignRight="@+id/txv_accuracy_title"
-                    android:layout_alignStart="@id/txv_accuracy_title"
-                    android:layout_below="@id/txv_accuracy_title"
-                    android:text="4.0"
-                    android:textAlignment="center" />
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/separator"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="#000000"
-                android:paddingBottom="20dp"
-                android:paddingLeft="1dp"
-                android:paddingRight="1dp"
-                android:paddingTop="1dp"
-                android:scaleType="fitXY" />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/rtl_small_scores"
-            android:layout_alignRight="@id/rtl_small_scores"
-            android:layout_below="@id/nav_bar"
-            android:gravity="center"
-            android:layout_centerVertical="true">
-
-            <com.lb.auto_fit_textview.AutoResizeTextView
-                android:id="@+id/txv_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4.0"
-                android:textAlignment="center" />
-
-        </RelativeLayout>
-    -->
 
 </RelativeLayout>

@@ -72,7 +72,10 @@ final class CipherHandler {
         return cipher.doFinal(cipherText);
     }
 
-    private static byte[] hexStringToByteArray (final String s) {
+    /*
+     * Converte la stringa specificata in un array di byte.
+     */
+    private static byte[] hexStringToByteArray(final String s) {
         if (s == null || (s.length() % 2) == 1)
             throw new IllegalArgumentException();
         final char[] chars = s.toCharArray();
