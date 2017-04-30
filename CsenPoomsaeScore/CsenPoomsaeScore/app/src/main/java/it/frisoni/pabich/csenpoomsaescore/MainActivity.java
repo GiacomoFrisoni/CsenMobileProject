@@ -1,16 +1,17 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
-import java.util.Calendar;
-
-import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
+import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
+import it.frisoni.pabich.csenpoomsaescore.utils.VibrationHandler;
 
 import static android.content.ContentValues.TAG;
 
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
 
     //Variabile per la gestione delle SharedPreferences
     private AppPreferences appPrefs;
+
+    //Variabili per la memorizzazione dei punteggi
+    private float accuracyPoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +67,6 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     }
 
     @Override
-    public void onStartClick() {
-        /*
-         * Replace del fragment nel layout con l'istanza di AccuracyFragment.
-         */
-        replaceFragment(AccuracyFragment.newInstance(), true);
-        VibrationHandler.getHandler().vibrate();
-    }
-
-    @Override
     public void onScoresClick() {
         /*
          * Replace del fragment nel layout con l'istanza di ScoresFragment.
@@ -93,8 +88,14 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     public void onMenuClick() {
         /*
          * Replace del fragment nel layout con l'istanza di MenuFragment.
+         * Tornano al menù dalla schermata di results, lo stack viene ripulito per impedire
+         * il back.
          */
-        replaceFragment(MenuFragment.newInstance(), true);
+        FragmentManager manager = getSupportFragmentManager();
+        for(int i = 0; i < manager.getBackStackEntryCount(); i++) {
+            manager.popBackStack();
+        }
+        replaceFragment(MenuFragment.newInstance(), false);
         VibrationHandler.getHandler().vibrate();
     }
 
@@ -108,30 +109,52 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     }
 
     @Override
-    public void onPresentationClick() {
+    public void onPresentationClick(float accuracyPoints) {
         /*
-         * Replace del fragment nel layout con l'istanza di PresentationFragment.
+         * Aggiunta di PresentationFragment.
          */
-        replaceFragment(PresentationFragment.newInstance(), true);
+        this.accuracyPoints = accuracyPoints;
+        addFragment(PresentationFragment.newInstance(), true);
         VibrationHandler.getHandler().vibrate();
     }
 
     @Override
-    public void onResultsClick() {
+    public void onResultsClick(float presentationPoints) {
         /*
-         * Replace del fragment nel layout con l'istanza di ResultsFragment.
+         * Aggiunta di ResultsFragment.
          */
-        replaceFragment(ResultsFragment.newInstance(), true);
+        addFragment(ResultsFragment.newInstance(this.accuracyPoints, presentationPoints), true);
         VibrationHandler.getHandler().vibrate();
     }
 
     @Override
     public void onBackPressed() {
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment f = manager.findFragmentById(R.id.fragment_container);
-        if (appPrefs.getBackButtonKey() || ((f instanceof ScoresFragment) || (f instanceof SettingsFragment))) {
-            if (manager.getBackStackEntryCount() > 0) {
-                manager.popBackStack();
+        final FragmentManager manager = getSupportFragmentManager();
+        final Fragment f = manager.findFragmentById(R.id.fragment_container);
+        if (appPrefs.getBackButtonKey() || (!(f instanceof PresentationFragment) && !(f instanceof ResultsFragment))) {
+            if (f instanceof AccuracyFragment) {
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.attention))
+                        .setMessage(getString(R.string.back_accuracy_message))
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                manager.popBackStackImmediate();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            } else {
+                if (manager.getBackStackEntryCount() > 0) {
+                    manager.popBackStackImmediate();
+                } else {
+                    super.onBackPressed();
+                }
             }
         }
     }

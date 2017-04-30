@@ -16,10 +16,11 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
-import static it.frisoni.pabich.csenpoomsaescore.RangeMappingUtilities.map;
+import static it.frisoni.pabich.csenpoomsaescore.utils.RangeMappingUtilities.map;
 
 
 /**
@@ -35,8 +36,8 @@ public class PresentationFragment extends Fragment {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnPresentationInteraction {
-        void onAccuracyClick();
-        void onResultsClick();
+        void onBackPressed();
+        void onResultsClick(float presentationPoints);
     }
 
     /**
@@ -103,8 +104,8 @@ public class PresentationFragment extends Fragment {
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null && appPrefs.getBackButtonKey()) {
-                    listener.onAccuracyClick();
+                if (listener != null) {
+                    listener.onBackPressed();
                 }
             }
         });
@@ -112,8 +113,7 @@ public class PresentationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onResultsClick();
-                    appPrefs.setPresentationKey(curPoints.floatValue());
+                    listener.onResultsClick(curPoints.floatValue());
                 }
             }
         });

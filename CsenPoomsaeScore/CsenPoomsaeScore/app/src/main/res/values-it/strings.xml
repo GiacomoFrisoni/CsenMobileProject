@@ -15,11 +15,13 @@
     <string name="check_credentials">Verifica credenziali</string>
     <string name="enter_password">Inserisci password</string>
     <string name="confirm">Conferma</string>
+    <string name="attention">Attenzione</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="cancel">Annulla</string>
     <string name="wrong_password">Password non corretta</string>
     <string name="end_valutation_message">Sei sicuro di voler chiudere la valutazione corrente?</string>
+    <string name="back_accuracy_message">Tornando indietro perderai eventuali modifice non salvate. Continuare?</string>
 
     <string name="speed_power">Velocità e Potenza</string>
     <string name="strength_pace">Forza e Ritmo</string>

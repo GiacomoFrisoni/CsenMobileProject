@@ -15,11 +15,13 @@
     <string name="check_credentials">Sprawdź referencję</string>
     <string name="enter_password">Wpisz hasło</string>
     <string name="confirm">OK</string>
+    <string name="attention">Attention</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="cancel">Anuluj</string>
     <string name="wrong_password">Błędne hasło</string>
     <string name="end_valutation_message">Are you sure you want to close your current valutation?</string>
+    <string name="back_accuracy_message">Going back you will lose any unsaved modifiers. Continue?</string>
 
     <string name="speed_power">Szybkość i moc</string>
     <string name="strength_pace">Siła i rytm</string>

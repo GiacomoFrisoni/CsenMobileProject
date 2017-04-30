@@ -1,4 +1,4 @@
-package it.frisoni.pabich.csenpoomsaescore;
+package it.frisoni.pabich.csenpoomsaescore.utils;
 
 /**
  * Created by giacomofrisoni on 25/04/2017.

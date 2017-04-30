@@ -1,4 +1,4 @@
-package it.frisoni.pabich.csenpoomsaescore;
+package it.frisoni.pabich.csenpoomsaescore.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;

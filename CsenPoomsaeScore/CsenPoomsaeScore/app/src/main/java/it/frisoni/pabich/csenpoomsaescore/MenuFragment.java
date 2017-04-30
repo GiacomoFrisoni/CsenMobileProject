@@ -27,7 +27,7 @@ public class MenuFragment extends Fragment {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnMenuInteraction {
-        void onStartClick();
+        void onAccuracyClick();
         void onScoresClick();
         void onSettingsClick();
     }
@@ -76,7 +76,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onStartClick();
+                    listener.onAccuracyClick();
                 }
             }
         });

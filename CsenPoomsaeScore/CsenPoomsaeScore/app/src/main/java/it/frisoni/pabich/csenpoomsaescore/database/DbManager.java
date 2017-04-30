@@ -3,14 +3,11 @@ package it.frisoni.pabich.csenpoomsaescore.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import it.frisoni.pabich.csenpoomsaescore.AthleteScore;
-
-import static android.content.ContentValues.TAG;
+import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 
 /**
  * Created by giacomofrisoni on 27/03/2017.

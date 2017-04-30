@@ -1,4 +1,4 @@
-package it.frisoni.pabich.csenpoomsaescore;
+package it.frisoni.pabich.csenpoomsaescore.utils;
 
 import android.util.Log;
 
@@ -14,7 +14,7 @@ import static android.content.ContentValues.TAG;
  * Questa classe mette a disposizione metodi per la gestione di crittografia AES a 128 bit.
  */
 
-final class CipherHandler {
+public final class CipherHandler {
 
     private static volatile CipherHandler singleton;
     private byte[] key = null;
@@ -33,7 +33,7 @@ final class CipherHandler {
      *
      * @return l'unica istanza di CipherHandler.
      */
-    static CipherHandler getHandler() {
+    public static CipherHandler getHandler() {
         if (singleton == null) {
             synchronized (CipherHandler.class) {
                 if (singleton == null) {
@@ -51,7 +51,7 @@ final class CipherHandler {
      * @return l'array di byte cifrato
      * @throws Exception errore durante la cifratura
      */
-    byte[] encryptBytes(byte[] plainText) throws Exception {
+    public byte[] encryptBytes(byte[] plainText) throws Exception {
         SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, new IvParameterSpec(new byte[cipher.getBlockSize()]));
@@ -65,7 +65,7 @@ final class CipherHandler {
      * @return l'array di byte decifrato
      * @throws Exception errore durante la decifratura
      */
-    byte[] decryptBytes(byte[] cipherText) throws Exception {
+    public  byte[] decryptBytes(byte[] cipherText) throws Exception {
         SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(new byte[cipher.getBlockSize()]));

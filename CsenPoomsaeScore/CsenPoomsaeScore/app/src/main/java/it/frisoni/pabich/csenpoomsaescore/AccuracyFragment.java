@@ -1,9 +1,11 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.lb.auto_fit_textview.AutoResizeTextView;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
+import it.frisoni.pabich.csenpoomsaescore.utils.VibrationHandler;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
@@ -32,8 +36,8 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnAccuracyInteraction {
-        void onMenuClick();
-        void onPresentationClick();
+        void onBackPressed();
+        void onPresentationClick(float accuracyPoints);
     }
 
     /**
@@ -104,8 +108,8 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null && appPrefs.getBackButtonKey()) {
-                    listener.onMenuClick();
+                if (listener != null) {
+                    listener.onBackPressed();
                 }
             }
         });
@@ -113,8 +117,7 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onPresentationClick();
-                    appPrefs.setAccuracyKey(cur_points.floatValue());
+                    listener.onPresentationClick(cur_points.floatValue());
                 }
             }
         });

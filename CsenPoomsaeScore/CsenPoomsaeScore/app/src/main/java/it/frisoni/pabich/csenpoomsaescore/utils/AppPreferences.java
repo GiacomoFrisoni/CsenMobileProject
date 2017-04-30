@@ -1,4 +1,4 @@
-package it.frisoni.pabich.csenpoomsaescore;
+package it.frisoni.pabich.csenpoomsaescore.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,8 +18,6 @@ public class AppPreferences {
     private static final String PW_SETTINGS_KEY = "pwSettings";
     private static final String BACK_BUTTON_KEY = "backButtonEnabling";
     private static final String BRIGHTNESS_CONTROL_KEY = "brightnessControlValue";
-    private static final String ACCURACY_KEY = "accuracyPoints";
-    private static final String PRESENTATION_KEY = "presentationPoints";
 
     private static final String APP_SHARED_PREFS = "MyPrefs";
 
@@ -66,21 +64,6 @@ public class AppPreferences {
         return sharedPrefs.getInt(BRIGHTNESS_CONTROL_KEY, 100);
     }
 
-
-    /**
-     * @return il corrente punteggio di accuratezza salvato.
-     */
-    public float getAccuracyKey() {
-        return sharedPrefs.getFloat(ACCURACY_KEY, 0);
-    }
-
-    /**
-     * @return il corrente punteggio di presentazione salvato.
-     */
-    public float getPresentationKey() {
-        return sharedPrefs.getFloat(PRESENTATION_KEY, 0);
-    }
-
     /**
      * Imposta una variabile booleana indicante se è la prima volta o meno che si avvia l'applicazione.
      * @param firstTime
@@ -115,23 +98,5 @@ public class AppPreferences {
      */
     public void setBrightnessKey(int value) {
         sharedPrefs.edit().putInt(BRIGHTNESS_CONTROL_KEY, value).apply();
-    }
-
-    /**
-     * Imposta il punteggio di accuratezza corrente.
-     * @param value
-     *      punteggio
-     */
-    public void setAccuracyKey(float value) {
-        sharedPrefs.edit().putFloat(ACCURACY_KEY, value).apply();
-    }
-
-    /**
-     * Imposta il punteggio di presentazione corrente.
-     * @param value
-     *      punteggio
-     */
-    public void setPresentationKey(float value) {
-        sharedPrefs.edit().putFloat(PRESENTATION_KEY, value).apply();
     }
 }

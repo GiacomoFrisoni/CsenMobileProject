@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
+
 
 /**
  * Created by giacomofrisoni on 05/04/2017.

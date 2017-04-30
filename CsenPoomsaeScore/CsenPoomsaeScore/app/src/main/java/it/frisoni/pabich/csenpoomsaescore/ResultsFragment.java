@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import com.lb.auto_fit_textview.AutoResizeTextView;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
+import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
+import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
@@ -37,7 +37,7 @@ public class ResultsFragment extends Fragment {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnResultsInteraction {
-        void onPresentationClick();
+        void onBackPressed();
         void onMenuClick();
     }
 
@@ -57,11 +57,19 @@ public class ResultsFragment extends Fragment {
      * "Costruttore" statico del fragment.
      * L'utilizzo di questo metodo, che ritorna un oggetto della classe corrente, rappresenta la modalità standard per istanziare un oggetto
      * di una classe Fragment.
+     * Per il passaggio di parametri si utilizza la classe Bundle.
+     * Una volta terminati i dati da inserire, il bundle stesso viene passato al fragment tramite il metodo "setArguments".
+     * Questi dati andranno poi recuperati nel metodo "onCreate".
      *
      * @return oggetto di classe ResultsFragment
      */
-    public static ResultsFragment newInstance() {
-        return new ResultsFragment();
+    public static ResultsFragment newInstance(float accuracyPoints, float presentationPoints) {
+        ResultsFragment fragment = new ResultsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putFloat("accuracy", accuracyPoints);
+        bundle.putFloat("presentation", presentationPoints);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
 
@@ -76,6 +84,7 @@ public class ResultsFragment extends Fragment {
     private CustomNavBar navBar;
 
     //Variabili
+    private float accuracyPoints, presentationPoints;
     private AutoResizeTextView txvAccuracy, txvPresentation, txvTotal;
 
     @Nullable
@@ -96,11 +105,9 @@ public class ResultsFragment extends Fragment {
         txvTotal = (AutoResizeTextView) view.findViewById(R.id.txv_total);
 
         //Inizializzazione dei campi testuali per la visualizzazione dei risultati
-        final float accuracy_points = round(appPrefs.getAccuracyKey(), N_DECIMAL_PLACES);
-        final float presentation_points = round(appPrefs.getPresentationKey(),N_DECIMAL_PLACES);
-        final float total = round(accuracy_points + presentation_points, N_DECIMAL_PLACES);
-        txvAccuracy.setText(String.valueOf(accuracy_points));
-        txvPresentation.setText(String.valueOf(presentation_points));
+        final float total = round(accuracyPoints + presentationPoints, N_DECIMAL_PLACES);
+        txvAccuracy.setText(String.valueOf(accuracyPoints));
+        txvPresentation.setText(String.valueOf(presentationPoints));
         txvTotal.setText(String.valueOf(total));
 
         //Gestione della navbar
@@ -108,8 +115,8 @@ public class ResultsFragment extends Fragment {
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null && appPrefs.getBackButtonKey()) {
-                    listener.onPresentationClick();
+                if (listener != null) {
+                    listener.onBackPressed();
                 }
             }
         });
@@ -125,7 +132,7 @@ public class ResultsFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //Salvataggio del punteggio nel database
-                                    dbManager.addAthleteScore(new AthleteScore(accuracy_points, presentation_points, total, Calendar.getInstance()));
+                                    dbManager.addAthleteScore(new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance()));
                                     listener.onMenuClick();
                                 }
                             })
@@ -147,14 +154,33 @@ public class ResultsFragment extends Fragment {
     /**
      * Round to certain number of decimals.
      *
-     * @param d
-     * @param decimalPlace
-     * @return
+     * @param value
+     *      number to round
+     * @param decimalPlaces
+     *      number of decimal places
+     * @return rounded value
      */
-    public static float round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+    public static float round(float value, int decimalPlaces) {
+        BigDecimal bd = new BigDecimal(Float.toString(value));
+        bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
+    }
+
+    /**
+     * Nel metodo "onCreate", vengono recuperati i valori passati nel metodo statico.
+     *
+     * @param savedInstanceState
+     *      bundle contenente i dati utili
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            accuracyPoints = round(bundle.getFloat("accuracy"), N_DECIMAL_PLACES);
+            presentationPoints = round(bundle.getFloat("presentation"), N_DECIMAL_PLACES);
+        }
     }
 
     /**

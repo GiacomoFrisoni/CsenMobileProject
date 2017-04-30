@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import it.frisoni.pabich.csenpoomsaescore.AthleteScore;
+import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 
 /**
  * Created by giacomofrisoni on 27/03/2017.

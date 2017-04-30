@@ -1,4 +1,4 @@
-package it.frisoni.pabich.csenpoomsaescore;
+package it.frisoni.pabich.csenpoomsaescore.utils;
 
 import android.app.Activity;
 import android.content.Context;

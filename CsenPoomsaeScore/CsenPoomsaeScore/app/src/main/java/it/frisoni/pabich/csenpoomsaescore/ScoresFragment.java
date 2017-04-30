@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
+import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;

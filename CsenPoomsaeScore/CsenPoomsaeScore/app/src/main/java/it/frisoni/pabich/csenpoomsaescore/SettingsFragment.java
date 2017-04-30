@@ -32,10 +32,12 @@ import java.util.Arrays;
 import android.Manifest;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
+import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
+import it.frisoni.pabich.csenpoomsaescore.utils.CipherHandler;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
-import static it.frisoni.pabich.csenpoomsaescore.RangeMappingUtilities.map;
+import static it.frisoni.pabich.csenpoomsaescore.utils.RangeMappingUtilities.map;
 
 
 /**
