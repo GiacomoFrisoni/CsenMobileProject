@@ -82,17 +82,15 @@
             android:textSize="15sp" />
     </RelativeLayout>
 
-    <com.lb.auto_fit_textview.AutoResizeTextView
-        android:layout_weight="1"
+    <TextView
         android:id="@+id/txv_total"
-        android:layout_width="wrap_content"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/rtl_points"
-        android:layout_toRightOf="@id/rtl_points"
-        android:text="5.2"
         android:gravity="right"
-        android:layout_marginRight="5dp"
+        android:textAlignment="gravity"
+        android:text="10.0"
         android:textColor="@color/gray"
-        android:textSize="40sp" />
+        android:textSize="37sp"/>
+
 
 </LinearLayout>
