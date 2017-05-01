@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 
 public class VibrationHandler {
 
-    private final static int VIBR_DURATION = 100;
+    private final static int VIBR_DURATION = 50;
 
     private static volatile VibrationHandler singleton;
 
