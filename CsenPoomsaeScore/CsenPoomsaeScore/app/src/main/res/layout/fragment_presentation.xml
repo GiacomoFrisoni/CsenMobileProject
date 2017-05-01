@@ -2,15 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
         android:id="@+id/nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="@string/presentation"
         app:backText="@string/accuracy"
-        app:forwardText="@string/results"/>
+        app:forwardText="@string/results"
+        app:titleText="@string/presentation" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,8 +47,8 @@
                     android:id="@+id/skb_speed_power"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:thumb="@drawable/thumb"
-                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete" />
+                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:thumb="@drawable/thumb" />
 
                 <TextView
                     android:id="@+id/txv_speed_power"
@@ -84,8 +85,8 @@
                     android:id="@+id/skb_strength_pace"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:thumb="@drawable/thumb"
-                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete" />
+                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:thumb="@drawable/thumb" />
 
                 <TextView
                     android:id="@+id/txv_strength_pace"
@@ -122,8 +123,8 @@
                     android:id="@+id/skb_energy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:thumb="@drawable/thumb"
-                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete" />
+                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:thumb="@drawable/thumb" />
 
                 <TextView
                     android:id="@+id/txv_energy"
@@ -131,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/skb_energy"
                     android:layout_centerInParent="true"
-                    android:text="@string/energy"/>
+                    android:text="@string/energy" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -156,8 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:paddingTop="10dp"
-            android:gravity="bottom|center">
+            android:gravity="bottom|center"
+            android:paddingTop="10dp">
 
             <ImageView
                 android:layout_width="wrap_content"

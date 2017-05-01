@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
                 }
             }
         }
+        VibrationHandler.getHandler().vibrate();
     }
 
     protected void addFragment(Fragment fragment, boolean back) {
