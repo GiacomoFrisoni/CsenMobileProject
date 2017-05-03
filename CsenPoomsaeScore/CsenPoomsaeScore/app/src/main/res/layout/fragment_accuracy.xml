@@ -20,30 +20,34 @@
         android:layout_below="@id/nav_bar"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:weightSum="6">
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="20dp"
+        android:paddingEnd="20dp"
+        android:weightSum="10">
 
         <com.lb.auto_fit_textview.AutoResizeTextView
             android:id="@+id/txv_counter"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="4.0"
-            android:textSize="300sp" />
+            android:textSize="200sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="4"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_add_big_penalty"
                 style="@style/big_button_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="7dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/red_button_background"
                 android:text="@string/add_big_penality" />
@@ -51,9 +55,10 @@
             <Button
                 android:id="@+id/btn_add_small_penalty"
                 style="@style/big_button_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="7dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/blue_button_background"
                 android:text="@string/add_small_penality" />
@@ -62,24 +67,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_remove_big_penalty"
                 style="@style/medium_button_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="7dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:text="@string/remove_big_penality" />
 
             <Button
                 android:id="@+id/btn_remove_small_penalty"
                 style="@style/medium_button_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="7dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+
                 android:layout_weight="1"
                 android:text="@string/remove_small_penality" />
         </LinearLayout>
@@ -88,15 +96,17 @@
             android:id="@+id/lnl_logos"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="25dp"
+                android:layout_marginRight="25dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/small_logo"
-                android:padding="10dp"
                 android:src="@drawable/taekw_logo" />
 
             <ImageView
@@ -104,7 +114,6 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/big_logo"
-                android:padding="10dp"
                 android:src="@drawable/taekw_text_logo" />
         </LinearLayout>
 

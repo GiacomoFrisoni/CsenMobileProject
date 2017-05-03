@@ -93,7 +93,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private CustomNavBar navBar;
 
     //Variabili
-    private RelativeLayout rlBack, rlClearScores;
+    private RelativeLayout rlHiddenSettings;
     private SeekBar skbBrightness;
     private ToggleButton tgbBack;
     private Button btnClearList;
@@ -138,8 +138,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         //Creazione dei riferimenti
         navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
-        rlBack = (RelativeLayout) view.findViewById(R.id.rl_back);
-        rlClearScores = (RelativeLayout) view.findViewById(R.id.rl_clear_scores);
+        rlHiddenSettings = (RelativeLayout) view.findViewById(R.id.rlt_hidden_settings);
         skbBrightness = (SeekBar) view.findViewById(R.id.skb_brightness);
         tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
@@ -234,8 +233,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
      * Rende visibili i componenti per la modifica delle impostazioni.
      */
     private void showComponents() {
-        rlBack.setVisibility(View.VISIBLE);
-        rlClearScores.setVisibility(View.VISIBLE);
+        rlHiddenSettings.setVisibility(View.VISIBLE);
     }
 
     /**

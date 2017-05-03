@@ -6,6 +6,7 @@
 
     <color name="text_white">#FFFFFF</color>
     <color name="text_dark">#383838</color>
+    <color name="text_dark_pressed">#484848</color>
 
     <color name="light_gray">#B0818181</color>
     <color name="light_gray_pressed">#E0818181</color>
