@@ -4,13 +4,14 @@
     <color name="primary_dark">#151515</color>
     <color name="background">#FAFAFA</color>
 
+    <color name="title_color">#EEEEEE</color>
     <color name="text_white">#FFFFFF</color>
     <color name="text_dark">#383838</color>
     <color name="text_dark_pressed">#484848</color>
 
     <color name="light_gray">#B0818181</color>
     <color name="light_gray_pressed">#E0818181</color>
-    <color name="window_background">#f5f3f5</color>
+    <color name="window_background">#F5F3F5</color>
 
     <color name="button_background">#4F4F4F</color>
     <color name="button_shadow">#000000</color>
@@ -18,15 +19,15 @@
     <color name="seek_bar_shape_start">#888888</color>
     <color name="seek_bar_shape_end">#666666</color>
 
-    <color name="blue">#0072bc</color>
-    <color name="blue_pressed">#dc0072bc</color>
-    <color name="red">#c42021</color>
-    <color name="red_pressed">#dcc42021</color>
+    <color name="blue">#0072BC</color>
+    <color name="blue_pressed">#DC0072BC</color>
+    <color name="red">#C42021</color>
+    <color name="red_pressed">#DCC42021</color>
     <color name="gray">#5A595B</color>
-    <color name="gray_pressed">#e65a595b</color>
+    <color name="gray_pressed">#E65A595B</color>
 
-    <color name="orange">#fa9300</color>
-    <color name="green">#04b100</color>
+    <color name="orange">#FA9300</color>
+    <color name="green">#04B100</color>
 
-    <color name="light_gray_item">#d4d4d4</color>
+    <color name="light_gray_item">#D4D4D4</color>
 </resources>

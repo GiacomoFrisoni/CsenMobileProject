@@ -6,6 +6,17 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
     </style>
 
+    <style name="title_with_shadow">
+        <item name="android:padding">15dp</item>
+        <item name="android:textColor">@color/title_color</item>
+        <item name="android:textSize">70sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">20</item>
+    </style>
+
+    <!-- Stile per i bottoni del menù -->
     <style name="menu_button">
         <item name="android:layout_margin">10dp</item>
         <item name="android:layout_weight">1</item>

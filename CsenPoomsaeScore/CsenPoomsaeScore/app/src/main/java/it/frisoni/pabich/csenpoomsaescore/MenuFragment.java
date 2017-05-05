@@ -1,6 +1,7 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
@@ -55,6 +59,9 @@ public class MenuFragment extends Fragment {
         return new MenuFragment();
     }
 
+    //Titolo
+    private TextView txvTitle;
+
     //Bottoni di interazione
     private Button btnStart;
     private Button btnList;
@@ -67,9 +74,14 @@ public class MenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
         //Creazione dei riferimenti con gli elementi della view tramite l'id univoco loro assegnato
+        txvTitle = (TextView) view.findViewById(R.id.txv_title);
         btnStart = (Button) view.findViewById(R.id.btn_start);
         btnList = (Button) view.findViewById(R.id.btn_list);
         btnSettings = (Button) view.findViewById(R.id.btn_settings);
+
+        //Imposta il font personalizzato per il titolo
+        Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(),  "fonts/go3v2.ttf");
+        txvTitle.setTypeface(custom_font);
 
         //Creazione dei listener per l'intercettazione dei click sui bottoni da parte dell'utente
         btnStart.setOnClickListener(new View.OnClickListener() {

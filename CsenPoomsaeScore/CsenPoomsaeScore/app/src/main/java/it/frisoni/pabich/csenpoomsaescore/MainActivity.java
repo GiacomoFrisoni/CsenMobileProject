@@ -161,8 +161,12 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     }
 
     protected void addFragment(Fragment fragment, boolean back) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
+        final FragmentManager manager = getSupportFragmentManager();
+        final FragmentTransaction transaction = manager.beginTransaction();
+        final Fragment f = manager.findFragmentById(R.id.fragment_container);
+        if (f != null && !f.isHidden()) {
+            transaction.hide(manager.findFragmentById(R.id.fragment_container));
+        }
         transaction.add(R.id.fragment_container, fragment);
         if (back) {
             transaction.addToBackStack(null);
@@ -171,8 +175,9 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     }
 
     protected void replaceFragment(Fragment fragment, boolean back) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
+        final FragmentManager manager = getSupportFragmentManager();
+        final FragmentTransaction transaction = manager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         transaction.replace(R.id.fragment_container, fragment);
         if (back) {
             transaction.addToBackStack(null);
