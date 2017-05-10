@@ -18,6 +18,10 @@ import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
  *
  * Questa classe modella un adapter per la realizzazione di una lista costituita da elementi personalizzati
  * finalizzati alla visualizzazione dei punteggi di gara memorizzati.
+ * Per ragioni di performance viene adottato sia il VIEW RECYCLING che il VIEW HOLDER PATTERN.
+ * Il View Holder pattern, nello specifico, garantisce l'impiego dei findViewById() soltanto al momento
+ * della creazione del primo layout (evitando di dover trovare una vista interna a un layout per ogni
+ * operazione di riciclo).
  */
 
 public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
@@ -29,12 +33,26 @@ public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        ViewHolder holder;
+
         //Ottiene il punteggio associato alla posizione corrente
         AthleteScore score = getItem(position);
 
         //Controlla se una vista esistente viene riutilizzata, altrimenti la definisce
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.score_row_layout, parent, false);
+
+            holder = new ViewHolder();
+            holder.number = (TextView) convertView.findViewById(R.id.number);
+            holder.date = (TextView) convertView.findViewById(R.id.txv_date);
+            holder.time = (TextView) convertView.findViewById(R.id.txv_time);
+            holder.accuracy = (TextView) convertView.findViewById(R.id.txv_accuracy);
+            holder.presentation = (TextView) convertView.findViewById(R.id.txv_presentation);
+            holder.total = (TextView) convertView.findViewById(R.id.txv_total);
+
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         //Imposta il testo delle descrizioni
@@ -43,23 +61,26 @@ public class ScoreAdapter extends ArrayAdapter<AthleteScore> {
         ((TextView) convertView.findViewById(R.id.txv_presentation_title)).setText(
                 this.getContext().getString(R.string.score_description, this.getContext().getString(R.string.presentation)));
 
-        //Ottiene i riferimenti al row layout
-        TextView txvNumber = (TextView) convertView.findViewById(R.id.number);
-        TextView txvDate = (TextView) convertView.findViewById(R.id.txv_date);
-        TextView txvTime = (TextView) convertView.findViewById(R.id.txv_time);
-        TextView txvAccuracy = (TextView) convertView.findViewById(R.id.txv_accuracy);
-        TextView txvPresentation = (TextView) convertView.findViewById(R.id.txv_presentation);
-        TextView txvTotal = (TextView) convertView.findViewById(R.id.txv_total);
-
         //Popola il template coi dati da visualizzare
-        txvNumber.setText(String.valueOf(position + 1));
-        txvDate.setText(score.getDateString());
-        txvTime.setText(score.getTimeString());
-        txvAccuracy.setText(String.valueOf(score.getAccuracy()));
-        txvPresentation.setText(String.valueOf(score.getPresentation()));
-        txvTotal.setText(String.valueOf(score.getTotal()));
+        if (score != null) {
+            holder.number.setText(String.valueOf(position + 1));
+            holder.date.setText(score.getDateString());
+            holder.time.setText(score.getTimeString());
+            holder.accuracy.setText(String.valueOf(score.getAccuracy()));
+            holder.presentation.setText(String.valueOf(score.getPresentation()));
+            holder.total.setText(String.valueOf(score.getTotal()));
+        }
 
-        // Return the completed view to render on screen
+        //Ritorna la view da renderizzare
         return convertView;
+    }
+
+    private static class ViewHolder {
+        public TextView number;
+        public TextView date;
+        public TextView time;
+        public TextView accuracy;
+        public TextView presentation;
+        public TextView total;
     }
 }
