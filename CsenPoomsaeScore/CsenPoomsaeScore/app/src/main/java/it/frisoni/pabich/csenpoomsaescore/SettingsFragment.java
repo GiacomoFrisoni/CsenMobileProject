@@ -184,6 +184,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getActivity().getPackageName()));
                     startActivityForResult(intent, WRITE_SETTINGS_REQUEST);
                 }
+                else {
+                    writeSettingsPermission = true;
+                }
             }
         }
 
