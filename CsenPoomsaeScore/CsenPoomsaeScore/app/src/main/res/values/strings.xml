@@ -23,10 +23,13 @@
     <string name="attention">Attention</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="wrong_password">Wrong password</string>
     <string name="end_valutation_message">Are you sure you want to close your current valutation?</string>
     <string name="back_accuracy_message">Going back you will lose any unsaved modifiers. Continue?</string>
+
+    <string name="ask_write_permission_message">You need to authorize the app for modifying brightness. Enable it on the next page.</string>
 
     <string name="speed_power">Speed and Power</string>
     <string name="strength_pace">Strength and Pace</string>

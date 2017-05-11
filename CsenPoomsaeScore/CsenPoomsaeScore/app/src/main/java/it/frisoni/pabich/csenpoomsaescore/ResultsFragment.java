@@ -127,7 +127,7 @@ public class ResultsFragment extends Fragment {
                     new AlertDialog.Builder(ResultsFragment.this.getActivity())
                             .setTitle(getString(R.string.confirm))
                             .setMessage(getString(R.string.end_valutation_message))
-                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
                             .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

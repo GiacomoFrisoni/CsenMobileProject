@@ -1,5 +1,6 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,11 +26,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Arrays;
+
 import android.Manifest;
+
+import org.w3c.dom.Text;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
@@ -42,7 +47,7 @@ import static it.frisoni.pabich.csenpoomsaescore.utils.RangeMappingUtilities.map
 
 /**
  * Created by giacomofrisoni on 30/03/2017.
- *
+ * <p>
  * Questa classe è dedidata alla gestione della schermata di impostazioni.
  */
 
@@ -98,8 +103,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private ToggleButton tgbBack;
     private Button btnClearList;
 
-    //Variabile per la gestione dei permessi
-    private boolean writeSettingsPermission = false;
 
 
     @Nullable
@@ -121,18 +124,38 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
                 progress = map(value, 0, MAX_BRIGHTNESS, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
-                if (writeSettingsPermission) {
-                    Log.d("PROGRESS", String.valueOf(progress));
+                if (hasPermissions(getActivity())) {
                     android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 appPrefs.setBrightnessKey(progress);
+
+                if (!hasPermissions(getActivity())) {
+                    new AlertDialog.Builder(SettingsFragment.this.getActivity())
+                            .setTitle(getString(R.string.attention))
+                            .setMessage(getString(R.string.ask_write_permission_message))
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    askForPermissions(getActivity());
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
             }
         };
 
@@ -168,30 +191,34 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         //Gestione del pulsante per la cancellazione del db
         btnClearList.setOnClickListener(this);
 
-        /*
-         * Interrogazione del sistema circa il permesso di scrittura delle impostazioni.
-         */
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED) {
-            writeSettingsPermission = true;
-        } else {
-            /*
-             * Nel caso il permesso non risulti garantito, viene richiesto all'utente.
-             */
-            writeSettingsPermission = false;
-            ActivityCompat.requestPermissions(getActivity(), new String[]{ Manifest.permission.WRITE_SETTINGS }, WRITE_SETTINGS_PERMISSION);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!Settings.System.canWrite(getActivity().getApplicationContext())) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getActivity().getPackageName()));
-                    startActivityForResult(intent, WRITE_SETTINGS_REQUEST);
-                }
-                else {
-                    writeSettingsPermission = true;
-                }
-            }
-        }
-
         return view;
     }
+
+
+    private boolean hasPermissions(Activity context) {
+        boolean permission;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permission = Settings.System.canWrite(context);
+        } else {
+            permission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED;
+        }
+
+        return permission;
+    }
+
+    public void askForPermissions(Activity context) {
+        if (!hasPermissions(context)) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                startActivityForResult(intent, SettingsFragment.WRITE_SETTINGS_PERMISSION);
+            } else {
+                ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_SETTINGS}, SettingsFragment.WRITE_SETTINGS_PERMISSION);
+            }
+        }
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -239,25 +266,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         rlHiddenSettings.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Funzione per poter gestire le risposte dell'utente circa i permessi richiesti.
-     *
-     * @param requestCode codice di richiesta con il quale è stata effettuata la richiesta
-     * @param permissions lista dei permessi richiesti
-     * @param grantResults lista delle risposte per i permessi richiesti
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == WRITE_SETTINGS_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                writeSettingsPermission = true;
-                Toast.makeText(getActivity(), "Permesso concesso!", Toast.LENGTH_SHORT).show();
-            } else {
-                writeSettingsPermission = false;
-                Toast.makeText(getActivity(), "È necessario concedere il permesso per la regolazione della luminosità!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     /**
      * Visualizza un alert dialog personalizzato per la gestione della visibilità dei componenti
