@@ -112,6 +112,9 @@ public class ResultsFragment extends Fragment {
 
         //Gestione della navbar
         //region NavBarListeners
+        if (!appPrefs.getBackButtonKey()) {
+            navBar.setBackButtonEnabled(false);
+        }
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -107,22 +107,12 @@ public class CustomNavBar extends RelativeLayout {
 
     public void setBackButtonEnabled(boolean enabled) {
         backButton.setEnabled(enabled);
-
-        if (!enabled) {
-            backButton.setVisibility(GONE);
-        } else {
-            backButton.setVisibility(VISIBLE);
-        }
+        backButton.setVisibility(enabled ? VISIBLE : GONE);
     }
 
     public void setForwardButtonEnabled(boolean enabled) {
         forwardButton.setEnabled(enabled);
-
-        if (!enabled) {
-            forwardButton.setVisibility(GONE);
-        } else {
-            forwardButton.setVisibility(VISIBLE);
-        }
+        forwardButton.setVisibility(enabled ? VISIBLE : GONE);
     }
 
 
