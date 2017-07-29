@@ -10,13 +10,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:weightSum="6">
 
-
-    <it.frisoni.pabich.csenpoomsaescore.widgets._AutoResizeTextView
+    <com.lb.auto_fit_textview.AutoResizeTextView
         android:id="@+id/txv_title"
         style="@style/title_with_shadow"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
         android:layout_weight="2"
         android:gravity="center"
         android:text="@string/app_title"
