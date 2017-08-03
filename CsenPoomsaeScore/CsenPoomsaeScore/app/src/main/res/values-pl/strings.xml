@@ -6,6 +6,10 @@
     <string name="scores">Lista</string>
     <string name="settings">Opcje</string>
 
+    <string name="connection_avaiable_message">Server nie jest skonfigurowany. By używać aplikacji w trybie online musisz skonfigurować serwer w ustawieniach.</string>
+    <string name="connection_continue_offline">Kontynułuj offline</string>
+    <string name="connection_config_server">Wejdź w ustawienia by skonfigurować</string>
+
     <string name="menu">Menu</string>
     <string name="accuracy">Dokładność</string>
     <string name="presentation">Prezentacja</string>
@@ -37,12 +41,21 @@
     <string name="poor">Słaby</string>
     <string name="very_poor">Bardzo słaby</string>
 
+    <string name="sending_data_title">Wysyłam</string>
+    <string name="sending_data_message">Wysyłam dane do serwera, czekaj...</string>
+    <string name="sending_data_error">Nie mogę wysłać danych na serwer</string>
+    <string name="retry">Spróbuj ponownie</string>
+
     <string name="regulate_brightness">Regulacja jasności</string>
     <string name="auth_back_text">Zezwól modyfikacje punktów</string>
     <string name="clear_scores_list">Opróżnij listę punktów</string>
     <string name="cleared_list">Lista opróżniona</string>
     <string name="ip_adress">Adres IP</string>
     <string name="connect">Połącz</string>
+    <string name="package_sent">Wiadomość wysłana</string>
+    <string name="invalid_ip">Nieprawidłowy adres IP</string>
+    <string name="package_not_sent">Problem z połączeniem</string>
+    <string name="no_connection">Brak połączenia z internetem</string>
 
 
     <string name="no_scores">Brak punktacji</string>

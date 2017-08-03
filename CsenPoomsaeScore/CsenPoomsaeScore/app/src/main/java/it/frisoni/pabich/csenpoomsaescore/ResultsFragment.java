@@ -1,16 +1,20 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.lb.auto_fit_textview.AutoResizeTextView;
 
@@ -31,7 +35,7 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by giacomofrisoni on 30/03/2017.
- *
+ * <p>
  * Questa classe è dedidata alla visualizzazione dei punteggi ottenuti dall'atleta e del relativo risultato finale.
  */
 
@@ -42,6 +46,7 @@ public class ResultsFragment extends Fragment {
      */
     public interface OnResultsInteraction {
         void onBackPressed();
+
         void onMenuClick();
     }
 
@@ -141,8 +146,8 @@ public class ResultsFragment extends Fragment {
                                     //Salvataggio del punteggio nel database
                                     AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
                                     dbManager.addAthleteScore(a);
+                                    dialog.dismiss();
                                     sendData(a);
-                                    listener.onMenuClick();
                                 }
                             })
                             .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -160,25 +165,65 @@ public class ResultsFragment extends Fragment {
         return view;
     }
 
-    private void sendData(AthleteScore score) {
+    private void sendData(final AthleteScore score) {
+        //Ho la connessione e ho il server confiurato
+        if (ConnectionHelper.isConnectionAvaiable() && ConnectionHelper.isConnectionEstabished()) {
+            //Simulo l'invio
+            simulateSendingData();
 
-        if (!ConnectionHelper.sendMessage(score.getPacketToSend())) {
-            new AlertDialog.Builder(ResultsFragment.this.getActivity())
-                    .setTitle("Warning!")
-                    .setMessage("Unable to send data to server")
-                    .setIconAttribute(android.R.attr.alertDialogIcon)
-                    .setPositiveButton(getString(R.string.ok), null)
-                    .show();
+            //Invio
+            if (!ConnectionHelper.sendMessage(score.getPacketToSend())) {
+                //Se non ho inviato
+                new android.app.AlertDialog.Builder(ResultsFragment.this.getActivity())
+                        .setTitle(getString(R.string.attention))
+                        .setMessage(getString(R.string.sending_data_error))
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .setPositiveButton(getString(R.string.retry), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                sendData(score);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                listener.onMenuClick();
+                            }
+                        })
+                        .show();
+            } else {
+                //Se ho inviato
+                Toast.makeText(getContext(), R.string.package_sent, Toast.LENGTH_SHORT);
+                listener.onMenuClick();
+            }
+        } else {
+            listener.onMenuClick();
         }
+
+    }
+
+    private void simulateSendingData() {
+        Thread closeActivity = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final ProgressDialog dialog = ProgressDialog.show(ResultsFragment.this.getContext(), getString(R.string.sending_data_title), getString(R.string.sending_data_message), false);
+                    Thread.sleep(2000);
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.getLocalizedMessage();
+                }
+            }
+        });
     }
 
     /**
      * Round to certain number of decimals.
      *
-     * @param value
-     *      number to round
-     * @param decimalPlaces
-     *      number of decimal places
+     * @param value         number to round
+     * @param decimalPlaces number of decimal places
      * @return rounded value
      */
     public static float round(float value, int decimalPlaces) {
@@ -190,8 +235,7 @@ public class ResultsFragment extends Fragment {
     /**
      * Nel metodo "onCreate", vengono recuperati i valori passati nel metodo statico.
      *
-     * @param savedInstanceState
-     *      bundle contenente i dati utili
+     * @param savedInstanceState bundle contenente i dati utili
      */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

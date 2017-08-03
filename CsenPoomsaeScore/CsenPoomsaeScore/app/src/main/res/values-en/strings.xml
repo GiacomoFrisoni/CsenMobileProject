@@ -7,6 +7,10 @@
     <string name="scores">Scores</string>
     <string name="settings">Settings</string>
 
+    <string name="connection_avaiable_message">Server is not configured. To use app in "online" mode please set the server in settings panel.</string>
+    <string name="connection_continue_offline">Continue offline</string>
+    <string name="connection_config_server">Go to settings to configure server</string>
+
     <string name="menu">Menu</string>
     <string name="accuracy">Accuracy</string>
     <string name="presentation">Presentation</string>
@@ -38,12 +42,21 @@
     <string name="poor">Poor</string>
     <string name="very_poor">Very poor</string>
 
+    <string name="sending_data_title">Sending</string>
+    <string name="sending_data_message">Sending data to server, please wait...</string>
+    <string name="sending_data_error">Cannot sent data to server</string>
+    <string name="retry">Retry</string>
+
     <string name="regulate_brightness">Regulate brightness</string>
     <string name="auth_back_text">Authorize score changes</string>
     <string name="clear_scores_list">Delete saved scores</string>
     <string name="cleared_list">Cleared list</string>
     <string name="ip_adress">IP Adress</string>
     <string name="connect">Connect</string>
+    <string name="package_sent">Package sent</string>
+    <string name="invalid_ip">Invalid IP</string>
+    <string name="package_not_sent">Connection error</string>
+    <string name="no_connection">No connection avaiable</string>
 
     <string name="no_scores">No stored score</string>
 

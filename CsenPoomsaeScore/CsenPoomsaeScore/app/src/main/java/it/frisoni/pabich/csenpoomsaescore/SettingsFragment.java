@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View;
@@ -110,7 +111,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private Button btnClearList, btnTest;
     private EditText edtIp;
     private TextView textError;
-
 
 
     @Nullable
@@ -211,8 +211,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             if (ConnectionHelper.refreshConnection()) {
                 textError.setText("Connected");
                 textError.setTextColor(Color.GREEN);
-            }
-            else  {
+            } else {
                 textError.setText("Unable to connect");
                 textError.setTextColor(Color.RED);
             }
@@ -258,13 +257,36 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), R.string.cleared_list, Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_test:
+                //Toglie la tastiera
                 hideKeyboard(getActivity());
-                if (ConnectionHelper.establishConnection(edtIp.getText().toString(), PORT)) {
-                    textError.setText("Connected");
-                    textError.setTextColor(Color.GREEN);
+
+                //Reset della connessione
+                ConnectionHelper.resetConnection();
+
+                //Guarda se c'è wifi
+                if (ConnectionHelper.isConnectionAvaiable()) {
+                    //Guarda se IP è corretto
+                    if (Patterns.IP_ADDRESS.matcher(edtIp.getText().toString()).matches()) {
+                        //Stabilisce la connessione
+                        if (ConnectionHelper.establishConnection(edtIp.getText().toString(), PORT)) {
+                            //OK pacchetto inviato
+                            textError.setText(R.string.package_sent);
+                            textError.setTextColor(Color.GREEN);
+                        } else {
+                            //Qualcosa è andato storto
+                            textError.setText(R.string.package_not_sent);
+                            textError.setTextColor(Color.RED);
+                        }
+                    }
+                    else {
+                        //Indirizzo IP non valido
+                        textError.setText(R.string.invalid_ip);
+                        textError.setTextColor(Color.RED);
+                    }
                 }
-                else {
-                    textError.setText("Unable to connect");
+                else  {
+                    //Nessuna connessione
+                    textError.setText(R.string.no_connection);
                     textError.setTextColor(Color.RED);
                 }
                 break;
@@ -272,6 +294,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
 
     /**
      * Metodo del ciclo di vita del fragment che viene richiamato quando lo stesso viene "collegato" ad un'activity.

@@ -6,6 +6,10 @@
     <string name="scores">Lista</string>
     <string name="settings">Impostazioni</string>
 
+    <string name="connection_avaiable_message">Il server non è configurato. Se vuoi usare l\'applicazione in modalità online configuralo nella scheda impostazioni.</string>
+    <string name="connection_continue_offline">Continua offline</string>
+    <string name="connection_config_server">Vai nelle impostazioni per configurare</string>
+
     <string name="menu">Menu</string>
     <string name="accuracy">Accuratezza</string>
     <string name="presentation">Presentazione</string>
@@ -37,12 +41,21 @@
     <string name="poor">Scarso</string>
     <string name="very_poor">Molto scarso</string>
 
+    <string name="sending_data_title">Invio</string>
+    <string name="sending_data_message">Invio dei dati al server, attendi...</string>
+    <string name="sending_data_error">Non sono riuscito a inviare i dati al server</string>
+    <string name="retry">Riprova</string>
+
     <string name="regulate_brightness">Regolazione luminosità</string>
     <string name="auth_back_text">Autorizza modifica punteggi</string>
     <string name="clear_scores_list">Svuota lista punteggi</string>
     <string name="cleared_list">Lista cancellata</string>
     <string name="ip_adress">Indirizzo IP</string>
     <string name="connect">Connetti</string>
+    <string name="package_sent">Messaggio inviato</string>
+    <string name="invalid_ip">Indirizzo IP non valido</string>
+    <string name="package_not_sent">Problema di connessione</string>
+    <string name="no_connection">Nessuna connessione a internet</string>
 
     <string name="no_scores">Nessun punteggio salvato</string>
 
