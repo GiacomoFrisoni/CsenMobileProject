@@ -41,6 +41,8 @@
     <string name="auth_back_text">Autorizza modifica punteggi</string>
     <string name="clear_scores_list">Svuota lista punteggi</string>
     <string name="cleared_list">Lista cancellata</string>
+    <string name="ip_adress">Indirizzo IP</string>
+    <string name="connect">Connetti</string>
 
     <string name="no_scores">Nessun punteggio salvato</string>
 

@@ -42,6 +42,8 @@
     <string name="auth_back_text">Authorize score changes</string>
     <string name="clear_scores_list">Delete saved scores</string>
     <string name="cleared_list">Cleared list</string>
+    <string name="ip_adress">IP Adress</string>
+    <string name="connect">Connect</string>
 
     <string name="no_scores">No stored score</string>
 

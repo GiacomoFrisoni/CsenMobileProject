@@ -15,11 +15,15 @@ import android.view.ViewGroup;
 import com.lb.auto_fit_textview.AutoResizeTextView;
 
 import java.math.BigDecimal;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.Calendar;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
+import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
@@ -135,7 +139,9 @@ public class ResultsFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //Salvataggio del punteggio nel database
-                                    dbManager.addAthleteScore(new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance()));
+                                    AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
+                                    dbManager.addAthleteScore(a);
+                                    sendData(a);
                                     listener.onMenuClick();
                                 }
                             })
@@ -152,6 +158,18 @@ public class ResultsFragment extends Fragment {
         //endregion
 
         return view;
+    }
+
+    private void sendData(AthleteScore score) {
+
+        if (!ConnectionHelper.sendMessage(score.getPacketToSend())) {
+            new AlertDialog.Builder(ResultsFragment.this.getActivity())
+                    .setTitle("Warning!")
+                    .setMessage("Unable to send data to server")
+                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                    .setPositiveButton(getString(R.string.ok), null)
+                    .show();
+        }
     }
 
     /**

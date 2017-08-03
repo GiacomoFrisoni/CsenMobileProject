@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.CalendarContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -39,6 +43,7 @@ import org.w3c.dom.Text;
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.CipherHandler;
+import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
@@ -89,6 +94,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private static final int MIN_BRIGHTNESS = 10;
     private static final int WRITE_SETTINGS_PERMISSION = 100;
     private static final int WRITE_SETTINGS_REQUEST = 200;
+    private static final int PORT = 9050;
 
     //Database e Shared preferences
     private DbManager dbManager;
@@ -101,7 +107,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlHiddenSettings;
     private SeekBar skbBrightness;
     private ToggleButton tgbBack;
-    private Button btnClearList;
+    private Button btnClearList, btnTest;
+    private EditText edtIp;
+    private TextView textError;
 
 
 
@@ -165,6 +173,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         skbBrightness = (SeekBar) view.findViewById(R.id.skb_brightness);
         tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
+        btnTest = (Button) view.findViewById(R.id.btn_test);
+        edtIp = (EditText) view.findViewById(R.id.edt_ip);
+        textError = (TextView) view.findViewById(R.id.text_error_connection);
 
         //Gestione della navbar
         //region NavBarListeners
@@ -190,6 +201,22 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         //Gestione del pulsante per la cancellazione del db
         btnClearList.setOnClickListener(this);
+
+        //Testing della connessione
+        btnTest.setOnClickListener(this);
+
+        if (ConnectionHelper.isConnectionEstabished()) {
+            edtIp.setText(ConnectionHelper.getIp());
+
+            if (ConnectionHelper.refreshConnection()) {
+                textError.setText("Connected");
+                textError.setTextColor(Color.GREEN);
+            }
+            else  {
+                textError.setText("Unable to connect");
+                textError.setTextColor(Color.RED);
+            }
+        }
 
         return view;
     }
@@ -229,6 +256,17 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_clear_list:
                 dbManager.clearAthleteScores();
                 Toast.makeText(getActivity(), R.string.cleared_list, Toast.LENGTH_LONG).show();
+                break;
+            case R.id.btn_test:
+                hideKeyboard(getActivity());
+                if (ConnectionHelper.establishConnection(edtIp.getText().toString(), PORT)) {
+                    textError.setText("Connected");
+                    textError.setTextColor(Color.GREEN);
+                }
+                else {
+                    textError.setText("Unable to connect");
+                    textError.setTextColor(Color.RED);
+                }
                 break;
             default:
                 break;
@@ -307,5 +345,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
         });
         myDialog.show();
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
