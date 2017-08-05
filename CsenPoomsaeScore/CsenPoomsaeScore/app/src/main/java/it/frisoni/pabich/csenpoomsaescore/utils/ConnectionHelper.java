@@ -2,6 +2,8 @@ package it.frisoni.pabich.csenpoomsaescore.utils;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Handler;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,11 +12,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-/**
- * Created by marti on 03/08/2017.
- */
-
-public class ConnectionHelper {
+public class ConnectionHelper  {
 
     private static ConnectionHelper helper;
 
@@ -41,28 +39,15 @@ public class ConnectionHelper {
     }
 
     public static boolean refreshConnection () {
-        try {
-            return sendMessage("Hello!");
-        } catch (Exception e) {
-            return false;
-        }
+        return sendMessage("Hello!");
     }
 
-    public static boolean sendMessage(String text) {
-        if (helper != null) {
-            try {
-                String messageStr = text;
-                int msg_length = messageStr.length();
-                byte[] message = messageStr.getBytes();
-                DatagramPacket p = new DatagramPacket(message, msg_length, Adress, Port);
-                Socket.send(p);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return false;
+    public static  boolean sendMessage(String text) {
+        MessageSender msg = new MessageSender();
+        msg.execute(new MessageToSend(text, Port, Adress, Socket));
+        return true;
     }
+
 
     public static boolean isConnectionEstabished() {
         return helper != null;
