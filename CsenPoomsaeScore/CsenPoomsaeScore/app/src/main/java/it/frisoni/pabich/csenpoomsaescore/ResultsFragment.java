@@ -166,18 +166,26 @@ public class ResultsFragment extends Fragment {
     }
 
     private void sendData(final AthleteScore score) {
-        //Ho la connessione e ho il server confiurato
-        if (ConnectionHelper.isConnectionAvaiable() && ConnectionHelper.isConnectionEstabished()) {
-            //Simulo l'invio
-            simulateSendingData();
 
-            //Invio
-            if (!ConnectionHelper.sendMessage(score.getPacketToSend())) {
-                //Se non ho inviato
+        //Ho configurato il server
+        if (ConnectionHelper.isConnectionEstabished()) {
+
+            //Controllo se ho ancora la connessione e provo ad inviare il dato
+            if (ConnectionHelper.sendMessage(score.getPacketToSend()) && ConnectionHelper.isConnectionAvaiable()) {
+
+                //Se ho la connessione e sono riuscito ad inviarlo
+                Toast.makeText(getContext(), R.string.package_sent, Toast.LENGTH_SHORT).show();
+                listener.onMenuClick();
+
+            //Se NON ho la connessione e/o NON sono riuscito a spedire
+            } else {
+                //Mostro un messaggio di errore
                 new android.app.AlertDialog.Builder(ResultsFragment.this.getActivity())
                         .setTitle(getString(R.string.attention))
                         .setMessage(getString(R.string.sending_data_error))
                         .setIconAttribute(android.R.attr.alertDialogIcon)
+
+                        //RIPROVO ad inviare i dati, richiamo me stesso
                         .setPositiveButton(getString(R.string.retry), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -185,23 +193,32 @@ public class ResultsFragment extends Fragment {
                                 sendData(score);
                             }
                         })
-                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+                        //ANNULLO l'invio e vado nella home
+                        .setNegativeButton(getString(R.string.continue_to_homepage), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                Toast.makeText(getContext(), R.string.package_not_sent, Toast.LENGTH_SHORT).show();
                                 listener.onMenuClick();
                             }
                         })
+
+                        //TORNO nella schermata dei punteggi
+                        .setNeutralButton(getString(R.string.return_to_results), new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
                         .show();
-            } else {
-                //Se ho inviato
-                Toast.makeText(getContext(), R.string.package_sent, Toast.LENGTH_SHORT);
-                listener.onMenuClick();
             }
+
+        //Non ho configurato il server, dunque esco senza dire nulla
         } else {
             listener.onMenuClick();
+            Toast.makeText(getContext(), "Server non configurato", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void simulateSendingData() {
@@ -217,6 +234,8 @@ public class ResultsFragment extends Fragment {
                 }
             }
         });
+
+        closeActivity.start();
     }
 
     /**

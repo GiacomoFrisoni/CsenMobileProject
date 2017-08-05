@@ -57,7 +57,7 @@
     <string name="connect">Connect</string>
     <string name="package_sent">Package sent</string>
     <string name="invalid_ip">Invalid IP</string>
-    <string name="package_not_sent">Connection error</string>
+    <string name="package_not_sent">Package not sent</string>
     <string name="no_connection">No connection avaiable</string>
 
     <string name="no_scores">No stored score</string>

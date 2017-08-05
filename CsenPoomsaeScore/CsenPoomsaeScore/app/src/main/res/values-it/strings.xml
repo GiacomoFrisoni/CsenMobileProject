@@ -56,7 +56,7 @@
     <string name="connect">Connetti</string>
     <string name="package_sent">Messaggio inviato</string>
     <string name="invalid_ip">Indirizzo IP non valido</string>
-    <string name="package_not_sent">Problema di connessione</string>
+    <string name="package_not_sent">Messaggio non inviato</string>
     <string name="no_connection">Nessuna connessione a internet</string>
 
     <string name="no_scores">Nessun punteggio salvato</string>

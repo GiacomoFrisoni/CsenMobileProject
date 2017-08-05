@@ -56,7 +56,7 @@
     <string name="connect">Połącz</string>
     <string name="package_sent">Wiadomość wysłana</string>
     <string name="invalid_ip">Nieprawidłowy adres IP</string>
-    <string name="package_not_sent">Problem z połączeniem</string>
+    <string name="package_not_sent">Wiadomość nie wysłana</string>
     <string name="no_connection">Brak połączenia z internetem</string>
 
 

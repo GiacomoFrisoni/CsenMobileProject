@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         app:backText="@string/menu"
         app:forwardEnabled="false"
-        app:titleText="@string/settings"></it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar>
+        app:titleText="@string/settings"/>
 
 
     <RelativeLayout
@@ -29,8 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:paddingEnd="10dp"
-            android:paddingRight="10dp"
             android:layout_centerHorizontal="true"
             android:text="@string/regulate_brightness"
             android:textSize="20sp" />
@@ -58,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="15dp"
                 android:layout_marginRight="70dp"
+                android:layout_marginEnd="70dp"
                 android:text="@string/auth_back_text"
                 android:textSize="20sp" />
 
@@ -99,9 +98,11 @@
             <RelativeLayout
                 android:layout_marginTop="10dp"
                 android:layout_alignLeft="@id/tgb_back"
+                android:layout_alignStart="@id/tgb_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tgb_back"
+                android:layout_alignEnd="@id/btn_clear_list"
                 android:layout_alignRight="@id/btn_clear_list">
 
                 <TextView
@@ -116,6 +117,7 @@
                     android:layout_width="290dp"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/textView4"
+                    android:layout_toEndOf="@id/textView4"
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
@@ -131,6 +133,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/edt_ip"
+                    android:layout_alignStart="@id/edt_ip"
+                    android:layout_alignEnd="@id/edt_ip"
                     android:layout_alignRight="@id/edt_ip"
                     android:layout_below="@id/edt_ip"
                     android:textAlignment="center"
@@ -143,7 +147,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/edt_ip"
+                    android:layout_toEndOf="@id/edt_ip"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:text="@string/connect"/>
             </RelativeLayout>
