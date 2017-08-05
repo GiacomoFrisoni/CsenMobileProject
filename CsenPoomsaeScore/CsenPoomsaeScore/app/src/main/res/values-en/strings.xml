@@ -46,6 +46,8 @@
     <string name="sending_data_message">Sending data to server, please wait...</string>
     <string name="sending_data_error">Cannot sent data to server</string>
     <string name="retry">Retry</string>
+    <string name="return_to_results">Return to results</string>
+    <string name="continue_to_homepage">Continue to home</string>
 
     <string name="regulate_brightness">Regulate brightness</string>
     <string name="auth_back_text">Authorize score changes</string>

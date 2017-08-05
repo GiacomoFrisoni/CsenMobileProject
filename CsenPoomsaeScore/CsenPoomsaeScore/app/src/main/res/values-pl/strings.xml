@@ -45,6 +45,8 @@
     <string name="sending_data_message">Wysyłam dane do serwera, czekaj...</string>
     <string name="sending_data_error">Nie mogę wysłać danych na serwer</string>
     <string name="retry">Spróbuj ponownie</string>
+    <string name="return_to_results">Wróć do rezultatów</string>
+    <string name="continue_to_homepage">Kontynuuj</string>
 
     <string name="regulate_brightness">Regulacja jasności</string>
     <string name="auth_back_text">Zezwól modyfikacje punktów</string>
