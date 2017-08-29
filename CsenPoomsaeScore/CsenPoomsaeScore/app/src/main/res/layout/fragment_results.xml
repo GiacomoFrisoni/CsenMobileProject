@@ -9,7 +9,7 @@
         android:id="@+id/nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backText="@string/presentation"
+        app:backText="@string/back"
         app:forwardText="@string/end_valutation"
         app:titleText="@string/results" />
 

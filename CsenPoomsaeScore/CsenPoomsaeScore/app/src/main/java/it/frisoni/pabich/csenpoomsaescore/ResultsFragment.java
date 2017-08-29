@@ -121,9 +121,10 @@ public class ResultsFragment extends Fragment {
 
         //Gestione della navbar
         //region NavBarListeners
-        if (!appPrefs.getBackButtonKey()) {
-            navBar.setBackButtonEnabled(false);
-        }
+        //THIS SCREEN SHOULD HAVE ALWAYS A BACK BUTTON
+        //if (!appPrefs.getBackButtonKey()) {
+        //    navBar.setBackButtonEnabled(false);
+        //}
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +148,8 @@ public class ResultsFragment extends Fragment {
                                     AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
                                     dbManager.addAthleteScore(a);
                                     dialog.dismiss();
-                                    sendData(a);
+                                    listener.onMenuClick();
+                                    //sendData(a);
                                 }
                             })
                             .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -164,7 +166,7 @@ public class ResultsFragment extends Fragment {
 
         return view;
     }
-
+    /*
     private void sendData(final AthleteScore score) {
 
         //Ho configurato il server
@@ -236,7 +238,9 @@ public class ResultsFragment extends Fragment {
         });
 
         closeActivity.start();
-    }
+    }*/
+
+
 
     /**
      * Round to certain number of decimals.

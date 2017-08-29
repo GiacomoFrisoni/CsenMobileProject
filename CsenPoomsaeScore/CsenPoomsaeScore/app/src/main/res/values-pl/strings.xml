@@ -15,6 +15,15 @@
     <string name="presentation">Prezentacja</string>
     <string name="results">Wyniki</string>
     <string name="end_valutation">Koniec ewaluacji</string>
+    <string name="forward">Dalej</string>
+    <string name="back">Wróć</string>
+    <string name="result_menu_title">Opcje</string>
+
+    <string name="send_scores">Wyślij punktacje</string>
+    <string name="scores_sent">Wysłano z powodzeniem</string>
+    <string name="scores_not_sent">Wystąpił błąd podczas wysyłania</string>
+
+    <string name="go_to_scores">Pokaż wyniki</string>
 
     <string name="check_credentials">Sprawdź referencję</string>
     <string name="enter_password">Wpisz hasło</string>

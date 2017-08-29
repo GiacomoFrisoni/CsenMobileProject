@@ -20,6 +20,15 @@
     <string name="results">Results</string>
     <string name="end_valutation">End valutation</string>
     <string name="score_description">%1s: </string>
+    <string name="forward">Next</string>
+    <string name="back">Back</string>
+    <string name="result_menu_title">Options</string>
+
+    <string name="send_scores">Send scores</string>
+    <string name="scores_sent">Scores sent successfully</string>
+    <string name="scores_not_sent">There\'s a problem with sending scores.</string>
+
+    <string name="go_to_scores">Show results screen</string>
 
     <string name="check_credentials">Check credentials</string>
     <string name="enter_password">Enter password</string>

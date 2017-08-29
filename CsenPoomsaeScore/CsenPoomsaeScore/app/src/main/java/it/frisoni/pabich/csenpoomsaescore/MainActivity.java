@@ -14,6 +14,7 @@ import android.widget.Toast;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
 import it.frisoni.pabich.csenpoomsaescore.utils.VibrationHandler;
+import it.frisoni.pabich.csenpoomsaescore.widgets.ResultMenuFragment;
 
 import static android.content.ContentValues.TAG;
 
@@ -26,7 +27,7 @@ import static android.content.ContentValues.TAG;
 public class MainActivity extends AppCompatActivity implements MenuFragment.OnMenuInteraction,
         AccuracyFragment.OnAccuracyInteraction, PresentationFragment.OnPresentationInteraction,
         ResultsFragment.OnResultsInteraction, SettingsFragment.OnSettingsInteraction,
-        ScoresFragment.OnScoresInteraction {
+        ScoresFragment.OnScoresInteraction, ResultMenuFragment.OnResultMenuInteraction {
 
     //Variabile per la gestione delle SharedPreferences
     private AppPreferences appPrefs;
@@ -149,6 +150,12 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
          */
         this.accuracyPoints = accuracyPoints;
         addFragment(PresentationFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
+    }
+
+    @Override
+    public void onResultMenuClick(float presentationPoints){
+        addFragment(ResultMenuFragment.newInstance(this.accuracyPoints, presentationPoints), true);
         VibrationHandler.getHandler().vibrate();
     }
 
