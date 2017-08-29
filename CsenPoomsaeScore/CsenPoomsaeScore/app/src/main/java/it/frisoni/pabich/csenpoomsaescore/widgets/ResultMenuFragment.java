@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,9 @@ import static android.content.ContentValues.TAG;
 public class ResultMenuFragment extends Fragment {
 
     public interface OnResultMenuInteraction {
+        void onResultsClick(float presentationPoints, boolean isReadOnly);
+        void onMenuClick();
         void onBackPressed();
-        void onResultsClick(float presentationPoints);
     }
 
     private ResultMenuFragment.OnResultMenuInteraction listener;
@@ -44,11 +46,11 @@ public class ResultMenuFragment extends Fragment {
 
     }
 
-    public static ResultMenuFragment newInstance(float accuracyPoints, float presentationPoints) {
+    public static ResultMenuFragment newInstance(AthleteScore a) {
         ResultMenuFragment fragment = new ResultMenuFragment();
         Bundle bundle = new Bundle();
-        bundle.putFloat("accuracy", accuracyPoints);
-        bundle.putFloat("presentation", presentationPoints);
+        bundle.putFloat("accuracy", a.getAccuracy());
+        bundle.putFloat("presentation", a.getPresentation());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -62,25 +64,17 @@ public class ResultMenuFragment extends Fragment {
     private TextView txvError;
     private CustomNavBar navBar;
 
-    //Shared preferences
-    private AppPreferences appPrefs;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_result_menu, container, false);
-
-        appPrefs = new AppPreferences(getActivity());
 
         navBar = (CustomNavBar) view.findViewById(R.id.nav_bar);
         btnSendScores = (Button) view.findViewById(R.id.btn_send_scores);
         btnShowResults = (Button) view.findViewById(R.id.btn_show_results);
         txvError = (TextView) view.findViewById(R.id.txv_error_sending);
 
-        if (!appPrefs.getBackButtonKey()) {
-            navBar.setBackButtonEnabled(false);
-        }
-
+        navBar.setBackButtonEnabled(false);
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,11 +83,28 @@ public class ResultMenuFragment extends Fragment {
                 }
             }
         });
+
         navBar.getForwardButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onResultsClick(presentationPoints);
+                    new AlertDialog.Builder(ResultMenuFragment.this.getActivity())
+                            .setTitle(getString(R.string.confirm))
+                            .setMessage(getString(R.string.end_connection_message))
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listener.onMenuClick();
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
                 }
             }
         });
@@ -117,7 +128,7 @@ public class ResultMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onResultsClick(presentationPoints);
+                    listener.onResultsClick(presentationPoints, true);
                 }
             }
         });

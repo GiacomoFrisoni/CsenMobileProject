@@ -17,7 +17,7 @@
     <string name="end_valutation">Koniec ewaluacji</string>
     <string name="forward">Dalej</string>
     <string name="back">Wróć</string>
-    <string name="result_menu_title">Opcje</string>
+    <string name="result_menu_title">Łączność</string>
 
     <string name="send_scores">Wyślij punktacje</string>
     <string name="scores_sent">Wysłano z powodzeniem</string>
@@ -33,9 +33,11 @@
     <string name="no">Nie</string>
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
+    <string name="close">Zamknij</string>
     <string name="wrong_password">Błędne hasło</string>
     <string name="end_valutation_message">Czy na pewno chcesz zamknąć bierzącą ewaluację?</string>
     <string name="back_accuracy_message">Wracając utracisz wszyskie nie zapisane dane. Kontynuować?</string>
+    <string name="end_connection_message">Czy na pewno chesz wrócić do menu?</string>
 
     <string name="ask_write_permission_message">Aplikacja musi miieć pozwolenie na regulację jasności ekranu. Upoważnij ją na następnej stronie</string>
 

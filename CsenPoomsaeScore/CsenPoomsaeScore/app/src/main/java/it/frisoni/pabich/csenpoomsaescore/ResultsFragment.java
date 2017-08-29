@@ -29,6 +29,7 @@ import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
+import it.frisoni.pabich.csenpoomsaescore.widgets.ResultMenuFragment;
 
 import static android.content.ContentValues.TAG;
 
@@ -46,7 +47,7 @@ public class ResultsFragment extends Fragment {
      */
     public interface OnResultsInteraction {
         void onBackPressed();
-
+        void onResultMenuClick(AthleteScore a);
         void onMenuClick();
     }
 
@@ -72,11 +73,12 @@ public class ResultsFragment extends Fragment {
      *
      * @return oggetto di classe ResultsFragment
      */
-    public static ResultsFragment newInstance(float accuracyPoints, float presentationPoints) {
+    public static ResultsFragment newInstance(float accuracyPoints, float presentationPoints, boolean isReadOnly) {
         ResultsFragment fragment = new ResultsFragment();
         Bundle bundle = new Bundle();
         bundle.putFloat("accuracy", accuracyPoints);
         bundle.putFloat("presentation", presentationPoints);
+        bundle.putBoolean("isReadOnly", isReadOnly);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -94,7 +96,12 @@ public class ResultsFragment extends Fragment {
 
     //Variabili
     private float accuracyPoints, presentationPoints;
+    private boolean isReadOnly;
     private AutoResizeTextView txvAccuracy, txvPresentation, txvTotal;
+
+    public boolean isReadOnly(){
+        return  isReadOnly;
+    }
 
     @Nullable
     @Override
@@ -121,47 +128,65 @@ public class ResultsFragment extends Fragment {
 
         //Gestione della navbar
         //region NavBarListeners
-        //THIS SCREEN SHOULD HAVE ALWAYS A BACK BUTTON
-        //if (!appPrefs.getBackButtonKey()) {
-        //    navBar.setBackButtonEnabled(false);
-        //}
-        navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
+        if (!appPrefs.getBackButtonKey()) {
+            navBar.setBackButtonEnabled(false);
+        }
+
+        if (!isReadOnly) {
+            navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onBackPressed();
+                    }
+                }
+            });
+            navBar.getForwardButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        new AlertDialog.Builder(ResultsFragment.this.getActivity())
+                                .setTitle(getString(R.string.confirm))
+                                .setMessage(getString(R.string.end_valutation_message))
+                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //Salvataggio del punteggio nel database
+                                        AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
+                                        dbManager.addAthleteScore(a);
+                                        dialog.dismiss();
+
+                                        if (ConnectionHelper.isConnectionEstabished())
+                                            listener.onResultMenuClick(a);
+                                        else
+                                            listener.onMenuClick();
+                                        //sendData(a);
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+                }
+            });
+        }
+        else  {
+            navBar.setForwardButtonEnabled(false);
+            navBar.setBackButtonEnabled(true);
+
+            navBar.setBackText(getString(R.string.close));
+            navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     listener.onBackPressed();
                 }
-            }
-        });
-        navBar.getForwardButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    new AlertDialog.Builder(ResultsFragment.this.getActivity())
-                            .setTitle(getString(R.string.confirm))
-                            .setMessage(getString(R.string.end_valutation_message))
-                            .setIconAttribute(android.R.attr.alertDialogIcon)
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //Salvataggio del punteggio nel database
-                                    AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
-                                    dbManager.addAthleteScore(a);
-                                    dialog.dismiss();
-                                    listener.onMenuClick();
-                                    //sendData(a);
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-                }
-            }
-        });
+            });
+        }
         //endregion
 
         return view;
@@ -268,6 +293,10 @@ public class ResultsFragment extends Fragment {
         if (bundle != null) {
             accuracyPoints = round(bundle.getFloat("accuracy"), N_DECIMAL_PLACES);
             presentationPoints = round(bundle.getFloat("presentation"), N_DECIMAL_PLACES);
+            isReadOnly = false;
+            try {
+                isReadOnly = bundle.getBoolean("isReadOnly");
+            } catch (Exception e) {}
         }
     }
 

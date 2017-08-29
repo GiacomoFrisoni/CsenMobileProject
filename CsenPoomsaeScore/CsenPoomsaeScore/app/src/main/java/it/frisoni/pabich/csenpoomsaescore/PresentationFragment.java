@@ -37,7 +37,7 @@ public class PresentationFragment extends Fragment {
      */
     public interface OnPresentationInteraction {
         void onBackPressed();
-        void onResultMenuClick(float presentationPoints);
+        void onResultsClick(float presentationPoints, boolean isReadOnly);
     }
 
     /**
@@ -116,7 +116,7 @@ public class PresentationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onResultMenuClick(curPoints.floatValue());
+                    listener.onResultsClick(curPoints.floatValue(), false);
                 }
             }
         });

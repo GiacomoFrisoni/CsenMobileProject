@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
 import it.frisoni.pabich.csenpoomsaescore.utils.VibrationHandler;
@@ -154,17 +155,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     }
 
     @Override
-    public void onResultMenuClick(float presentationPoints){
-        addFragment(ResultMenuFragment.newInstance(this.accuracyPoints, presentationPoints), true);
+    public void onResultMenuClick(AthleteScore a){
+        addFragment(ResultMenuFragment.newInstance(a), true);
         VibrationHandler.getHandler().vibrate();
     }
 
     @Override
-    public void onResultsClick(float presentationPoints) {
+    public void onResultsClick(float presentationPoints, boolean isReadOnly) {
         /*
          * Aggiunta di ResultsFragment.
          */
-        addFragment(ResultsFragment.newInstance(this.accuracyPoints, presentationPoints), true);
+        addFragment(ResultsFragment.newInstance(this.accuracyPoints, presentationPoints, isReadOnly), true);
         VibrationHandler.getHandler().vibrate();
     }
 
@@ -172,7 +173,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     public void onBackPressed() {
         final FragmentManager manager = getSupportFragmentManager();
         final Fragment f = manager.findFragmentById(R.id.fragment_container);
-        if (appPrefs.getBackButtonKey() || (!(f instanceof PresentationFragment) && !(f instanceof ResultsFragment))) {
+
+        if (f instanceof  ResultsFragment) {
+            if (((ResultsFragment) f).isReadOnly()) {
+                if (manager.getBackStackEntryCount() > 0) {
+                    manager.popBackStackImmediate();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+        }
+        else if (appPrefs.getBackButtonKey() || (!(f instanceof PresentationFragment) && !(f instanceof ResultsFragment))) {
             if (f instanceof AccuracyFragment) {
                 new AlertDialog.Builder(this)
                         .setTitle(getString(R.string.attention))

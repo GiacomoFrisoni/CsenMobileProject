@@ -17,7 +17,7 @@
     <string name="end_valutation">Fine valutazione</string>
     <string name="forward">Avanti</string>
     <string name="back">Indietro</string>
-    <string name="result_menu_title">Opzioni</string>
+    <string name="result_menu_title">Connessione</string>
 
     <string name="send_scores">Invia punteggi</string>
     <string name="scores_sent">Punteggi inviati con successo</string>
@@ -33,9 +33,11 @@
     <string name="no">No</string>
     <string name="ok">OK</string>
     <string name="cancel">Annulla</string>
+    <string name="close">Chiudi</string>
     <string name="wrong_password">Password non corretta</string>
     <string name="end_valutation_message">Sei sicuro di voler chiudere la valutazione corrente?</string>
     <string name="back_accuracy_message">Tornando indietro perderai eventuali modifice non salvate. Continuare?</string>
+    <string name="end_connection_message">Sei sicuro di voler tornare al menu?</string>
 
     <string name="ask_write_permission_message">Devi autorizzare l\'applicazione per modificare la luminosità. Abilitala nella prossima schermata</string>
 
