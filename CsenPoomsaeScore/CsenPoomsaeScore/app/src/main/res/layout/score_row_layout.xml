@@ -10,12 +10,12 @@
 
     <TextView
         android:id="@+id/number"
-        android:layout_width="45dp"
+        android:layout_width="55dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:text="255"
         android:textColor="@color/gray"
-        android:textSize="25sp"/>
+        android:textSize="28sp"/>
 
     <RelativeLayout
         android:layout_weight="1"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="09/04/2017"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txv_time"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txv_date"
             android:text="12:59"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accuratezza: "
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txv_accuracy"
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9.0"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txv_presentation_title"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txv_accuracy"
             android:text="Presentazione: "
-            android:textSize="15sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/txv_presentation"
@@ -79,7 +79,7 @@
             android:layout_toRightOf="@id/txv_presentation_title"
             android:layout_below="@id/txv_accuracy"
             android:text="5.6"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <TextView

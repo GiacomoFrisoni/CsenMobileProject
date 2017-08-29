@@ -10,9 +10,165 @@
         android:layout_height="wrap_content"
         app:backText="@string/menu"
         app:forwardEnabled="false"
-        app:titleText="@string/settings"/>
+        app:titleText="@string/settings" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/powered_by"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="bottom"
+        android:textColor="@color/text_dark" />
+
+    <LinearLayout
+        android:id="@+id/lnl_settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_bar"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_above="@+id/textView6">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/regulate_brightness"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:id="@+id/skb_brightness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView1"
+                android:paddingTop="5dp"
+                android:thumb="@drawable/thumb" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlt_hidden_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="70dp"
+                android:layout_marginRight="70dp"
+                android:paddingTop="15dp"
+                android:text="@string/auth_back_text"
+                android:textSize="20sp" />
+
+            <ToggleButton
+                android:id="@+id/tgb_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/textView2"
+                android:layout_alignLeft="@+id/textView2"
+                android:layout_alignRight="@+id/textView2"
+                android:layout_alignStart="@+id/textView2"
+                android:layout_below="@id/textView2"
+                android:maxWidth="400dp" />
 
 
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_toEndOf="@id/textView2"
+                android:layout_toRightOf="@id/textView2"
+                android:paddingTop="15dp"
+                android:text="@string/clear_scores_list"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btn_clear_list"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/textView3"
+                android:layout_alignLeft="@+id/textView3"
+                android:layout_alignRight="@+id/textView3"
+                android:layout_alignStart="@+id/textView3"
+                android:layout_below="@+id/textView3"
+                android:maxWidth="400dp"
+                android:text="@string/clear_scores_list" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/ip_adress" />
+
+            <EditText
+                android:id="@+id/edt_ip"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/textView4"
+                android:layout_toRightOf="@id/textView4"
+                android:maxLength="15"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/text_error_connection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/edt_ip"
+                android:layout_alignLeft="@id/edt_ip"
+                android:layout_alignRight="@id/edt_ip"
+                android:layout_alignStart="@id/edt_ip"
+                android:layout_below="@id/edt_ip"
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="11dp" />
+
+
+            <Button
+                android:id="@+id/btn_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/edt_ip"
+                android:layout_toRightOf="@id/edt_ip"
+                android:text="@string/connect" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+
+    <!--
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -171,7 +327,7 @@
     </RelativeLayout>
 
 
-    <!--
+
 
     <RelativeLayout
         android:layout_below="@id/nav_bar"
