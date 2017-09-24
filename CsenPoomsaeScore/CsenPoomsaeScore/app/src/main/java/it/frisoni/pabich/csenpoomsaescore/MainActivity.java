@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         /*
          * Replace del fragment nel layout con l'istanza di AccuracyFragment.
          */
-        if (ConnectionHelper.isConnectionAvaiable()) {
+        if (ConnectionHelper.isConnectionAvaiable(this)) {
             if (!ConnectionHelper.isConnectionEstabished()) {
                 new android.app.AlertDialog.Builder(this)
                         .setTitle(getString(R.string.attention))
@@ -137,8 +137,28 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
             }
 
         } else {
-            replaceFragment(AccuracyFragment.newInstance(), true);
-            VibrationHandler.getHandler().vibrate();
+
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.attention))
+                    .setMessage(getString(R.string.internet_avaiable_message))
+                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                    .setPositiveButton(getString(R.string.internet_wait), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Toast.makeText(getBaseContext(), getString(R.string.internet_wait), Toast.LENGTH_LONG);
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.connection_continue_offline), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                            replaceFragment(AccuracyFragment.newInstance(), true);
+                            VibrationHandler.getHandler().vibrate();
+                        }
+                    })
+                    .show();
         }
 
 
@@ -155,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
     }
 
     @Override
-    public void onResultMenuClick(AthleteScore a){
+    public void onResultMenuClick(AthleteScore a) {
         addFragment(ResultMenuFragment.newInstance(a), true);
         VibrationHandler.getHandler().vibrate();
     }
@@ -165,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         /*
          * Aggiunta di ResultsFragment.
          */
+
         addFragment(ResultsFragment.newInstance(this.accuracyPoints, presentationPoints, isReadOnly), true);
         VibrationHandler.getHandler().vibrate();
     }
@@ -174,16 +195,15 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         final FragmentManager manager = getSupportFragmentManager();
         final Fragment f = manager.findFragmentById(R.id.fragment_container);
 
-        if (f instanceof  ResultsFragment) {
-            if (((ResultsFragment) f).isReadOnly()) {
-                if (manager.getBackStackEntryCount() > 0) {
-                    manager.popBackStackImmediate();
-                } else {
-                    super.onBackPressed();
-                }
+        if (f instanceof ResultsFragment) {
+
+            if (manager.getBackStackEntryCount() > 0) {
+                manager.popBackStackImmediate();
+            } else {
+                super.onBackPressed();
             }
-        }
-        else if (appPrefs.getBackButtonKey() || (!(f instanceof PresentationFragment) && !(f instanceof ResultsFragment))) {
+
+        } else if (appPrefs.getBackButtonKey() || (!(f instanceof PresentationFragment))) {
             if (f instanceof AccuracyFragment) {
                 new AlertDialog.Builder(this)
                         .setTitle(getString(R.string.attention))

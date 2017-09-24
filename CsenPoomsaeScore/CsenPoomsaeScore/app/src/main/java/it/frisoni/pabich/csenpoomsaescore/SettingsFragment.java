@@ -264,7 +264,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 ConnectionHelper.resetConnection();
 
                 //Guarda se c'è wifi
-                if (ConnectionHelper.isConnectionAvaiable()) {
+                if (ConnectionHelper.isConnectionAvaiable(getActivity())) {
                     //Guarda se IP è corretto
                     if (Patterns.IP_ADDRESS.matcher(edtIp.getText().toString()).matches()) {
                         //Stabilisce la connessione

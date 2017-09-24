@@ -1,5 +1,7 @@
 package it.frisoni.pabich.csenpoomsaescore.utils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -49,11 +51,29 @@ public class ConnectionHelper  {
     }
 
 
+
     public static boolean isConnectionEstabished() {
         return helper != null;
     }
 
-    public static boolean isConnectionAvaiable() {
+    public static boolean isConnectionAvaiable(Activity activity) {
+
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo)
+        {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI")) //WIFI
+                if (ni.isConnected())  haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE")) //EDGE
+                if (ni.isConnected())  haveConnectedMobile = true;
+            //LAN??
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+        /*
         Runtime runtime = Runtime.getRuntime();
         try {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
@@ -63,7 +83,7 @@ public class ConnectionHelper  {
         catch (IOException e)          { e.printStackTrace(); }
         catch (InterruptedException e) { e.printStackTrace(); }
 
-        return false;
+        return false;*/
     }
 
     public static String getIp() {

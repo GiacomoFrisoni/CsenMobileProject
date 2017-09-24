@@ -9,6 +9,8 @@
     <string name="connection_avaiable_message">Server nie jest skonfigurowany. By używać aplikacji w trybie online musisz skonfigurować serwer w ustawieniach.</string>
     <string name="connection_continue_offline">Kontynułuj offline</string>
     <string name="connection_config_server">Wejdź w ustawienia by skonfigurować</string>
+    <string name="internet_avaiable_message">Serwer jest skonfigurowany, ale straciłeś połączenie z internetem.</string>
+    <string name="internet_wait">Sprawdzę połaczenie</string>
 
     <string name="menu">Menu</string>
     <string name="accuracy">Dokładność</string>
@@ -20,8 +22,14 @@
     <string name="result_menu_title">Łączność</string>
 
     <string name="send_scores">Wyślij punktacje</string>
-    <string name="scores_sent">Wysłano z powodzeniem</string>
+    <string name="scores_sent">Wysłano. Sprawdź je na serwerze.</string>
     <string name="scores_not_sent">Wystąpił błąd podczas wysyłania</string>
+    <string name="scores_not_sent_internet">Wystąpił błąd podczas wysyłania: internet niedostępny</string>
+    <string name="scores_not_sent_server">Wystąpił błąd podczas wysyłania: problemy z serverem</string>
+    <string name="scores_not_sent_yet">Punktacja jeszcze nie wysłana</string>
+
+    <string name="scores_confirm_received">Potwierdzam dostarczono punkację</string>
+    <string name="scores_not_confirm_received">Wróć</string>
 
     <string name="go_to_scores">Pokaż wyniki</string>
 
@@ -37,7 +45,7 @@
     <string name="wrong_password">Błędne hasło</string>
     <string name="end_valutation_message">Czy na pewno chcesz zamknąć bierzącą ewaluację?</string>
     <string name="back_accuracy_message">Wracając utracisz wszyskie nie zapisane dane. Kontynuować?</string>
-    <string name="end_connection_message">Czy na pewno chesz wrócić do menu?</string>
+    <string name="end_connection_message">Czy na pewno chesz wrócić do menu? Nie będzie już można wysłać ponownie punktacji. Upewnij się że została wysłana.</string>
 
     <string name="ask_write_permission_message">Aplikacja musi miieć pozwolenie na regulację jasności ekranu. Upoważnij ją na następnej stronie</string>
 

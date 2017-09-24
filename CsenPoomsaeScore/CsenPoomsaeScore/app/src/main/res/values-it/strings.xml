@@ -9,6 +9,8 @@
     <string name="connection_avaiable_message">Il server non è configurato. Se vuoi usare l\'applicazione in modalità online configuralo nella scheda impostazioni.</string>
     <string name="connection_continue_offline">Continua offline</string>
     <string name="connection_config_server">Vai nelle impostazioni per configurare</string>
+    <string name="internet_avaiable_message">Il server pare configurato, ma non hai più la connessione internet.</string>
+    <string name="internet_wait">Verificherò la connessione</string>
 
     <string name="menu">Menu</string>
     <string name="accuracy">Accuratezza</string>
@@ -20,8 +22,14 @@
     <string name="result_menu_title">Connessione</string>
 
     <string name="send_scores">Invia punteggi</string>
-    <string name="scores_sent">Punteggi inviati con successo</string>
+    <string name="scores_sent">Punteggi inviati. Verifica la ricezione sul server.</string>
     <string name="scores_not_sent">C\'è stato un problema nell\'invio</string>
+    <string name="scores_not_sent_internet">C\'è stato un problema nell\'invio: internet non disponibile</string>
+    <string name="scores_not_sent_server">C\'è stato un problema nell\'invio: problema del server</string>
+    <string name="scores_not_sent_yet">Punteggi ancora non inviati</string>
+
+    <string name="scores_confirm_received">Confermo punteggi ricevuti</string>
+    <string name="scores_not_confirm_received">Indietro</string>
 
     <string name="go_to_scores">Mostra schermata risultati</string>
 
@@ -37,7 +45,7 @@
     <string name="wrong_password">Password non corretta</string>
     <string name="end_valutation_message">Sei sicuro di voler chiudere la valutazione corrente?</string>
     <string name="back_accuracy_message">Tornando indietro perderai eventuali modifice non salvate. Continuare?</string>
-    <string name="end_connection_message">Sei sicuro di voler tornare al menu?</string>
+    <string name="end_connection_message">Sei sicuro di voler tornare al menu? Non sarà più possibile inviare questi dati al server: verifica se sono stati ricevuti.</string>
 
     <string name="ask_write_permission_message">Devi autorizzare l\'applicazione per modificare la luminosità. Abilitala nella prossima schermata</string>
 

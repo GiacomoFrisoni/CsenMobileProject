@@ -53,15 +53,17 @@
                 android:textSize="20sp" />
 
             <SeekBar
+                android:maxHeight="1000dp"
                 android:id="@+id/skb_brightness"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_below="@id/textView1"
                 android:paddingTop="5dp"
                 android:thumb="@drawable/thumb" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="invisible"
             android:id="@+id/rlt_hidden_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

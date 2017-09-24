@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,13 +37,15 @@ public class ResultMenuFragment extends Fragment {
 
     public interface OnResultMenuInteraction {
         void onResultsClick(float presentationPoints, boolean isReadOnly);
+
         void onMenuClick();
+
         void onBackPressed();
     }
 
     private ResultMenuFragment.OnResultMenuInteraction listener;
 
-    public ResultMenuFragment(){
+    public ResultMenuFragment() {
 
     }
 
@@ -63,6 +66,7 @@ public class ResultMenuFragment extends Fragment {
     private Button btnSendScores, btnShowResults;
     private TextView txvError;
     private CustomNavBar navBar;
+    private ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -73,6 +77,7 @@ public class ResultMenuFragment extends Fragment {
         btnSendScores = (Button) view.findViewById(R.id.btn_send_scores);
         btnShowResults = (Button) view.findViewById(R.id.btn_show_results);
         txvError = (TextView) view.findViewById(R.id.txv_error_sending);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
 
         navBar.setBackButtonEnabled(false);
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
@@ -92,13 +97,13 @@ public class ResultMenuFragment extends Fragment {
                             .setTitle(getString(R.string.confirm))
                             .setMessage(getString(R.string.end_connection_message))
                             .setIconAttribute(android.R.attr.alertDialogIcon)
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.scores_confirm_received), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     listener.onMenuClick();
                                 }
                             })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getString(R.string.scores_not_confirm_received), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -113,14 +118,24 @@ public class ResultMenuFragment extends Fragment {
         btnSendScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnSendScores.setEnabled(false);
+                txvError.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
                 if (sendScores(new AthleteScore(accuracyPoints, presentationPoints, round(accuracyPoints + presentationPoints, N_DECIMAL_PLACES), Calendar.getInstance()))) {
                     txvError.setText(getString(R.string.scores_sent));
                     txvError.setTextColor(Color.GREEN);
-                }
-                else {
+                } else {
+
                     txvError.setText(getString(R.string.scores_not_sent));
                     txvError.setTextColor(Color.RED);
+
+                    if (!ConnectionHelper.isConnectionAvaiable(getActivity())) {
+                        txvError.setText(getString(R.string.scores_not_sent_internet));
+                    }
                 }
+                progressBar.setVisibility(View.GONE);
+                txvError.setVisibility(View.VISIBLE);
+                btnSendScores.setEnabled(true);
             }
         });
 
@@ -143,13 +158,13 @@ public class ResultMenuFragment extends Fragment {
         if (ConnectionHelper.isConnectionEstabished()) {
 
             //Controllo se ho ancora la connessione e provo ad inviare il dato
-            if (ConnectionHelper.sendMessage(score.getPacketToSend()) && ConnectionHelper.isConnectionAvaiable()) {
+            if (ConnectionHelper.sendMessage(score.getPacketToSend()) && ConnectionHelper.isConnectionAvaiable(getActivity())) {
 
                 //Se ho la connessione e sono riuscito ad inviarlo
                 Toast.makeText(getContext(), R.string.package_sent, Toast.LENGTH_SHORT).show();
                 return true;
 
-                //Se NON ho la connessione e/o NON sono riuscito a spedire
+            //Se NON ho la connessione e/o NON sono riuscito a spedire
             } else {
                 Toast.makeText(getContext(), R.string.package_not_sent, Toast.LENGTH_SHORT).show();
                 return false;
@@ -161,7 +176,6 @@ public class ResultMenuFragment extends Fragment {
             return false;
         }
     }
-
 
 
     /**

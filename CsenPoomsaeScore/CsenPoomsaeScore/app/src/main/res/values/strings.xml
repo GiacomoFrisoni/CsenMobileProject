@@ -11,6 +11,8 @@
     <string name="connection_avaiable_message">Server is not configured. To use app in "online" mode please set the server in settings panel.</string>
     <string name="connection_continue_offline">Continue offline</string>
     <string name="connection_config_server">Go to settings to configure server</string>
+    <string name="internet_avaiable_message">Server seems to be configured, but you lost internet connection.</string>
+    <string name="internet_wait">I\'ll check the connection</string>
 
     <string name="back_symbol">&lt;   %1$s</string>
     <string name="forward_symbol">%1$s   &gt;</string>
@@ -25,8 +27,14 @@
     <string name="result_menu_title">Connection</string>
 
     <string name="send_scores">Send scores</string>
-    <string name="scores_sent">Scores sent successfully</string>
+    <string name="scores_sent">Scores sent. Check them on server.</string>
     <string name="scores_not_sent">There\'s a problem with sending scores.</string>
+    <string name="scores_not_sent_internet">There\'s a problem with sending scores: internet unavaiable</string>
+    <string name="scores_not_sent_server">There\'s a problem with sending scores: server error</string>
+    <string name="scores_not_sent_yet">Scores wasn\'t send yet</string>
+
+    <string name="scores_confirm_received">I confirm score received</string>
+    <string name="scores_not_confirm_received">Go back</string>
 
     <string name="go_to_scores">Show results screen</string>
 
@@ -42,7 +50,7 @@
     <string name="wrong_password">Wrong password</string>
     <string name="end_valutation_message">Are you sure you want to close your current valutation?</string>
     <string name="back_accuracy_message">Going back you will lose any unsaved modifiers. Continue?</string>
-    <string name="end_connection_message">Are you sure you want to back to menu?</string>
+    <string name="end_connection_message">Are you sure you want to back to menu? You\'ll not be able anymore to send this score to server</string>
 
     <string name="ask_write_permission_message">You need to authorize the app for modifying brightness. Enable it on the next page.</string>
 
