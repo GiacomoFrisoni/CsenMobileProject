@@ -14,26 +14,28 @@
         app:titleText="@string/result_menu_title" />
 
     <LinearLayout
-        android:weightSum="2"
-        android:orientation="horizontal"
-        android:layout_below="@id/nav_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_bar"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
 
         <LinearLayout
-            android:layout_margin="50dp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="50dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+            <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
                 android:id="@+id/btn_send_scores"
-                android:text="@string/send_scores"/>
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:drawablePadding="10dp"
+                android:drawableTop="@drawable/ic_connection"
+                android:text="@string/send_scores" />
 
 
             <RelativeLayout
@@ -43,23 +45,21 @@
                 <TextView
                     android:id="@+id/txv_error_sending"
                     android:layout_width="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_marginTop="5dp"
-                    android:layout_height="40dp"
                     android:text="@string/scores_not_sent_yet"
                     android:textAlignment="center"
+                    android:textSize="20dp"
                     android:textStyle="italic" />
 
                 <ProgressBar
-                    android:visibility="gone"
                     android:id="@+id/progress_bar"
-                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
                     android:layout_marginTop="5dp"
-                    android:layout_height="40dp"/>
+                    android:visibility="gone" />
             </RelativeLayout>
-
-
-
 
 
         </LinearLayout>
@@ -72,12 +72,15 @@
             android:layout_weight="1"
             android:gravity="center">
 
-            <Button
+
+            <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
                 android:id="@+id/btn_show_results"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginBottom="20dp"
-                android:text="@string/go_to_scores" />
+                android:layout_height="150dp"
+                android:drawablePadding="10dp"
+                android:layout_marginBottom="30dp"
+                android:drawableTop="@drawable/ic_results"
+                android:text="@string/return_to_results" />
 
         </LinearLayout>
 
