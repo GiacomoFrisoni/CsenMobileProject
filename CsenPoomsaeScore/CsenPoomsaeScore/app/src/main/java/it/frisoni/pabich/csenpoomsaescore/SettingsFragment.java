@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -135,7 +136,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 progress = map(value, 0, MAX_BRIGHTNESS, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
                 if (hasPermissions(getActivity())) {
                     //Method 1
+                    Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
                     android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
+
+                    WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                    lp.screenBrightness = (float) progress / 255; //...and put it here
+                    getActivity().getWindow().setAttributes(lp);
                 }
             }
 
