@@ -94,7 +94,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     //Costanti
     private static final int MAX_BRIGHTNESS = 255;
-    private static final int MIN_BRIGHTNESS = 10;
+    private static final int MIN_BRIGHTNESS = 50;
     private static final int WRITE_SETTINGS_PERMISSION = 100;
     private static final int WRITE_SETTINGS_REQUEST = 200;
     private static final int PORT = 9050;
