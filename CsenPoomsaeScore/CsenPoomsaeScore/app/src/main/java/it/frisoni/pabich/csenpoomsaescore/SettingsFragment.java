@@ -2,6 +2,7 @@ package it.frisoni.pabich.csenpoomsaescore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -133,7 +134,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
                 progress = map(value, 0, MAX_BRIGHTNESS, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
                 if (hasPermissions(getActivity())) {
+                    //Method 1
                     android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
+
+                    //Method 2
+                    ContentResolver cResolver = getActivity().getApplicationContext().getContentResolver();
+                    Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, progress);
                 }
             }
 

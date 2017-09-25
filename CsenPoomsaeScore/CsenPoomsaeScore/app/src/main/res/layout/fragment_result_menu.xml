@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
-                android:background="@drawable/menu_button_background"
+                android:background="@drawable/nav_button_background"
                 android:textColor="@color/text_white"
                 android:textSize="20dp"
                 android:id="@+id/btn_send_scores"
@@ -78,7 +78,7 @@
 
 
             <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
-                android:background="@drawable/menu_button_background"
+                android:background="@drawable/nav_button_background"
                 android:textColor="@color/text_white"
                 android:textSize="20dp"
                 android:id="@+id/btn_show_results"
