@@ -210,7 +210,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
             if (ConnectionHelper.refreshConnection()) {
                 textError.setText("Connected");
-                textError.setTextColor(Color.GREEN);
+                textError.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
             } else {
                 textError.setText("Unable to connect");
                 textError.setTextColor(Color.RED);

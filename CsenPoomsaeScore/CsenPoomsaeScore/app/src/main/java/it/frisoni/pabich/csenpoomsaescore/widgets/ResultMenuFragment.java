@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -123,7 +124,7 @@ public class ResultMenuFragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
                 if (sendScores(new AthleteScore(accuracyPoints, presentationPoints, round(accuracyPoints + presentationPoints, N_DECIMAL_PLACES), Calendar.getInstance()))) {
                     txvError.setText(getString(R.string.scores_sent));
-                    txvError.setTextColor(Color.GREEN);
+                    txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
                 } else {
 
                     txvError.setText(getString(R.string.scores_not_sent));
