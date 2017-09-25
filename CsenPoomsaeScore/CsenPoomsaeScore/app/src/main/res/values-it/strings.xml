@@ -64,7 +64,7 @@
     <string name="sending_data_message">Invio dei dati al server, attendi...</string>
     <string name="sending_data_error">Non sono riuscito a inviare i dati al server</string>
     <string name="retry">Riprova</string>
-    <string name="return_to_results">Torna ai punteggi</string>
+    <string name="return_to_results">Torna ai risultati</string>
     <string name="continue_to_homepage">Continua sulla home</string>
 
     <string name="regulate_brightness">Regolazione luminosità</string>
