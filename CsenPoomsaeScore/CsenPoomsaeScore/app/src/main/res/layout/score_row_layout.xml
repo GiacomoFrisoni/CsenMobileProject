@@ -53,10 +53,12 @@
             android:id="@+id/txv_accuracy_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accuratezza: "
+            android:text="Accuratezza:"
             android:textSize="20sp" />
 
         <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:id="@+id/txv_accuracy"
             android:layout_toRightOf="@id/txv_accuracy_title"
             android:layout_width="wrap_content"
@@ -69,17 +71,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txv_accuracy"
-            android:text="Presentazione: "
+            android:text="Presentazione:"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/txv_presentation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/txv_presentation_title"
-            android:layout_below="@id/txv_accuracy"
             android:text="5.6"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_below="@id/txv_accuracy"
+            android:layout_alignRight="@+id/txv_accuracy"
+            android:layout_alignEnd="@+id/txv_accuracy" />
     </RelativeLayout>
 
     <TextView

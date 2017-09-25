@@ -30,9 +30,10 @@
             android:orientation="vertical">
 
             <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
+                android:textSize="20dp"
                 android:id="@+id/btn_send_scores"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="190dp"
                 android:drawablePadding="10dp"
                 android:drawableTop="@drawable/ic_connection"
                 android:text="@string/send_scores" />
@@ -74,9 +75,10 @@
 
 
             <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
+                android:textSize="20dp"
                 android:id="@+id/btn_show_results"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="190dp"
                 android:drawablePadding="10dp"
                 android:layout_marginBottom="30dp"
                 android:drawableTop="@drawable/ic_results"
