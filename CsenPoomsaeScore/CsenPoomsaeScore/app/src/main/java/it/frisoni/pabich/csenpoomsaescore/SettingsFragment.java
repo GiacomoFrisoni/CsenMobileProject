@@ -2,18 +2,14 @@ package it.frisoni.pabich.csenpoomsaescore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.CalendarContract;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -41,7 +37,6 @@ import java.util.Arrays;
 
 import android.Manifest;
 
-import org.w3c.dom.Text;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
@@ -94,9 +89,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     //Costanti
     private static final int MAX_BRIGHTNESS = 255;
-    private static final int MIN_BRIGHTNESS = 15;
+    private static final int MIN_BRIGHTNESS = 20;
     private static final int WRITE_SETTINGS_PERMISSION = 100;
-    private static final int WRITE_SETTINGS_REQUEST = 200;
+    //private static final int WRITE_SETTINGS_REQUEST = 200;
     private static final int PORT = 9050;
 
     //Database e Shared preferences

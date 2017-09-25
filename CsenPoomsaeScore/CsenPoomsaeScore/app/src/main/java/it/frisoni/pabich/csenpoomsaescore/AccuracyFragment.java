@@ -1,11 +1,9 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +15,6 @@ import com.lb.auto_fit_textview.AutoResizeTextView;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.VibrationHandler;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 

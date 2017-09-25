@@ -3,7 +3,6 @@ package it.frisoni.pabich.csenpoomsaescore.utils;
 import android.os.AsyncTask;
 
 import java.net.DatagramPacket;
-import java.net.Socket;
 
 /**
  * Created by marti on 05/08/2017.

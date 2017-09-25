@@ -1,27 +1,19 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.lb.auto_fit_textview.AutoResizeTextView;
 
 import java.math.BigDecimal;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.Calendar;
 
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
@@ -29,7 +21,6 @@ import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
-import it.frisoni.pabich.csenpoomsaescore.widgets.ResultMenuFragment;
 
 import static android.content.ContentValues.TAG;
 
