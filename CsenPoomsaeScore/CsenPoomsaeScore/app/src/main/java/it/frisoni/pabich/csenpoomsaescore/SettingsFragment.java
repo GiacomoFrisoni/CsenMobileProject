@@ -136,10 +136,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 if (hasPermissions(getActivity())) {
                     //Method 1
                     android.provider.Settings.System.putInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, progress);
-
-                    //Method 2
-                    ContentResolver cResolver = getActivity().getApplicationContext().getContentResolver();
-                    Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, progress);
                 }
             }
 
