@@ -63,7 +63,8 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:contentDescription="@string/small_logo"
-            android:padding="10dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
             android:src="@drawable/taekw_logo" />
 
         <ImageView
@@ -71,7 +72,6 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:contentDescription="@string/big_logo"
-            android:padding="10dp"
             android:src="@drawable/taekw_text_logo" />
     </LinearLayout>
 
