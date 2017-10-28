@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/home_background"
     android:orientation="vertical"
-    android:paddingTop="10dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="10dp"
     android:weightSum="6">
 
     <com.lb.auto_fit_textview.AutoResizeTextView
@@ -17,6 +17,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:gravity="center"
+        android:padding="20dp"
         android:text="@string/app_title"
         android:textAlignment="center" />
 
@@ -59,17 +60,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_margin="20dp"
+        android:layout_weight="1"
         android:gravity="bottom|center_horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/small_logo"
-            android:layout_marginRight="25dp"
-            android:layout_marginEnd="25dp"
             android:src="@drawable/taekw_logo" />
 
         <ImageView

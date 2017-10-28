@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CsenPoomsaeScore</string>
-    <string name="app_title">Csen Poomsae Score</string>
+    <string name="app_title">CSEN Poomsae Score</string>
     <string name="powered_by">Powered by Giacomo Frisoni &amp; Marcin Pabich"</string>
 
     <string name="start">Start</string>

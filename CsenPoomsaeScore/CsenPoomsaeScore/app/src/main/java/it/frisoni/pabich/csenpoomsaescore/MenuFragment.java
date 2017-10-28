@@ -5,6 +5,11 @@ import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,9 +80,15 @@ public class MenuFragment extends Fragment {
         btnList = (Button) view.findViewById(R.id.btn_list);
         btnSettings = (Button) view.findViewById(R.id.btn_settings);
 
+        String title = txvTitle.getText().toString();
+        SpannableString spanString = new SpannableString(title);
+        spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, 4, 0);
+        spanString.setSpan(new StyleSpan(Typeface.ITALIC), 4, spanString.length(), 0);
+        txvTitle.setText(spanString);
+
         //Imposta il font personalizzato per il titolo
-        Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(),  "fonts/go3v2.ttf");
-        txvTitle.setTypeface(custom_font);
+        //Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(),  "fonts/go3v2.ttf");
+        //txvTitle.setTypeface(custom_font);
 
         //Creazione dei listener per l'intercettazione dei click sui bottoni da parte dell'utente
         btnStart.setOnClickListener(new View.OnClickListener() {
