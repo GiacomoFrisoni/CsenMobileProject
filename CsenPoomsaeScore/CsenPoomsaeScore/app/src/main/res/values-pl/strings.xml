@@ -43,7 +43,10 @@
     <string name="cancel">Anuluj</string>
     <string name="close">Zamknij</string>
     <string name="wrong_password">Błędne hasło</string>
-    <string name="end_valutation_message">Czy na pewno chcesz zamknąć bierzącą ewaluację?</string>
+    <string name="end_valutation_message_offline_title">Wróć do menu</string>
+    <string name="end_valutation_message_online_title">Wysyłanie rezultatów</string>
+    <string name="end_valutation_message_offline">Jesteś w trybie offline. Czy na pewno chcesz wrócić do menu?</string>
+    <string name="end_valutation_message_online">Jesteś pewny że chcesz zakończyć tą punktacje i przejść do wysyłania rezultatów?</string>
     <string name="back_accuracy_message">Wracając utracisz wszyskie nie zapisane dane. Kontynuować?</string>
     <string name="end_connection_message">Czy na pewno chesz wrócić do menu? Nie będzie już można wysłać ponownie punktacji. Upewnij się że została wysłana.</string>
 
@@ -80,6 +83,9 @@
 
 
     <string name="no_scores">Brak punktacji</string>
+
+    <string name="total">Suma</string>
+
 
     <string name="choose_language">Wybierz język</string>
     <string-array name="languages">

@@ -48,7 +48,10 @@
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
     <string name="wrong_password">Wrong password</string>
-    <string name="end_valutation_message">Are you sure you want to close your current valutation?</string>
+    <string name="end_valutation_message_offline_title">Go back to menu</string>
+    <string name="end_valutation_message_online_title">Go to send scores</string>
+    <string name="end_valutation_message_offline">You\'re in offline mode. Do you want to go back to menu?</string>
+    <string name="end_valutation_message_online">Are you sure to close this valuation and go to send menu?</string>
     <string name="back_accuracy_message">Going back you will lose any unsaved modifiers. Continue?</string>
     <string name="end_connection_message">Are you sure you want to back to menu? You\'ll not be able anymore to send this score to server</string>
 
@@ -94,6 +97,7 @@
 
     <string name="small_logo">Logo CSEN</string>
     <string name="big_logo">Logo CSEN</string>
+    <string name="total">Total</string>
 
 
     <string-array name="languages">

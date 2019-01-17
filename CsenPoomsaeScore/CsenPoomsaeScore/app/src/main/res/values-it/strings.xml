@@ -43,7 +43,10 @@
     <string name="cancel">Annulla</string>
     <string name="close">Chiudi</string>
     <string name="wrong_password">Password non corretta</string>
-    <string name="end_valutation_message">Sei sicuro di voler chiudere la valutazione corrente?</string>
+    <string name="end_valutation_message_offline_title">Torna al menu</string>
+    <string name="end_valutation_message_online_title">Concludi valutazione</string>
+    <string name="end_valutation_message_offline">Sei nella modalità offline. Vuoi tornare al menù principale?</string>
+    <string name="end_valutation_message_online">Sei sicuro di voler chiudere questa valutazione e passare alla schermata di invio punteggi?</string>
     <string name="back_accuracy_message">Tornando indietro perderai eventuali modifice non salvate. Continuare?</string>
     <string name="end_connection_message">Sei sicuro di voler tornare al menu? Non sarà più possibile inviare questi dati al server: verifica se sono stati ricevuti.</string>
 
@@ -79,6 +82,9 @@
     <string name="no_connection">Nessuna connessione a internet</string>
 
     <string name="no_scores">Nessun punteggio salvato</string>
+
+    <string name="total">Totale</string>
+
 
     <string name="choose_language">Scegli la lingua</string>
     <string-array name="languages">

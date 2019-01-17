@@ -136,32 +136,57 @@ public class ResultsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        new AlertDialog.Builder(ResultsFragment.this.getActivity())
-                                .setTitle(getString(R.string.confirm))
-                                .setMessage(getString(R.string.end_valutation_message))
-                                .setIconAttribute(android.R.attr.alertDialogIcon)
-                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //Salvataggio del punteggio nel database
-                                        AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
-                                        dbManager.addAthleteScore(a);
-                                        dialog.dismiss();
-
-                                        if (ConnectionHelper.isConnectionEstabished())
+                        // Online mode
+                        if (ConnectionHelper.isConnectionEstabished()) {
+                            new AlertDialog.Builder(ResultsFragment.this.getActivity())
+                                    .setTitle(getString(R.string.end_valutation_message_online_title))
+                                    .setMessage(getString(R.string.end_valutation_message_online))
+                                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //Salvataggio del punteggio nel database
+                                            AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
+                                            dbManager.addAthleteScore(a);
+                                            dialog.dismiss();
                                             listener.onResultMenuClick(a);
-                                        else
+                                            //sendData(a);
+                                        }
+                                    })
+                                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+                        // Offline mode
+                        else {
+                            new AlertDialog.Builder(ResultsFragment.this.getActivity())
+                                    .setTitle(getString(R.string.end_valutation_message_offline_title))
+                                    .setMessage(getString(R.string.end_valutation_message_offline))
+                                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //Salvataggio del punteggio nel database
+                                            AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
+                                            dbManager.addAthleteScore(a);
+                                            dialog.dismiss();
+
                                             listener.onMenuClick();
-                                        //sendData(a);
-                                    }
-                                })
-                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
+                                            //sendData(a);
+                                        }
+                                    })
+                                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
                     }
                 }
             });
