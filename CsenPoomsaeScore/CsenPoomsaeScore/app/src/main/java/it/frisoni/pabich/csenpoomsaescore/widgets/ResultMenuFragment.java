@@ -162,18 +162,18 @@ public class ResultMenuFragment extends Fragment {
             if (ConnectionHelper.sendMessage(score.getPacketToSend()) && ConnectionHelper.isConnectionAvaiable(getActivity())) {
 
                 //Se ho la connessione e sono riuscito ad inviarlo
-                Toast.makeText(getContext(), R.string.package_sent, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.package_sent, Toast.LENGTH_SHORT).show();
                 return true;
 
             //Se NON ho la connessione e/o NON sono riuscito a spedire
             } else {
-                Toast.makeText(getContext(), R.string.package_not_sent, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.package_not_sent, Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             //Non ho configurato il server, dunque esco senza dire nulla
         } else {
-            Toast.makeText(getContext(), "Server non configurato", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Server non configurato", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
