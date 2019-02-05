@@ -39,12 +39,12 @@
                     android:id="@+id/txv_accuracy_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="-40dp"
+                    android:layout_marginBottom="-60dp"
                     android:text="@string/accuracy"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textColor="@color/text_dark"
-                    android:textSize="30sp" />
+                    android:textSize="40sp" />
 
                 <com.lb.auto_fit_textview.AutoResizeTextView
                     android:id="@+id/txv_accuracy"
@@ -53,7 +53,7 @@
                     android:text="4.0"
                     android:textAlignment="center"
                     android:textColor="@color/text_dark"
-                    android:textSize="280sp" />
+                    android:textSize="300sp" />
             </LinearLayout>
 
             <ImageView
@@ -83,12 +83,12 @@
                     android:id="@+id/txv_presentation_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="-40dp"
+                    android:layout_marginBottom="-60dp"
                     android:text="@string/presentation"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textColor="@color/text_dark"
-                    android:textSize="30sp" />
+                    android:textSize="40sp" />
 
                 <com.lb.auto_fit_textview.AutoResizeTextView
                     android:id="@+id/txv_presentation"
@@ -97,7 +97,7 @@
                     android:text="6.0"
                     android:textAlignment="center"
                     android:textColor="@color/text_dark"
-                    android:textSize="280sp" />
+                    android:textSize="300sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -111,20 +111,19 @@
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/text_dark"
-            android:textSize="30sp" />
+            android:textSize="35sp" />
 
         <com.lb.auto_fit_textview.AutoResizeTextView
             android:id="@+id/txv_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30sp"
-            android:layout_marginTop="15sp"
             android:layout_marginRight="30sp"
             android:gravity="center"
             android:text="10.0"
             android:textAlignment="center"
             android:textColor="@color/text_dark"
-            android:textSize="100sp"
+            android:textSize="170sp"
             android:textStyle="bold" />
     </LinearLayout>
 
