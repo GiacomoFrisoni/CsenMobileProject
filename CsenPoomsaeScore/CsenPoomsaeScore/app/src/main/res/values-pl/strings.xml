@@ -88,6 +88,18 @@
 
 
     <string name="choose_language">Wybierz język</string>
+    <string name="tablet_not_connected_info">Tablet nie jest połączony. Skonfiguruj adres IP w ustawieniach.</string>
+    <string name="tablet_not_connected">Tablet nie jest połączony.</string>
+    <string name="tablet_connected">Tablet połączony z: %1$s</string>
+    <string name="tablet_connected_device_id">Tablet połączony z %1$s jako DeviceID %2$s</string>
+    <string name="tablet_connecting">Łączenie z serwerem…</string>
+    <string name="tablet_not_connected_warning">Nie można uzyskać połączenia z serwerem!</string>
+    <string name="tablet_check_connection">Sparwdzam połączenie z serwerem…</string>
+    <string name="tablet_waiting_for_ack">Ostatnie kroki…</string>
+    <string name="hidden_settings">Opcje zaawansowane</string>
+    <string name="show_hidden_settings">Pokaż opcje zaawansowane</string>
+    <string name="hide_hidden_settings">Ukryj opcje zaawansowane</string>
+
     <string-array name="languages">
         <item>Wybierz język</item>
         <item>Angielski</item>

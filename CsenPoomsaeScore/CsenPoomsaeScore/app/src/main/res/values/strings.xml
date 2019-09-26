@@ -69,7 +69,7 @@
     <string name="very_poor">Very poor</string>
 
     <string name="sending_data_title">Sending</string>
-    <string name="sending_data_message">Sending data to server, please wait...</string>
+    <string name="sending_data_message">Sending data to server, please wait…</string>
     <string name="sending_data_error">Cannot sent data to server</string>
     <string name="retry">Retry</string>
     <string name="return_to_results">Return to results</string>
@@ -79,7 +79,7 @@
     <string name="auth_back_text">Authorize score changes</string>
     <string name="clear_scores_list">Delete saved scores</string>
     <string name="cleared_list">Cleared list</string>
-    <string name="ip_adress">IP Adress</string>
+    <string name="ip_adress">IP Address</string>
     <string name="connect">Connect</string>
     <string name="package_sent">Package sent</string>
     <string name="package_not_sent">Package not sent</string>
@@ -98,6 +98,18 @@
     <string name="small_logo">Logo CSEN</string>
     <string name="big_logo">Logo CSEN</string>
     <string name="total">Total</string>
+
+    <string name="tablet_not_connected_info">Tablet not connected. Please configure the IP address in settings.</string>
+    <string name="tablet_not_connected">Tablet not connected.</string>
+    <string name="tablet_connected">Tablet is now connected to: %1$s</string>
+    <string name="tablet_connected_device_id">Tablet is now connected to %1$s with DeviceID %2$s</string>
+    <string name="tablet_connecting">Waiting for server response…</string>
+    <string name="tablet_not_connected_warning">Cannot connect to the server!</string>
+    <string name="tablet_check_connection">Checking server connection status…</string>
+    <string name="tablet_waiting_for_ack">Waiting for final response…</string>
+    <string name="hidden_settings">Advanced settings</string>
+    <string name="show_hidden_settings">Show advanced settings</string>
+    <string name="hide_hidden_settings">Hide advanced settings</string>
 
 
     <string-array name="languages">

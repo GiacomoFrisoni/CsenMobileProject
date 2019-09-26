@@ -87,6 +87,18 @@
 
 
     <string name="choose_language">Scegli la lingua</string>
+    <string name="tablet_not_connected_info">Tablet non connesso. Configurare l\'indirizzo IP del PC nelle impostazioni.</string>
+    <string name="tablet_not_connected">Tablet non connesso.</string>
+    <string name="tablet_connected">Tablet è attualmente connesso a: %1$s</string>
+    <string name="tablet_connected_device_id">Tablet è connesso all\'indirizzo %1$s con DeviceID %2$s</string>
+    <string name="tablet_connecting">Connettendo al server…</string>
+    <string name="tablet_not_connected_warning">Impossibile connettersi al server!</string>
+    <string name="tablet_check_connection">Verifico lo stato della connessione…</string>
+    <string name="tablet_waiting_for_ack">Ultimazione connessione…</string>
+    <string name="hidden_settings">Impostazioni avanzate</string>
+    <string name="show_hidden_settings">Mostra impostazioni avanzate</string>
+    <string name="hide_hidden_settings">Nascondi impostazioni avanzate</string>
+
     <string-array name="languages">
         <item>Seleziona la lingua</item>
         <item>Inglese</item>
