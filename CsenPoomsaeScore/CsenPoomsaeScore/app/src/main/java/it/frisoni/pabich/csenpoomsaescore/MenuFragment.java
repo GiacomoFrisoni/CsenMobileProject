@@ -65,7 +65,7 @@ public class MenuFragment extends Fragment {
     }
 
     //Titolo
-    private TextView txvTitle, txvTabletConnectionStatus;
+    private TextView txvTitle, txvTabletConnectionStatus, txvAppVersion;
 
     //Bottoni di interazione
     private Button btnStart, btnList, btnSettings;
@@ -84,6 +84,10 @@ public class MenuFragment extends Fragment {
         btnList = (Button) view.findViewById(R.id.btn_list);
         btnSettings = (Button) view.findViewById(R.id.btn_settings);
         txvTabletConnectionStatus = (TextView) view.findViewById(R.id.txv_tablet_connection_status);
+        txvAppVersion = (TextView) view.findViewById(R.id.txv_app_version);
+
+        // Set version name
+        txvAppVersion.setText(BuildConfig.VERSION_NAME);
 
         String title = txvTitle.getText().toString();
         SpannableString spanString = new SpannableString(title);
