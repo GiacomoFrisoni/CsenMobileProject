@@ -1,4 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:backText="@string/menu"
+        app:forwardEnabled="false"
+        app:titleText="@string/settings" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/regulate_brightness"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="20sp" />
+
+                <SeekBar
+                    android:id="@+id/skb_brightness"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:thumb="@drawable/thumb" />
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ip_adress"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:text="192.168.1.3"
+                        android:id="@+id/edt_ip"
+                        android:layout_width="290dp"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:id="@+id/btn_connect"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/connect" />
+
+                    <ProgressBar
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:visibility="invisible"
+                        android:id="@+id/prg_connect"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        />
+
+                    <TextView
+                        android:text="@string/tablet_not_connected"
+                        android:id="@+id/text_info_connection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/red"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hidden_settings"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:hint="@string/enter_password"
+                        android:id="@+id/edt_password"
+                        android:layout_width="290dp"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:id="@+id/btn_check_password"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/show_hidden_settings" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <RelativeLayout
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/rlt_hidden_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_alignBaseline="@id/tgb_back"
+                    android:id="@+id/textView2"
+                    android:layout_width="290dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auth_back_text"
+                    android:textSize="20sp" />
+
+                <ToggleButton
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:id="@+id/tgb_back"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/textView2"
+                    android:layout_toRightOf="@id/textView2"
+                    android:maxWidth="400dp" />
+
+
+                <TextView
+                    android:layout_below="@id/textView2"
+                    android:id="@+id/textView3"
+                    android:layout_width="290dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear_scores_list"
+                    android:layout_alignBaseline="@id/btn_clear_list"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:id="@+id/btn_clear_list"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tgb_back"
+                    android:layout_alignEnd="@id/tgb_back"
+                    android:layout_alignRight="@id/tgb_back"
+                    android:maxWidth="400dp"
+                    android:text="@string/clear_scores_list" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
+<!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -63,7 +298,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="invisible"
+            android:visibility="visible"
             android:id="@+id/rlt_hidden_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -129,6 +364,7 @@
                 android:text="@string/ip_adress" />
 
             <EditText
+                android:text="192.168.1.3"
                 android:id="@+id/edt_ip"
                 android:layout_width="290dp"
                 android:layout_height="wrap_content"
@@ -143,7 +379,7 @@
                 android:textAlignment="center" />
 
             <TextView
-                android:id="@+id/text_error_connection"
+                android:id="@+id/text_info_connection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@id/edt_ip"
@@ -153,24 +389,34 @@
                 android:layout_below="@id/edt_ip"
                 android:textAlignment="center"
                 android:textColor="@color/red"
-                android:textSize="11dp" />
+                android:textSize="12sp" />
 
 
             <Button
-                android:id="@+id/btn_test"
+                android:id="@+id/btn_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/edt_ip"
                 android:layout_toRightOf="@id/edt_ip"
                 android:text="@string/connect" />
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:id="@+id/prg_connect"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@id/btn_connect"
+                android:layout_toRightOf="@id/btn_connect"
+                android:layout_centerVertical="true"
+                />
         </RelativeLayout>
     </LinearLayout>
 
 
 
 
-    <!--
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -432,7 +678,7 @@
 
         </LinearLayout>
 
-    </RelativeLayout>-->
+    </RelativeLayout>
 
-</RelativeLayout>
+</RelativeLayout>-->
 

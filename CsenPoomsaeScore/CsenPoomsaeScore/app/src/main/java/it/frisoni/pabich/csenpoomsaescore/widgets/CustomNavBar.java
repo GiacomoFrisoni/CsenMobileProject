@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.io.Console;
 
 import it.frisoni.pabich.csenpoomsaescore.R;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 
 /**
  * Created by marti on 21/04/2017.
@@ -29,7 +30,7 @@ import it.frisoni.pabich.csenpoomsaescore.R;
 public class CustomNavBar extends RelativeLayout {
 
     private Button backButton, forwardButton;
-    private TextView title;
+    private TextView title, txvTabletConnection;
 
     public CustomNavBar(Context context) {
         super(context);
@@ -57,6 +58,7 @@ public class CustomNavBar extends RelativeLayout {
         backButton = (Button) findViewById(R.id.btn_back);
         forwardButton = (Button) findViewById(R.id.btn_forward);
         title = (TextView) findViewById(R.id.txv_title);
+        txvTabletConnection = (TextView) findViewById(R.id.txv_nav_bar_tablet_connection_status);
 
         if (attrs != null) {
             TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomNavBar, 0, 0);
@@ -65,8 +67,8 @@ public class CustomNavBar extends RelativeLayout {
                 String back = array.getString(R.styleable.CustomNavBar_backText);
                 String forward = array.getString(R.styleable.CustomNavBar_forwardText);
                 String title = array.getString(R.styleable.CustomNavBar_titleText);
-                Boolean backEnabled = array.getBoolean(R.styleable.CustomNavBar_backEnabled, true);
-                Boolean forwardEnabled = array.getBoolean(R.styleable.CustomNavBar_forwardEnabled, true);
+                boolean backEnabled = array.getBoolean(R.styleable.CustomNavBar_backEnabled, true);
+                boolean forwardEnabled = array.getBoolean(R.styleable.CustomNavBar_forwardEnabled, true);
 
                 if (back != null) {
                     setBackText(back);
@@ -104,6 +106,20 @@ public class CustomNavBar extends RelativeLayout {
         title.setText(text);
     }
 
+    public void setTabletNotConnected() {
+        txvTabletConnection.setText(getContext().getText(R.string.tablet_not_connected));
+        txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_off), null, null, null);
+    }
+
+    public void setTabletConnecting() {
+        txvTabletConnection.setText(getContext().getText(R.string.tablet_check_connection));
+        txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_refresh), null, null, null);
+    }
+
+    public void setTabletConnected(final String serverIPAddress, final String deviceID) {
+        txvTabletConnection.setText(getContext().getString(R.string.tablet_connected_device_id, serverIPAddress, deviceID));
+        txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_on), null, null, null);
+    }
 
     public void setBackButtonEnabled(boolean enabled) {
         backButton.setEnabled(enabled);
