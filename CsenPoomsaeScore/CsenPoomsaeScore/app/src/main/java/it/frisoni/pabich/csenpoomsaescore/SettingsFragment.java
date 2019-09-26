@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -27,6 +26,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -41,8 +41,10 @@ import android.Manifest;
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.CipherHandler;
-import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper.*;
 
 import static android.content.ContentValues.TAG;
 import static it.frisoni.pabich.csenpoomsaescore.utils.RangeMappingUtilities.map;
@@ -72,8 +74,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     /**
      * Costruttore vuoto richiesto dal sistema per poter funzionare correttamente in tutte le situazioni.
      */
-    public SettingsFragment() {
-    }
+    public SettingsFragment() { }
 
     /**
      * "Costruttore" statico del fragment.
@@ -105,9 +106,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlHiddenSettings;
     private SeekBar skbBrightness;
     private ToggleButton tgbBack;
-    private Button btnClearList, btnTest;
-    private EditText edtIp;
-    private TextView textError;
+    private Button btnClearList, btnConnect, btnCheckPassword;
+    private EditText edtIp, edtPassword;
+    private TextView txtInfoConnection;
+    private ProgressBar prgConnect;
+
+    // Per la connessione
+    private MyWebSocketListener webSocketListener;
+
+    // Shows or hide advanced settings
+    private boolean isAdvancedSettingVisible = false;
 
 
     @Nullable
@@ -120,7 +128,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         appPrefs = new AppPreferences(getActivity());
 
         //Gestione dell'accessibilità dei controlli
-        showCustomDialog();
+        //showCustomDialog();
 
         //Creazione del listner per la seek bar
         final SeekBar.OnSeekBarChangeListener skbListener = new SeekBar.OnSeekBarChangeListener() {
@@ -175,13 +183,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         rlHiddenSettings = (RelativeLayout) view.findViewById(R.id.rlt_hidden_settings);
         skbBrightness = (SeekBar) view.findViewById(R.id.skb_brightness);
         tgbBack = (ToggleButton) view.findViewById(R.id.tgb_back);
+        btnConnect = (Button) view.findViewById(R.id.btn_connect);
+        btnCheckPassword = (Button) view.findViewById(R.id.btn_check_password);
         btnClearList = (Button) view.findViewById(R.id.btn_clear_list);
-        btnTest = (Button) view.findViewById(R.id.btn_test);
         edtIp = (EditText) view.findViewById(R.id.edt_ip);
-        textError = (TextView) view.findViewById(R.id.text_error_connection);
+        edtPassword = (EditText) view.findViewById(R.id.edt_password);
+        txtInfoConnection = (TextView) view.findViewById(R.id.text_info_connection);
+        prgConnect = (ProgressBar) view.findViewById(R.id.prg_connect);
 
         //Gestione della navbar
-        //region NavBarListeners
         navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +201,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
         });
         navBar.setForwardButtonEnabled(false);
-        //endregion
 
         //Gestione della seek bar
         skbBrightness.setMax(MAX_BRIGHTNESS);
@@ -202,27 +211,106 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         tgbBack.setChecked(appPrefs.getBackButtonKey());
         tgbBack.setOnClickListener(this);
 
-        //Gestione del pulsante per la cancellazione del db
+        // Buttons management
         btnClearList.setOnClickListener(this);
+        btnConnect.setOnClickListener(this);
+        btnCheckPassword.setOnClickListener(this);
 
-        //Testing della connessione
-        btnTest.setOnClickListener(this);
 
-        if (ConnectionHelper.isConnectionEstabished()) {
-            edtIp.setText(ConnectionHelper.getIp());
-
-            if (ConnectionHelper.refreshConnection()) {
-                textError.setText("Connected");
-                textError.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-            } else {
-                textError.setText("Unable to connect");
-                textError.setTextColor(Color.RED);
+        // Prepare listener for websocket
+        this.webSocketListener = new MyWebSocketListener() {
+            @Override
+            public void onPong(String senderIPAddress, String deviceID) {
+                ChangeConnectionStatus(ConnectionStatus.CONNECTED, senderIPAddress, deviceID);
             }
+
+            @Override
+            public void onSetDeviceIDReceived(String senderIPAddress) {
+                ChangeConnectionStatus(ConnectionStatus.WAITING_FOP_ACK, null, null);
+            }
+
+            @Override
+            public void onSetDeviceIDAckReceived(String senderIPAddress, String deviceID) {
+                ChangeConnectionStatus(ConnectionStatus.CONNECTED, senderIPAddress, deviceID);
+            }
+
+            @Override
+            public void onSetDeviceIDFailed() {
+                ChangeConnectionStatus(ConnectionStatus.NOT_CONNECTED, null, null);
+            }
+
+            @Override
+            public void onFailure(String senderIPAddress, String reason) {
+                ChangeConnectionStatus(ConnectionStatus.NOT_CONNECTED, null,null);
+            }
+        };
+
+        // Assign it as a listener
+        WebSocketHelper.getInstance().addListener(this.webSocketListener);
+
+        System.out.println("SETTINGS send a ping request");
+
+        // Check if it is possible to send a ping request
+        if (WebSocketHelper.getInstance().sendPingRequest()) {
+            // Server may be online... waiting for response message
+            ChangeConnectionStatus(ConnectionStatus.CONNECTING, null, null);
+
+        } else {
+            // Serve is offline, not configured
+            ChangeConnectionStatus(ConnectionStatus.NOT_CONNECTED, null, null);
         }
 
         return view;
     }
 
+    private void ChangeConnectionStatus(final ConnectionStatus connectionStatus, final String serverName, final String deviceID) {
+        if (this.getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    txtInfoConnection.setText("");
+
+                    switch (connectionStatus) {
+                        case WRONG_INPUT:
+                            txtInfoConnection.setText(getContext().getText(R.string.invalid_ip));
+                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                            prgConnect.setVisibility(View.INVISIBLE);
+                            btnConnect.setEnabled(true);
+                            navBar.setTabletNotConnected();
+                            break;
+                        case NOT_CONNECTED:
+                            txtInfoConnection.setText(getContext().getText(R.string.tablet_not_connected));
+                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                            prgConnect.setVisibility(View.INVISIBLE);
+                            btnConnect.setEnabled(true);
+                            navBar.setTabletNotConnected();
+                            break;
+                        case CONNECTING:
+                            txtInfoConnection.setText(getContext().getText(R.string.tablet_connecting));
+                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                            prgConnect.setVisibility(View.VISIBLE);
+                            btnConnect.setEnabled(false);
+                            navBar.setTabletConnecting();
+                            break;
+                        case WAITING_FOP_ACK:
+                            txtInfoConnection.setText(getContext().getText(R.string.tablet_waiting_for_ack));
+                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                            prgConnect.setVisibility(View.VISIBLE);
+                            btnConnect.setEnabled(false);
+                            navBar.setTabletConnecting();
+                            break;
+                        case CONNECTED:
+                            txtInfoConnection.setText(getContext().getString(R.string.tablet_connected, serverName));
+                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                            prgConnect.setVisibility(View.INVISIBLE);
+                            btnConnect.setEnabled(true);
+                            navBar.setTabletConnected(serverName, deviceID);
+                        break;
+                    }
+                }
+            });
+        }
+    }
 
     private boolean hasPermissions(Activity context) {
         boolean permission;
@@ -259,40 +347,39 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 dbManager.clearAthleteScores();
                 Toast.makeText(getActivity(), R.string.cleared_list, Toast.LENGTH_LONG).show();
                 break;
-            case R.id.btn_test:
-                //Toglie la tastiera
+            case R.id.btn_connect:
                 hideKeyboard(getActivity());
 
-                //Reset della connessione
-                ConnectionHelper.resetConnection();
-
-                //Guarda se c'è wifi
-                if (ConnectionHelper.isConnectionAvaiable(getActivity())) {
-                    //Guarda se IP è corretto
-                    if (Patterns.IP_ADDRESS.matcher(edtIp.getText().toString()).matches()) {
-                        //Stabilisce la connessione
-                        if (ConnectionHelper.establishConnection(edtIp.getText().toString(), PORT)) {
-                            //OK pacchetto inviato
-                            textError.setText(R.string.package_sent);
-                            textError.setTextColor(Color.GREEN);
-                        } else {
-                            //Qualcosa è andato storto
-                            textError.setText(R.string.package_not_sent);
-                            textError.setTextColor(Color.RED);
-                        }
-                    }
-                    else {
-                        //Indirizzo IP non valido
-                        textError.setText(R.string.invalid_ip);
-                        textError.setTextColor(Color.RED);
-                    }
-                }
-                else  {
-                    //Nessuna connessione
-                    textError.setText(R.string.no_connection);
-                    textError.setTextColor(Color.RED);
+                if (Patterns.IP_ADDRESS.matcher(edtIp.getText().toString()).matches()) {
+                    WebSocketHelper.getInstance().configureWebSocket(edtIp.getText().toString(), "25565");
+                    ChangeConnectionStatus(ConnectionStatus.CONNECTING, null, null);
+                } else {
+                    ChangeConnectionStatus(ConnectionStatus.WRONG_INPUT, null, null);
                 }
                 break;
+            case R.id.btn_check_password:
+                hideKeyboard(getActivity());
+
+                if (!isAdvancedSettingVisible) {
+                    boolean isPasswordCorrect = false;
+
+                    try {
+                        byte[] pw = Base64.decode(appPrefs.getPwSettingsKey(), Base64.NO_WRAP);
+                        byte[] dataUser = CipherHandler.getHandler().encryptBytes(edtPassword.getText().toString().getBytes());
+                        if (Arrays.equals(pw, dataUser))
+                            isPasswordCorrect = true;
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error during encryption: " + e.getMessage());
+                    }
+                    if (isPasswordCorrect) {
+                        showHiddenSettings();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.wrong_password, Toast.LENGTH_LONG).show();
+                        hideHiddenSettings();
+                    }
+                } else {
+                    hideHiddenSettings();
+                }
             default:
                 break;
         }
@@ -307,13 +394,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         if (context instanceof SettingsFragment.OnSettingsInteraction) {
             listener = (SettingsFragment.OnSettingsInteraction) context;
         } else {
             Log.e(TAG, "Not valid context for ScoresFragment");
         }
     }
-
     /**
      * Quando il fragment viene distrutto, viene eliminato il collegamento con l'activity.
      */
@@ -321,21 +408,33 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
+        WebSocketHelper.getInstance().removeListener(webSocketListener);
     }
 
     /**
      * Rende visibili i componenti per la modifica delle impostazioni.
      */
-    private void showComponents() {
+    private void showHiddenSettings() {
+        isAdvancedSettingVisible = true;
         rlHiddenSettings.setVisibility(View.VISIBLE);
+        btnCheckPassword.setText(getText(R.string.hide_hidden_settings));
+        edtPassword.setText("");
     }
+
+    private void hideHiddenSettings() {
+        isAdvancedSettingVisible = false;
+        rlHiddenSettings.setVisibility(View.GONE);
+        btnCheckPassword.setText(getText(R.string.show_hidden_settings));
+        edtPassword.setText("");
+    }
+
 
 
     /**
      * Visualizza un alert dialog personalizzato per la gestione della visibilità dei componenti
      * costituenti l'interfaccia.
      */
-    private void showCustomDialog() {
+    /*private void showCustomDialog() {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(getActivity());
         myDialog.setTitle(R.string.check_credentials);
 
@@ -371,16 +470,21 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
         });
         myDialog.show();
-    }
+    }*/
 
     public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+            // Find the currently focused view, so we can grab the correct window token from it.
+            View view = activity.getCurrentFocus();
+
+            // If no view currently has focus, create a new one, just so we can grab a window token from it
+            if (view == null) {
+                view = new View(activity);
+            }
+
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        } catch (Exception e) { }
     }
 }
