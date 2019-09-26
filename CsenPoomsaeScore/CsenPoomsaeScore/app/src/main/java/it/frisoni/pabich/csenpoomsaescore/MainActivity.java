@@ -99,15 +99,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
         for (int i = 0; i < manager.getBackStackEntryCount(); i++) {
             manager.popBackStack();
         }
-        replaceFragment(MenuFragment.newInstance(), false);
+        //replaceFragment(MenuFragment.newInstance(), false);
         VibrationHandler.getHandler().vibrate();
     }
 
     @Override
-    public void onAccuracyClick() {
+    public void onStartNewEvaluation() {
+        replaceFragment(AccuracyFragment.newInstance(), true);
+        VibrationHandler.getHandler().vibrate();
         /*
          * Replace del fragment nel layout con l'istanza di AccuracyFragment.
-         */
+
         if (ConnectionHelper.isConnectionAvaiable(this)) {
             if (!ConnectionHelper.isConnectionEstabished()) {
                 new android.app.AlertDialog.Builder(this)
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnMe
                         }
                     })
                     .show();
-        }
+        }*/
 
 
     }

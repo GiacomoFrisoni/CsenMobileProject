@@ -1,21 +1,23 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.text.style.TextAppearanceSpan;
-import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper.*;
 
 import static android.content.ContentValues.TAG;
 
@@ -32,8 +34,10 @@ public class MenuFragment extends Fragment {
      * Interfaccia per gestire il flusso dell'applicazione dal fragment all'activity.
      */
     public interface OnMenuInteraction {
-        void onAccuracyClick();
+        void onStartNewEvaluation();
+
         void onScoresClick();
+
         void onSettingsClick();
     }
 
@@ -61,12 +65,12 @@ public class MenuFragment extends Fragment {
     }
 
     //Titolo
-    private TextView txvTitle;
+    private TextView txvTitle, txvTabletConnectionStatus;
 
     //Bottoni di interazione
-    private Button btnStart;
-    private Button btnList;
-    private Button btnSettings;
+    private Button btnStart, btnList, btnSettings;
+
+    private MyWebSocketListener webSocketListener;
 
 
     @Nullable
@@ -79,6 +83,7 @@ public class MenuFragment extends Fragment {
         btnStart = (Button) view.findViewById(R.id.btn_start);
         btnList = (Button) view.findViewById(R.id.btn_list);
         btnSettings = (Button) view.findViewById(R.id.btn_settings);
+        txvTabletConnectionStatus = (TextView) view.findViewById(R.id.txv_tablet_connection_status);
 
         String title = txvTitle.getText().toString();
         SpannableString spanString = new SpannableString(title);
@@ -86,6 +91,7 @@ public class MenuFragment extends Fragment {
         spanString.setSpan(new StyleSpan(Typeface.ITALIC), 4, spanString.length(), 0);
         txvTitle.setText(spanString);
 
+        ChangeStatus(ConnectionStatus.NOT_CONNECTED, null, null);
         //Imposta il font personalizzato per il titolo
         //Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(),  "fonts/go3v2.ttf");
         //txvTitle.setTypeface(custom_font);
@@ -95,7 +101,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onAccuracyClick();
+                    listener.onStartNewEvaluation();
                 }
             }
         });
@@ -116,6 +122,35 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        // Prepare listener for websocket
+        this.webSocketListener = new MyWebSocketListener() {
+            @Override
+            public void onFailure(String senderIPAddress, String reason) {
+                ChangeStatus(ConnectionStatus.NOT_CONNECTED, null, null);
+            }
+
+            @Override
+            public void onPong(String senderIPAddress, String deviceID) {
+                if (senderIPAddress != null)
+                    ChangeStatus(ConnectionStatus.CONNECTED, senderIPAddress, deviceID);
+                else
+                    ChangeStatus(ConnectionStatus.NOT_CONNECTED, null, null);
+            }
+        };
+
+        // Add listener
+        WebSocketHelper.getInstance().addListener(this.webSocketListener);
+
+
+        // Send ping request and wait for pong
+        System.out.println("MENU send a ping request");
+        if (WebSocketHelper.getInstance().sendPingRequest()) {
+            ChangeStatus(ConnectionStatus.CONNECTING, null, null);
+        } else {
+            ChangeStatus(ConnectionStatus.NOT_CONNECTED, null, null);
+        }
+
+
         return view;
     }
 
@@ -127,10 +162,13 @@ public class MenuFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnMenuInteraction) {
-            listener = (OnMenuInteraction) context;
-        } else {
-            Log.e(TAG, "Not valid context for MenuFragment");
+
+        if (listener == null) {
+            if (context instanceof OnMenuInteraction) {
+                listener = (OnMenuInteraction) context;
+            } else {
+                Log.e(TAG, "Not valid context for MenuFragment");
+            }
         }
     }
 
@@ -141,5 +179,32 @@ public class MenuFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
+        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
+    }
+
+    private void ChangeStatus(final ConnectionStatus connectionStatus, final String ipAddress, final String deviceID) {
+        if (this.getActivity() != null) {
+            this.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    switch (connectionStatus) {
+                        case NOT_CONNECTED:
+                            txvTabletConnectionStatus.setText(getText(R.string.tablet_not_connected_info));
+                            txvTabletConnectionStatus.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_off), null, null, null);
+                            break;
+                        case CONNECTING:
+                            txvTabletConnectionStatus.setText(getText(R.string.tablet_check_connection));
+                            txvTabletConnectionStatus.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_refresh), null, null, null);
+                            break;
+                        case CONNECTED:
+                            txvTabletConnectionStatus.setText(getString(R.string.tablet_connected_device_id, ipAddress, deviceID));
+                            txvTabletConnectionStatus.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_on), null, null, null);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        }
     }
 }
