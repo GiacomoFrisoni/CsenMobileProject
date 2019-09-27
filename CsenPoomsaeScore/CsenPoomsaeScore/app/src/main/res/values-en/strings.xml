@@ -103,6 +103,7 @@
     <string name="hidden_settings">Hidden settings</string>
     <string name="show_hidden_settings">Show hidden settings</string>
     <string name="hide_hidden_settings">Hide advanced settings</string>
+    <string name="quick_tablet_not_connected">Pair your device here, if it\'s not connected</string>
 
 
     <string-array name="languages">

@@ -98,6 +98,7 @@
     <string name="hidden_settings">Impostazioni avanzate</string>
     <string name="show_hidden_settings">Mostra impostazioni avanzate</string>
     <string name="hide_hidden_settings">Nascondi impostazioni avanzate</string>
+    <string name="quick_tablet_not_connected">Associa il tuo dispositivo qui</string>
 
     <string-array name="languages">
         <item>Seleziona la lingua</item>
