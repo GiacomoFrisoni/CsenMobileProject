@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import it.frisoni.pabich.csenpoomsaescore.utils.VibrationHandler;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
@@ -80,6 +82,8 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     private BigDecimal cur_points;
     private AutoResizeTextView txvCounter;
 
+    // Connection
+    private MyWebSocketListener webSocketListener;
 
     @Nullable
     @Override
@@ -123,6 +127,9 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
         //Inizializzazione del contatore
         this.cur_points = BigDecimal.valueOf(START_POINTS);
         refreshPoints();
+
+        // WebSocket server listener
+        this.webSocketListener = WebSocketHelper.setNavBarListener(getActivity(), navBar);
 
         return view;
     }
@@ -191,5 +198,6 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
+        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
     }
 }

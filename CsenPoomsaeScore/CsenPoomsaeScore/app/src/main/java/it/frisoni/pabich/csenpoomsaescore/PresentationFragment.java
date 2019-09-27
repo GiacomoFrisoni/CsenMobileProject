@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
@@ -80,6 +82,8 @@ public class PresentationFragment extends Fragment {
     private TextView txvSpeedPower, txvStrengthPace, txvEnergy;
     private SeekBar skbSpeedPower, skbStrengthPace, skbEnergy;
     private BigDecimal curPoints;
+
+    private MyWebSocketListener webSocketListener;
 
     @Nullable
     @Override
@@ -193,6 +197,9 @@ public class PresentationFragment extends Fragment {
         txvStrengthPace.setText(getDescriptionFromValue(skbStrengthPace.getProgress()));
         txvEnergy.setText(getDescriptionFromValue(skbEnergy.getProgress()));
 
+        // WebSocket server listener
+        this.webSocketListener = WebSocketHelper.setNavBarListener(getActivity(), navBar);
+
         return view;
     }
 
@@ -284,5 +291,6 @@ public class PresentationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
+        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
     }
 }
