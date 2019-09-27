@@ -2,10 +2,8 @@ package it.frisoni.pabich.csenpoomsaescore.widgets;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -16,17 +14,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import it.frisoni.pabich.csenpoomsaescore.PresentationFragment;
 import it.frisoni.pabich.csenpoomsaescore.R;
-import it.frisoni.pabich.csenpoomsaescore.ResultsFragment;
 import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
-import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
-import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.AthleteScoreMessage;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.MessageTypes;
 
 import static android.content.ContentValues.TAG;
 
@@ -68,6 +64,9 @@ public class ResultMenuFragment extends Fragment {
     private TextView txvError;
     private CustomNavBar navBar;
     private ProgressBar progressBar;
+
+    private MyWebSocketListener webSocketListener;
+    private boolean isPendingRequestPresent = false;
 
     @Nullable
     @Override
@@ -119,24 +118,48 @@ public class ResultMenuFragment extends Fragment {
         btnSendScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Disable button; cannot press it anymore!
                 btnSendScores.setEnabled(false);
-                txvError.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                if (sendScores(new AthleteScore(accuracyPoints, presentationPoints, round(accuracyPoints + presentationPoints, N_DECIMAL_PLACES), Calendar.getInstance()))) {
-                    txvError.setText(getString(R.string.scores_sent));
-                    txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+
+                // Try to send the message to server
+                if (WebSocketHelper.getInstance().sendRequest(MessageTypes.ATHLETE_SCORE, new AthleteScoreMessage(
+                        accuracyPoints,
+                        presentationPoints,
+                        round(accuracyPoints + presentationPoints, N_DECIMAL_PLACES),
+                        Calendar.getInstance()))) {
+
+                    // Message sent; waiting for ack
+                    progressBar.setVisibility(View.VISIBLE);
+                    txvError.setText(getContext().getText(R.string.sending_data_message));
+                    txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                    isPendingRequestPresent = true;
+
+                    // Check if ack arrive in time
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(5000);
+
+                                if (isPendingRequestPresent) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    txvError.setText(getContext().getText(R.string.sending_data_error));
+                                    txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                                }
+                            } catch (Exception e) {}
+                        }
+                    }).start();
+
                 } else {
-
-                    txvError.setText(getString(R.string.scores_not_sent));
-                    txvError.setTextColor(Color.RED);
-
-                    if (!ConnectionHelper.isConnectionAvaiable(getActivity())) {
-                        txvError.setText(getString(R.string.scores_not_sent_internet));
-                    }
+                    // Message not sent
+                    progressBar.setVisibility(View.INVISIBLE);
+                    txvError.setText(getContext().getText(R.string.sending_data_error));
+                    txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    isPendingRequestPresent = false;
                 }
-                progressBar.setVisibility(View.GONE);
-                txvError.setVisibility(View.VISIBLE);
-                btnSendScores.setEnabled(true);
+
+                // If there is a pending request, disable button, but if failed to send, enable it again!
+                btnSendScores.setEnabled(!isPendingRequestPresent);
             }
         });
 
@@ -149,35 +172,99 @@ public class ResultMenuFragment extends Fragment {
             }
         });
 
+        // WebSocket server listener
+        this.webSocketListener = new MyWebSocketListener() {
+            @Override
+            public void onFailure(String senderIPAddress, String reason) {
+                super.onFailure(senderIPAddress, reason);
+                ChangeConnectionStatus(WebSocketHelper.ConnectionStatus.NOT_CONNECTED, null, null);
+            }
+
+            @Override
+            public void onPong(String senderIPAddress, String deviceID) {
+                super.onPong(senderIPAddress, deviceID);
+                ChangeConnectionStatus(WebSocketHelper.ConnectionStatus.CONNECTED, senderIPAddress, deviceID);
+            }
+
+            @Override
+            public void onAthleteScoreAckReceived() {
+                super.onAthleteScoreAckReceived();
+                if (isPendingRequestPresent) {
+                    isPendingRequestPresent = false;
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            txvError.setText(getContext().getText(R.string.scores_sent));
+                            txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                            btnSendScores.setEnabled(!isPendingRequestPresent);
+                        }
+                    });
+
+                }
+            }
+        };
+
+        WebSocketHelper.getInstance().addListener(this.webSocketListener);
+
+        // Set default values to all controls
+        txvError.setText("");
+        progressBar.setVisibility(View.INVISIBLE);
+        btnSendScores.setEnabled(false);
+        navBar.setTabletNotConnected();
+
+        if (WebSocketHelper.getInstance().sendPingRequest()) {
+            ChangeConnectionStatus(WebSocketHelper.ConnectionStatus.CONNECTING, null, null);
+        } else {
+            ChangeConnectionStatus(WebSocketHelper.ConnectionStatus.NOT_CONNECTED, null, null);
+        }
 
         return view;
     }
 
-
-    private boolean sendScores(final AthleteScore score) {
-        //Ho configurato il server
-        if (ConnectionHelper.isConnectionEstabished()) {
-
-            //Controllo se ho ancora la connessione e provo ad inviare il dato
-            if (ConnectionHelper.sendMessage(score.getPacketToSend()) && ConnectionHelper.isConnectionAvaiable(getActivity())) {
-
-                //Se ho la connessione e sono riuscito ad inviarlo
-                Toast.makeText(getActivity(), R.string.package_sent, Toast.LENGTH_SHORT).show();
-                return true;
-
-            //Se NON ho la connessione e/o NON sono riuscito a spedire
-            } else {
-                Toast.makeText(getActivity(), R.string.package_not_sent, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            //Non ho configurato il server, dunque esco senza dire nulla
-        } else {
-            Toast.makeText(getActivity(), "Server non configurato", Toast.LENGTH_SHORT).show();
-            return false;
+    private void ChangeConnectionStatus(final WebSocketHelper.ConnectionStatus connectionStatus, final String serverName, final String deviceID) {
+        if (this.getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    switch (connectionStatus) {
+                        case WRONG_INPUT:
+                            navBar.setTabletNotConnected();
+                            break;
+                        case NOT_CONNECTED:
+                            txvError.setText(getContext().getText(R.string.tablet_not_connected));
+                            txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                            progressBar.setVisibility(View.INVISIBLE);
+                            btnSendScores.setEnabled(false);
+                            navBar.setTabletNotConnected();
+                            break;
+                        case CONNECTING:
+                            txvError.setText(getContext().getText(R.string.tablet_connecting));
+                            txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                            progressBar.setVisibility(View.VISIBLE);
+                            btnSendScores.setEnabled(false);
+                            navBar.setTabletConnecting();
+                            break;
+                        case WAITING_FOP_ACK:
+                            txvError.setText(getContext().getText(R.string.tablet_waiting_for_ack));
+                            txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                            progressBar.setVisibility(View.VISIBLE);
+                            btnSendScores.setEnabled(false);
+                            navBar.setTabletConnecting();
+                            break;
+                        case CONNECTED:
+                            txvError.setText(getContext().getString(R.string.tablet_connected, serverName));
+                            txvError.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                            progressBar.setVisibility(View.INVISIBLE);
+                            btnSendScores.setEnabled(true);
+                            navBar.setTabletConnected(serverName, deviceID);
+                            break;
+                    }
+                }
+            });
         }
     }
-
 
     /**
      * Round to certain number of decimals.
@@ -201,7 +288,7 @@ public class ResultMenuFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if (bundle != null) {
             accuracyPoints = round(bundle.getFloat("accuracy"), N_DECIMAL_PLACES);
             presentationPoints = round(bundle.getFloat("presentation"), N_DECIMAL_PLACES);
@@ -230,6 +317,7 @@ public class ResultMenuFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
+        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
     }
 
 }

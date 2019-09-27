@@ -20,6 +20,8 @@ import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
 import static android.content.ContentValues.TAG;
@@ -90,6 +92,8 @@ public class ResultsFragment extends Fragment {
     private boolean isReadOnly;
     private AutoResizeTextView txvAccuracy, txvPresentation, txvTotal;
 
+    private MyWebSocketListener webSocketListener;
+
     public boolean isReadOnly(){
         return  isReadOnly;
     }
@@ -123,6 +127,7 @@ public class ResultsFragment extends Fragment {
             navBar.setBackButtonEnabled(false);
         }
 
+        // When it's not READ ONLY you have just finished your performance, so you should be able to go back, if permitted
         if (!isReadOnly) {
             navBar.getBackButton().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,65 +137,21 @@ public class ResultsFragment extends Fragment {
                     }
                 }
             });
+
+            // Bring ALWAYS to the send-score screen
             navBar.getForwardButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        // Online mode
-                        if (ConnectionHelper.isConnectionEstabished()) {
-                            new AlertDialog.Builder(ResultsFragment.this.getActivity())
-                                    .setTitle(getString(R.string.end_valutation_message_online_title))
-                                    .setMessage(getString(R.string.end_valutation_message_online))
-                                    .setIconAttribute(android.R.attr.alertDialogIcon)
-                                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            //Salvataggio del punteggio nel database
-                                            AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
-                                            dbManager.addAthleteScore(a);
-                                            dialog.dismiss();
-                                            listener.onResultMenuClick(a);
-                                            //sendData(a);
-                                        }
-                                    })
-                                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
-                        }
-                        // Offline mode
-                        else {
-                            new AlertDialog.Builder(ResultsFragment.this.getActivity())
-                                    .setTitle(getString(R.string.end_valutation_message_offline_title))
-                                    .setMessage(getString(R.string.end_valutation_message_offline))
-                                    .setIconAttribute(android.R.attr.alertDialogIcon)
-                                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            //Salvataggio del punteggio nel database
-                                            AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
-                                            dbManager.addAthleteScore(a);
-                                            dialog.dismiss();
-
-                                            listener.onMenuClick();
-                                            //sendData(a);
-                                        }
-                                    })
-                                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
-                        }
+                        final AthleteScore a = new AthleteScore(accuracyPoints, presentationPoints, total, Calendar.getInstance());
+                        dbManager.addAthleteScore(a);
+                        listener.onResultMenuClick(a);
                     }
                 }
             });
         }
+
+        // When it's "READ ONLY" you can go back to the "MENU" where you can show this or send scores
         else  {
             navBar.setForwardButtonEnabled(false);
             navBar.setBackButtonEnabled(true);
@@ -205,82 +166,11 @@ public class ResultsFragment extends Fragment {
         }
         //endregion
 
+        // WebSocket server listener
+        this.webSocketListener = WebSocketHelper.setNavBarListener(getActivity(), navBar);
+
         return view;
     }
-    /*
-    private void sendData(final AthleteScore score) {
-
-        //Ho configurato il server
-        if (ConnectionHelper.isConnectionEstabished()) {
-
-            //Controllo se ho ancora la connessione e provo ad inviare il dato
-            if (ConnectionHelper.sendMessage(score.getPacketToSend()) && ConnectionHelper.isConnectionAvaiable()) {
-
-                //Se ho la connessione e sono riuscito ad inviarlo
-                Toast.makeText(getContext(), R.string.package_sent, Toast.LENGTH_SHORT).show();
-                listener.onMenuClick();
-
-            //Se NON ho la connessione e/o NON sono riuscito a spedire
-            } else {
-                //Mostro un messaggio di errore
-                new android.app.AlertDialog.Builder(ResultsFragment.this.getActivity())
-                        .setTitle(getString(R.string.attention))
-                        .setMessage(getString(R.string.sending_data_error))
-                        .setIconAttribute(android.R.attr.alertDialogIcon)
-
-                        //RIPROVO ad inviare i dati, richiamo me stesso
-                        .setPositiveButton(getString(R.string.retry), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                sendData(score);
-                            }
-                        })
-
-                        //ANNULLO l'invio e vado nella home
-                        .setNegativeButton(getString(R.string.continue_to_homepage), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                Toast.makeText(getContext(), R.string.package_not_sent, Toast.LENGTH_SHORT).show();
-                                listener.onMenuClick();
-                            }
-                        })
-
-                        //TORNO nella schermata dei punteggi
-                        .setNeutralButton(getString(R.string.return_to_results), new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-            }
-
-        //Non ho configurato il server, dunque esco senza dire nulla
-        } else {
-            listener.onMenuClick();
-            Toast.makeText(getContext(), "Server non configurato", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void simulateSendingData() {
-        Thread closeActivity = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final ProgressDialog dialog = ProgressDialog.show(ResultsFragment.this.getContext(), getString(R.string.sending_data_title), getString(R.string.sending_data_message), false);
-                    Thread.sleep(2000);
-                    dialog.dismiss();
-                } catch (Exception e) {
-                    e.getLocalizedMessage();
-                }
-            }
-        });
-
-        closeActivity.start();
-    }*/
-
 
 
     /**
@@ -338,5 +228,6 @@ public class ResultsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
+        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
     }
 }
