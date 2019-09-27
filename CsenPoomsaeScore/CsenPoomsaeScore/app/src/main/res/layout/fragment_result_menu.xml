@@ -13,86 +13,145 @@
         app:forwardText="@string/menu"
         app:titleText="@string/result_menu_title" />
 
+    <!-- External layout (container for buttons + connection settings) -->
     <LinearLayout
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/nav_bar"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-
+        <!-- BUTTONS -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
-                android:background="@drawable/nav_button_background"
-                android:textColor="@color/text_white"
-                android:textSize="20dp"
-                android:id="@+id/btn_send_scores"
-                android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:drawablePadding="10dp"
-                android:drawableTop="@drawable/ic_connection"
-                android:text="@string/send_scores" />
-
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:gravity="center_horizontal"
-                    android:id="@+id/txv_error_sending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/scores_not_sent_yet"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:textStyle="italic" />
+                <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
+                    android:id="@+id/btn_send_scores"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:background="@drawable/nav_button_background"
+                    android:drawableTop="@drawable/ic_connection"
+                    android:drawablePadding="10dp"
+                    android:text="@string/send_scores"
+                    android:textColor="@color/text_white"
+                    android:textSize="23sp" />
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
+                <LinearLayout
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:layout_below="@id/btn_send_scores"
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="5dp"
-                    android:visibility="gone" />
+                    android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/progress_bar"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/txv_error_sending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scores_not_sent_yet"
+                        android:textAlignment="center"
+                        android:textSize="23sp"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
             </RelativeLayout>
 
 
-        </LinearLayout>
+            <RelativeLayout
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="50dp"
-            android:layout_weight="1"
-            android:gravity="center">
-
-
-            <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
-                android:background="@drawable/nav_button_background"
-                android:textColor="@color/text_white"
-                android:textSize="20dp"
-                android:id="@+id/btn_show_results"
-                android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:drawablePadding="10dp"
-                android:layout_marginBottom="30dp"
-                android:drawableTop="@drawable/ic_results"
-                android:text="@string/return_to_results" />
+                <it.frisoni.pabich.csenpoomsaescore.widgets.CenteredIconButton
+                    android:id="@+id/btn_show_results"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/nav_button_background"
+                    android:drawableTop="@drawable/ic_results"
+                    android:drawablePadding="10dp"
+                    android:text="@string/return_to_results"
+                    android:textColor="@color/text_white"
+                    android:textSize="23sp" />
+            </RelativeLayout>
 
         </LinearLayout>
-
-
     </LinearLayout>
 
+
+    <!-- Hidden connection settings -->
+    <RelativeLayout
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textAlignment="center"
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quick_tablet_not_connected"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_below="@id/text1"
+            android:layout_alignBaseline="@id/edt_ip"
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ip_adress"
+            android:textSize="15sp" />
+
+        <EditText
+            android:layout_below="@id/text1"
+            android:gravity="center"
+            android:layout_toEndOf="@id/text2"
+            android:layout_toRightOf="@id/text2"
+            android:layout_alignEnd="@id/text1"
+            android:layout_alignRight="@id/text1"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/edt_ip"
+            android:layout_width="290dp"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:text="192.168.1.3" />
+
+        <Button
+            android:layout_alignLeft="@id/text2"
+            android:layout_alignStart="@id/text2"
+            android:layout_alignRight="@id/edt_ip"
+            android:layout_alignEnd="@id/edt_ip"
+            android:layout_below="@id/edt_ip"
+            android:id="@+id/btn_connect"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/connect" />
+    </RelativeLayout>
 
 </RelativeLayout>
