@@ -13,6 +13,7 @@ import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.MessageTypes;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.StringMessage;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.WebSocketMessage;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.WebSocketMessageData;
+import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -327,6 +328,32 @@ public class WebSocketHelper {
                 }
             }
         };
+    }
+
+    public static MyWebSocketListener setNavBarListener(final CustomNavBar customNavBar) {
+        final MyWebSocketListener webSocketListener = new MyWebSocketListener() {
+            @Override
+            public void onFailure(String senderIPAddress, String reason) {
+                super.onFailure(senderIPAddress, reason);
+                customNavBar.setTabletNotConnected();
+            }
+
+            @Override
+            public void onPong(String senderIPAddress, String deviceID) {
+                super.onPong(senderIPAddress, deviceID);
+                customNavBar.setTabletConnected(senderIPAddress, deviceID);
+            }
+        };
+
+        if (WebSocketHelper.getInstance().sendPingRequest()) {
+            customNavBar.setTabletConnecting();
+        } else {
+            customNavBar.setTabletNotConnected();
+        }
+
+        WebSocketHelper.getInstance().addListener(webSocketListener);
+
+        return webSocketListener;
     }
 
     public enum ConnectionStatus {
