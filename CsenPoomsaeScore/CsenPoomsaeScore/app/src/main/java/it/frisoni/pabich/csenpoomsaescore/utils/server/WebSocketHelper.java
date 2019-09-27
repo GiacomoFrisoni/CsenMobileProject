@@ -234,6 +234,18 @@ public class WebSocketHelper {
 
                         break;
 
+                    //----------------------------------------------------------------------------------------------------------------------------- REJECT_DEVICE
+                    case REJECT_DEVICE:
+                        myDevice.setAsNotConnected();
+                        webSocketRef.send(new WebSocketMessage<>(MessageTypes.ACK, message.getDeviceID(), new AckMessage(MessageTypes.REJECT_DEVICE, message.getDeviceID())).toJson());
+
+                        // Inform all the listeners I got the DeviceID (but I'm not ready yet)
+                        for (MyWebSocketListener listener : myWebSocketListeners) {
+                            listener.onSetDeviceIDFailed();
+                        }
+
+                        break;
+
                     //----------------------------------------------------------------------------------------------------------------------------- ACK
                     case ACK:
 
@@ -254,6 +266,7 @@ public class WebSocketHelper {
                         }
                         break;
 
+                    //----------------------------------------------------------------------------------------------------------------------------- PONG
                     case PONG:
                         // Inform all the listeners I got the DeviceID (but I'm not ready yet)
                         for (MyWebSocketListener listener : myWebSocketListeners) {
@@ -261,6 +274,7 @@ public class WebSocketHelper {
                         }
                         break;
 
+                    //----------------------------------------------------------------------------------------------------------------------------- PING
                     case PING:
                         // Send a PONG to server: yeah dude, I gotcha this!
                         webSocketRef.send(new WebSocketMessage<>(MessageTypes.PONG, message.getDeviceID(), new EmptyMessage()).toJson());
