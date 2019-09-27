@@ -27,7 +27,6 @@
     <string name="result_menu_title">Connection</string>
 
     <string name="send_scores">Send scores</string>
-    <string name="scores_sent">Scores sent. Check them on server.</string>
     <string name="scores_not_sent">There\'s a problem with sending scores.</string>
     <string name="scores_not_sent_internet">There\'s a problem with sending scores: internet unavaiable</string>
     <string name="scores_not_sent_server">There\'s a problem with sending scores: server error</string>
@@ -111,6 +110,8 @@
     <string name="show_hidden_settings">Show advanced settings</string>
     <string name="hide_hidden_settings">Hide advanced settings</string>
     <string name="quick_tablet_not_connected">Pair your device here, if it\'s not connected</string>
+    <string name="scores_sending">Sending scores to server…</string>
+    <string name="scores_sent">Scores has successfully arrived to server!</string>
 
 
     <string-array name="languages">

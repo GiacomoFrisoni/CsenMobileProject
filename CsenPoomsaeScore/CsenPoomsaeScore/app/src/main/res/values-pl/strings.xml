@@ -22,7 +22,6 @@
     <string name="result_menu_title">Łączność</string>
 
     <string name="send_scores">Wyślij punktacje</string>
-    <string name="scores_sent">Wysłano. Sprawdź je na serwerze.</string>
     <string name="scores_not_sent">Wystąpił błąd podczas wysyłania</string>
     <string name="scores_not_sent_internet">Wystąpił błąd podczas wysyłania: internet niedostępny</string>
     <string name="scores_not_sent_server">Wystąpił błąd podczas wysyłania: problemy z serverem</string>
@@ -100,6 +99,8 @@
     <string name="show_hidden_settings">Pokaż opcje zaawansowane</string>
     <string name="hide_hidden_settings">Ukryj opcje zaawansowane</string>
     <string name="quick_tablet_not_connected">Połącz swoje urządzenie, jeśli nie jest połączone</string>
+    <string name="scores_sending">Wysyłanie punktacji…</string>
+    <string name="scores_sent">Puntacja dotarła do serwera!</string>
 
     <string-array name="languages">
         <item>Wybierz język</item>

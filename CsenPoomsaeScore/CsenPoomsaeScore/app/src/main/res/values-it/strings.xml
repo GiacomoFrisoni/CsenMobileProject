@@ -22,7 +22,6 @@
     <string name="result_menu_title">Connessione</string>
 
     <string name="send_scores">Invia punteggi</string>
-    <string name="scores_sent">Punteggi inviati. Verifica la ricezione sul server.</string>
     <string name="scores_not_sent">C\'è stato un problema nell\'invio</string>
     <string name="scores_not_sent_internet">C\'è stato un problema nell\'invio: internet non disponibile</string>
     <string name="scores_not_sent_server">C\'è stato un problema nell\'invio: problema del server</string>
@@ -64,7 +63,7 @@
     <string name="very_poor">Molto scarso</string>
 
     <string name="sending_data_title">Invio</string>
-    <string name="sending_data_message">Invio dei dati al server, attendi...</string>
+    <string name="sending_data_message">Invio dei dati al server, attendi…</string>
     <string name="sending_data_error">Non sono riuscito a inviare i dati al server</string>
     <string name="retry">Riprova</string>
     <string name="return_to_results">Torna ai risultati</string>
@@ -99,6 +98,8 @@
     <string name="show_hidden_settings">Mostra impostazioni avanzate</string>
     <string name="hide_hidden_settings">Nascondi impostazioni avanzate</string>
     <string name="quick_tablet_not_connected">Associa il tuo dispositivo qui</string>
+    <string name="scores_sending">Invio dei punteggi al server…</string>
+    <string name="scores_sent">I punteggi sono stati ricevuti!</string>
 
     <string-array name="languages">
         <item>Seleziona la lingua</item>
