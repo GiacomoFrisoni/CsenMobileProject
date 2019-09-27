@@ -1,5 +1,7 @@
 package it.frisoni.pabich.csenpoomsaescore.utils.server;
 
+import android.app.Activity;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -81,11 +83,6 @@ public class WebSocketHelper {
             public void onClosed(String senderIPAddress, String reason) {
                 super.onClosed(senderIPAddress, reason);
                 System.out.println("Closed! " + senderIPAddress + ": " + reason);
-            }
-
-            @Override
-            public void onPairingRequestSent(String senderIPAddress) {
-                System.out.println("Pairing request sent from " + senderIPAddress);
             }
 
             @Override
@@ -253,6 +250,7 @@ public class WebSocketHelper {
                         final WebSocketMessage<AckMessage> ackMessage = gson.fromJson(text, new TypeToken<WebSocketMessage<AckMessage>>(){}.getType());
 
                         switch (ackMessage.getData().getAckType()) {
+
                             case SET_DEVICE_ID:
                                 if (myDevice.getStatus() == MyDeviceStatus.PENDING) {
                                     myDevice.setAsConnected(ackMessage.getDeviceID());
@@ -262,6 +260,11 @@ public class WebSocketHelper {
                                     }
                                 }
                                 break;
+
+                            case ATHLETE_SCORE:
+                                for (MyWebSocketListener listener : myWebSocketListeners) {
+                                    listener.onAthleteScoreAckReceived();
+                                }
                             default:
                                 break;
                         }
@@ -330,25 +333,51 @@ public class WebSocketHelper {
         };
     }
 
-    public static MyWebSocketListener setNavBarListener(final CustomNavBar customNavBar) {
+    public static MyWebSocketListener setNavBarListener(final Activity activity, final CustomNavBar customNavBar) {
+
+
         final MyWebSocketListener webSocketListener = new MyWebSocketListener() {
             @Override
             public void onFailure(String senderIPAddress, String reason) {
                 super.onFailure(senderIPAddress, reason);
-                customNavBar.setTabletNotConnected();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        customNavBar.setTabletNotConnected();
+                    }
+                });
+
             }
 
             @Override
-            public void onPong(String senderIPAddress, String deviceID) {
+            public void onPong(final String senderIPAddress, final String deviceID) {
                 super.onPong(senderIPAddress, deviceID);
-                customNavBar.setTabletConnected(senderIPAddress, deviceID);
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        customNavBar.setTabletConnected(senderIPAddress, deviceID);
+                    }
+                });
             }
         };
 
         if (WebSocketHelper.getInstance().sendPingRequest()) {
-            customNavBar.setTabletConnecting();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    customNavBar.setTabletConnecting();
+                }
+            });
+
         } else {
-            customNavBar.setTabletNotConnected();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    customNavBar.setTabletNotConnected();
+                }
+            });
         }
 
         WebSocketHelper.getInstance().addListener(webSocketListener);

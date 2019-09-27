@@ -13,10 +13,9 @@ public abstract class MyWebSocketListener {
 
     public void onPong(String senderIPAddress, String deviceID) { }
 
-    public void onPairingRequestSent(String senderIPAddress) { }
     public void onSetDeviceIDReceived(String senderIPAddress) { }
     public void onSetDeviceIDAckReceived(String senderIPAddress, String deviceID) { }
     public void onSetDeviceIDFailed() { }
 
-
+    public void onAthleteScoreAckReceived() { }
 }
