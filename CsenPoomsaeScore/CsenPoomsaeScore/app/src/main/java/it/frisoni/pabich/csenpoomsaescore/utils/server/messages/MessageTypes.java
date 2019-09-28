@@ -5,7 +5,11 @@ package it.frisoni.pabich.csenpoomsaescore.utils.server.messages;
  */
 
 public enum MessageTypes {
-    SET_DEVICE_ID("SET_DEVICE_ID"), REJECT_DEVICE("REJECT_DEVICE"), ACK("ACK"), PING("PING"), PONG("PONG"), ATHLETE_SCORE("ATHLETE_SCORE");
+    DEVICE_ACCEPTED("DEVICE_ACCEPTED"),
+    DEVICE_REJECTED("DEVICE_REJECTED"),
+    ACK("ACK"),
+    CONNECTION_CHECK("CONNECTION_CHECK"),
+    ATHLETE_SCORE("ATHLETE_SCORE");
 
     private String description;
 
