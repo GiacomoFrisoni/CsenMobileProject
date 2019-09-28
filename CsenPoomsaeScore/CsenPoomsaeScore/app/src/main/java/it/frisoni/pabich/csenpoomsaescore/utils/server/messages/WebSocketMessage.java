@@ -11,16 +11,24 @@ public class WebSocketMessage<D extends WebSocketMessageData> {
             .create();
 
     @Expose
+    private int messageID;
+    @Expose
     private MessageTypes messageType;
     @Expose
-    private String deviceID;
-    @Expose
     private D data;
+    @Expose
+    private int responseForMessageID;
 
-    public WebSocketMessage(MessageTypes messageType, String deviceID, D data) {
+
+    public WebSocketMessage(final int messageID, final MessageTypes messageType, final D data, final int responseForMessageID) {
+        this.messageID = messageID;
         this.messageType = messageType;
-        this.deviceID = deviceID;
         this.data = data;
+        this.responseForMessageID = responseForMessageID;
+    }
+
+    public WebSocketMessage(final int messageID, final MessageTypes messageType, final D data) {
+        this(messageID, messageType, data, -1);
     }
 
     public String toJson() {
@@ -35,19 +43,27 @@ public class WebSocketMessage<D extends WebSocketMessageData> {
         this.messageType = messageType;
     }
 
-    public String getDeviceID() {
-        return deviceID;
-    }
-
-    public void setDeviceID(String deviceID) {
-        this.deviceID = deviceID;
-    }
-
     public D getData() {
-        return data;
+        return this.data;
     }
 
     public void setData(D data) {
         this.data = data;
+    }
+
+    public int getMessageID() {
+        return this.messageID;
+    }
+
+    public void setMessageID(int messageID) {
+        this.messageID = messageID;
+    }
+
+    public int getResponseForMessageID() {
+        return responseForMessageID;
+    }
+
+    public void setResponseForMessageID(int responseForMessageID) {
+        this.responseForMessageID = responseForMessageID;
     }
 }
