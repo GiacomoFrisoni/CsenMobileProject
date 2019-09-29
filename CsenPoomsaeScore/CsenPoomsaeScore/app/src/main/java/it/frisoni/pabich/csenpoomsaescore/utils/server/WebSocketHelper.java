@@ -65,7 +65,7 @@ public class WebSocketHelper {
 
 
     public boolean isServerAvailable() {
-        return webSocketRef != null && ConnectionStatus.getInstance().getCurrentConnectionStatus() == ConnectionStatuses.CONNECTED;
+        return webSocketRef != null;
     }
 
     /**
@@ -223,7 +223,7 @@ public class WebSocketHelper {
                 final WebSocketMessage<GenericMessage> message = gson.fromJson(text, new TypeToken<WebSocketMessage<GenericMessage>>(){}.getType());
 
                 // Logger: I received a message!
-                WebSocketLogger.Log("Received a new message", new Pair<>(message.getMessageType().toString(), String.valueOf(message.getAckMessageID())));
+                WebSocketLogger.Log("Received a new message", new Pair<>(message.getMessageType().toString(), String.valueOf(message.getMessageID())));
 
                 // Check the type of the message
                 switch (message.getMessageType()) {
@@ -237,6 +237,8 @@ public class WebSocketHelper {
 
                         // Now I'm ready to be connected
                         ConnectionStatus.getInstance().setOnConnected(wsmDeviceAccepted.getData().getDeviceID());
+
+                        WebSocketLogger.Log("Ack sent for DEVICE_ACCEPTED");
                         break;
 
                     //------------------------------------------------------------------------------------------------------------------------------------------------------------- Device Rejected
@@ -265,7 +267,7 @@ public class WebSocketHelper {
                     //------------------------------------------------------------------------------------------------------------------------------------------------------------- Connection Check
                     case CONNECTION_CHECK:
                         final WebSocketMessage<ConnectionCheckMessage> wsmConnectionCheck = gson.fromJson(text, new  TypeToken<WebSocketMessage<ConnectionCheckMessage>>(){}.getType());
-                        sendAckFor(wsmConnectionCheck.getAckMessageID());
+                        sendAckFor(wsmConnectionCheck.getMessageID());
                         break;
                     default:
                         break;
@@ -280,6 +282,8 @@ public class WebSocketHelper {
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onClosing(webSocket, code, reason);
+
+                ConnectionStatus.getInstance().setOnNotConnected();
             }
 
             @Override
