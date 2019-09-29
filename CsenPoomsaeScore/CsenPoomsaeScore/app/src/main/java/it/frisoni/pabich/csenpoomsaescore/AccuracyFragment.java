@@ -16,7 +16,10 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import it.frisoni.pabich.csenpoomsaescore.utils.VibrationHandler;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatus;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatusListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatuses;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketLogger;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
@@ -83,7 +86,7 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     private AutoResizeTextView txvCounter;
 
     // Connection
-    private MyWebSocketListener webSocketListener;
+    private ConnectionStatusListener connectionStatusListener;
 
     @Nullable
     @Override
@@ -128,11 +131,13 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
         this.cur_points = BigDecimal.valueOf(START_POINTS);
         refreshPoints();
 
-        // WebSocket server listener
-        this.webSocketListener = WebSocketHelper.setNavBarListener(getActivity(), navBar);
+        // Bind the connection status to the widget; method will return the listener to remove after
+        this.connectionStatusListener = ConnectionStatus.getInstance().bindWidgetToConnectionStatus(navBar);
 
         return view;
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -198,6 +203,6 @@ public class AccuracyFragment extends Fragment implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
-        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
+        ConnectionStatus.getInstance().removeConnectionStatusListener(this.connectionStatusListener);
     }
 }

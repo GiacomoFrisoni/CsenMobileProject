@@ -17,7 +17,9 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatus;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatusListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketLogger;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
@@ -83,7 +85,7 @@ public class PresentationFragment extends Fragment {
     private SeekBar skbSpeedPower, skbStrengthPace, skbEnergy;
     private BigDecimal curPoints;
 
-    private MyWebSocketListener webSocketListener;
+    private ConnectionStatusListener connectionStatusListener;
 
     @Nullable
     @Override
@@ -197,8 +199,8 @@ public class PresentationFragment extends Fragment {
         txvStrengthPace.setText(getDescriptionFromValue(skbStrengthPace.getProgress()));
         txvEnergy.setText(getDescriptionFromValue(skbEnergy.getProgress()));
 
-        // WebSocket server listener
-        this.webSocketListener = WebSocketHelper.setNavBarListener(getActivity(), navBar);
+        // Bind the connection status to the widget; method will return the listener to remove after
+        this.connectionStatusListener = ConnectionStatus.getInstance().bindWidgetToConnectionStatus(navBar);
 
         return view;
     }
@@ -291,6 +293,6 @@ public class PresentationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
-        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
+        ConnectionStatus.getInstance().removeConnectionStatusListener(this.connectionStatusListener);
     }
 }

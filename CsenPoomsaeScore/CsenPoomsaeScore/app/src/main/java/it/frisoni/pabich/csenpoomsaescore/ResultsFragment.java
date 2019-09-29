@@ -1,10 +1,8 @@
 package it.frisoni.pabich.csenpoomsaescore;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +17,9 @@ import java.util.Calendar;
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.model.AthleteScore;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
-import it.frisoni.pabich.csenpoomsaescore.utils.ConnectionHelper;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatus;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatusListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketLogger;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 
@@ -92,7 +91,7 @@ public class ResultsFragment extends Fragment {
     private boolean isReadOnly;
     private AutoResizeTextView txvAccuracy, txvPresentation, txvTotal;
 
-    private MyWebSocketListener webSocketListener;
+    private ConnectionStatusListener connectionStatusListener;
 
     public boolean isReadOnly(){
         return  isReadOnly;
@@ -166,8 +165,8 @@ public class ResultsFragment extends Fragment {
         }
         //endregion
 
-        // WebSocket server listener
-        this.webSocketListener = WebSocketHelper.setNavBarListener(getActivity(), navBar);
+        // Bind the connection status to the widget; method will return the listener to remove after
+        this.connectionStatusListener = ConnectionStatus.getInstance().bindWidgetToConnectionStatus(navBar);
 
         return view;
     }
@@ -228,6 +227,6 @@ public class ResultsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
-        WebSocketHelper.getInstance().removeListener(this.webSocketListener);
+        ConnectionStatus.getInstance().removeConnectionStatusListener(this.connectionStatusListener);
     }
 }

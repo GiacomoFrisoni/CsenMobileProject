@@ -14,12 +14,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
-import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -41,10 +39,12 @@ import android.Manifest;
 import it.frisoni.pabich.csenpoomsaescore.database.DbManager;
 import it.frisoni.pabich.csenpoomsaescore.utils.AppPreferences;
 import it.frisoni.pabich.csenpoomsaescore.utils.CipherHandler;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.MyWebSocketListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatus;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatusListener;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.ConnectionStatuses;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketLogger;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper.*;
 
 import static android.content.ContentValues.TAG;
 import static it.frisoni.pabich.csenpoomsaescore.utils.RangeMappingUtilities.map;
@@ -112,7 +112,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private ProgressBar prgConnect;
 
     // Per la connessione
-    private MyWebSocketListener webSocketListener;
+    private ConnectionStatusListener connectionStatusListener;
 
     // Shows or hide advanced settings
     private boolean isAdvancedSettingVisible = false;
@@ -217,95 +217,59 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         btnCheckPassword.setOnClickListener(this);
 
 
-        // Prepare listener for websocket
-        this.webSocketListener = new MyWebSocketListener() {
-            @Override
-            public void onPong(String senderIPAddress, String deviceID) {
-                ChangeConnectionStatus(ConnectionStatus.CONNECTED, senderIPAddress, deviceID);
-            }
+        ChangeConnectionStatus(ConnectionStatus.getInstance().getCurrentConnectionStatus());
 
+        this.connectionStatusListener = new ConnectionStatusListener() {
             @Override
-            public void onSetDeviceIDReceived(String senderIPAddress) {
-                ChangeConnectionStatus(ConnectionStatus.WAITING_FOP_ACK, null, null);
-            }
-
-            @Override
-            public void onSetDeviceIDAckReceived(String senderIPAddress, String deviceID) {
-                ChangeConnectionStatus(ConnectionStatus.CONNECTED, senderIPAddress, deviceID);
-            }
-
-            @Override
-            public void onSetDeviceIDFailed() {
-                ChangeConnectionStatus(ConnectionStatus.NOT_CONNECTED, null, null);
-            }
-
-            @Override
-            public void onFailure(String senderIPAddress, String reason) {
-                ChangeConnectionStatus(ConnectionStatus.NOT_CONNECTED, null,null);
+            public void onConnectionStatusChanged(final ConnectionStatuses connectionStatus) {
+                ChangeConnectionStatus(connectionStatus);
             }
         };
 
-        // Assign it as a listener
-        WebSocketHelper.getInstance().addListener(this.webSocketListener);
-
-        System.out.println("SETTINGS send a ping request");
-
-        // Check if it is possible to send a ping request
-        if (WebSocketHelper.getInstance().sendPingRequest()) {
-            // Server may be online... waiting for response message
-            ChangeConnectionStatus(ConnectionStatus.CONNECTING, null, null);
-
-        } else {
-            // Serve is offline, not configured
-            ChangeConnectionStatus(ConnectionStatus.NOT_CONNECTED, null, null);
-        }
+        ConnectionStatus.getInstance().addConnectionStatusListener(connectionStatusListener);
 
         return view;
     }
 
-    private void ChangeConnectionStatus(final ConnectionStatus connectionStatus, final String serverName, final String deviceID) {
+    private void ChangeConnectionStatus(final ConnectionStatuses connectionStatus) {
         if (this.getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     txtInfoConnection.setText("");
 
-                    switch (connectionStatus) {
-                        case WRONG_INPUT:
-                            txtInfoConnection.setText(getContext().getText(R.string.invalid_ip));
-                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                            prgConnect.setVisibility(View.INVISIBLE);
-                            btnConnect.setEnabled(true);
-                            navBar.setTabletNotConnected();
-                            break;
-                        case NOT_CONNECTED:
-                            txtInfoConnection.setText(getContext().getText(R.string.tablet_not_connected));
-                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                            prgConnect.setVisibility(View.INVISIBLE);
-                            btnConnect.setEnabled(true);
-                            navBar.setTabletNotConnected();
-                            break;
-                        case CONNECTING:
-                            txtInfoConnection.setText(getContext().getText(R.string.tablet_connecting));
-                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
-                            prgConnect.setVisibility(View.VISIBLE);
-                            btnConnect.setEnabled(false);
-                            navBar.setTabletConnecting();
-                            break;
-                        case WAITING_FOP_ACK:
-                            txtInfoConnection.setText(getContext().getText(R.string.tablet_waiting_for_ack));
-                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
-                            prgConnect.setVisibility(View.VISIBLE);
-                            btnConnect.setEnabled(false);
-                            navBar.setTabletConnecting();
-                            break;
-                        case CONNECTED:
-                            txtInfoConnection.setText(getContext().getString(R.string.tablet_connected, serverName));
-                            txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
-                            prgConnect.setVisibility(View.INVISIBLE);
-                            btnConnect.setEnabled(true);
-                            navBar.setTabletConnected(serverName, deviceID);
-                        break;
+                    if (connectionStatus != null) {
+                        switch (connectionStatus) {
+                            case NOT_CONNECTED:
+                                txtInfoConnection.setText(getContext().getText(R.string.tablet_not_connected));
+                                txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                                prgConnect.setVisibility(View.INVISIBLE);
+                                btnConnect.setEnabled(true);
+                                navBar.setOnNotConnected();
+                                break;
+                            case CONNECTING:
+                                txtInfoConnection.setText(getContext().getText(R.string.tablet_connecting));
+                                txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                                prgConnect.setVisibility(View.VISIBLE);
+                                btnConnect.setEnabled(false);
+                                navBar.setOnConnecting();
+                                break;
+                            case CONNECTED:
+                                txtInfoConnection.setText(getContext().getString(R.string.tablet_connected, ConnectionStatus.getInstance().getServerIPAddress()));
+                                txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+                                prgConnect.setVisibility(View.INVISIBLE);
+                                btnConnect.setEnabled(true);
+                                navBar.setOnConnected(ConnectionStatus.getInstance().getServerIPAddress(), ConnectionStatus.getInstance().getServerPort(), ConnectionStatus.getInstance().getDeviceID());
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        txtInfoConnection.setText(getContext().getText(R.string.invalid_ip));
+                        txtInfoConnection.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                        prgConnect.setVisibility(View.INVISIBLE);
+                        btnConnect.setEnabled(true);
+                        navBar.setOnNotConnected();
                     }
                 }
             });
@@ -338,25 +302,27 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         switch (view.getId()) {
             case R.id.tgb_back:
                 appPrefs.setBackButtonKey(tgbBack.isChecked());
                 break;
+
             case R.id.btn_clear_list:
                 dbManager.clearAthleteScores();
                 Toast.makeText(getActivity(), R.string.cleared_list, Toast.LENGTH_LONG).show();
                 break;
+
             case R.id.btn_connect:
                 hideKeyboard(getActivity());
 
                 if (Patterns.IP_ADDRESS.matcher(edtIp.getText().toString()).matches()) {
-                    WebSocketHelper.getInstance().configureWebSocket(edtIp.getText().toString(), "25565");
-                    ChangeConnectionStatus(ConnectionStatus.CONNECTING, null, null);
+                    WebSocketHelper.getInstance().configureWebSocket(edtIp.getText().toString(), WebSocketHelper.DEFAULT_WEBSOCKET_PORT);
                 } else {
-                    ChangeConnectionStatus(ConnectionStatus.WRONG_INPUT, null, null);
+                    ChangeConnectionStatus(null);
                 }
                 break;
+
             case R.id.btn_check_password:
                 hideKeyboard(getActivity());
 
@@ -408,7 +374,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         listener = null;
-        WebSocketHelper.getInstance().removeListener(webSocketListener);
+        ConnectionStatus.getInstance().removeConnectionStatusListener(this.connectionStatusListener);
     }
 
     /**
