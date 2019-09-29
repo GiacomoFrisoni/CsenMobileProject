@@ -3,6 +3,7 @@ package it.frisoni.pabich.csenpoomsaescore.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -27,7 +28,7 @@ import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
  * - un pulsante di forward
  */
 
-public class CustomNavBar extends RelativeLayout {
+public class CustomNavBar extends RelativeLayout implements  WidgetWithConnectionStatus {
 
     private Button backButton, forwardButton;
     private TextView title, txvTabletConnection;
@@ -106,21 +107,6 @@ public class CustomNavBar extends RelativeLayout {
         title.setText(text);
     }
 
-    public void setTabletNotConnected() {
-        txvTabletConnection.setText(getContext().getText(R.string.tablet_not_connected));
-        txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_off), null, null, null);
-    }
-
-    public void setTabletConnecting() {
-        txvTabletConnection.setText(getContext().getText(R.string.tablet_check_connection));
-        txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_refresh), null, null, null);
-    }
-
-    public void setTabletConnected(final String serverIPAddress, final String deviceID) {
-        txvTabletConnection.setText(getContext().getString(R.string.tablet_connected_device_id, serverIPAddress, deviceID));
-        txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_on), null, null, null);
-    }
-
     public void setBackButtonEnabled(boolean enabled) {
         backButton.setEnabled(enabled);
         backButton.setVisibility(enabled ? VISIBLE : GONE);
@@ -138,5 +124,41 @@ public class CustomNavBar extends RelativeLayout {
 
     public Button getForwardButton() {
         return forwardButton;
+    }
+
+    @Override
+    public void setOnNotConnected() {
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                txvTabletConnection.setText(getContext().getText(R.string.tablet_not_connected));
+                txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_off), null, null, null);
+            }
+        });
+    }
+
+    @Override
+    public void setOnConnecting() {
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                txvTabletConnection.setText(getContext().getText(R.string.tablet_check_connection));
+                txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_refresh), null, null, null);
+            }
+        });
+    }
+
+    @Override
+    public void setOnConnected(final String ip, final String port, final String deviceID) {
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                txvTabletConnection.setText(getContext().getString(R.string.tablet_connected_device_id, ip, deviceID));
+                txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_on), null, null, null);
+            }
+        });
     }
 }
