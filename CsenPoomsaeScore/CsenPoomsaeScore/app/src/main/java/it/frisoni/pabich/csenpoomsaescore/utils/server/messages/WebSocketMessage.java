@@ -17,18 +17,18 @@ public class WebSocketMessage<D extends WebSocketMessageData> {
     @Expose
     private D data;
     @Expose
-    private int responseForMessageID;
+    private int ackMessageID;
 
 
-    public WebSocketMessage(final int messageID, final MessageTypes messageType, final D data, final int responseForMessageID) {
+    public WebSocketMessage(final int messageID, final D data, final int ackMessageID) {
         this.messageID = messageID;
-        this.messageType = messageType;
         this.data = data;
-        this.responseForMessageID = responseForMessageID;
+        this.ackMessageID = ackMessageID;
+        this.messageType = data.getMessageType();
     }
 
-    public WebSocketMessage(final int messageID, final MessageTypes messageType, final D data) {
-        this(messageID, messageType, data, -1);
+    public WebSocketMessage(final int messageID, final D data) {
+        this(messageID, data, -1);
     }
 
     public String toJson() {
@@ -59,11 +59,11 @@ public class WebSocketMessage<D extends WebSocketMessageData> {
         this.messageID = messageID;
     }
 
-    public int getResponseForMessageID() {
-        return responseForMessageID;
+    public int getAckMessageID() {
+        return ackMessageID;
     }
 
-    public void setResponseForMessageID(int responseForMessageID) {
-        this.responseForMessageID = responseForMessageID;
+    public void setAckMessageID(int ackMessageID) {
+        this.ackMessageID = ackMessageID;
     }
 }

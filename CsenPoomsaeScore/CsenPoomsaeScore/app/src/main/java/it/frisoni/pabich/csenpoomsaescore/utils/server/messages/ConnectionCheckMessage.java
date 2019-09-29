@@ -1,13 +1,12 @@
 package it.frisoni.pabich.csenpoomsaescore.utils.server.messages;
 
+public class ConnectionCheckMessage extends WebSocketMessageData {
 
-public class AckMessage extends WebSocketMessageData {
-
-    public AckMessage() { }
+    public ConnectionCheckMessage() { }
 
     @Override
     public String toString() {
-        return "Ack Message";
+        return "Connection Check";
     }
 
     @Override
@@ -17,6 +16,6 @@ public class AckMessage extends WebSocketMessageData {
 
     @Override
     public MessageTypes getMessageType() {
-        return MessageTypes.ACK;
+        return MessageTypes.CONNECTION_CHECK;
     }
 }

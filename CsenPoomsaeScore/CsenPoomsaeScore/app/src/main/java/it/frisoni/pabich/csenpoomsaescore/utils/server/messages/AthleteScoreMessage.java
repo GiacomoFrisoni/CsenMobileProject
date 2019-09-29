@@ -87,4 +87,9 @@ public class AthleteScoreMessage extends WebSocketMessageData {
     private String getDateString(final Calendar dateTime) {
         return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateTime.getTime());
     }
+
+    @Override
+    public MessageTypes getMessageType() {
+        return MessageTypes.ATHLETE_SCORE;
+    }
 }
