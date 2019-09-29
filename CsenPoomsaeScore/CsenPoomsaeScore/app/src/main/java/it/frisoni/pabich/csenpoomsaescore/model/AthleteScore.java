@@ -130,8 +130,4 @@ public class AthleteScore implements BaseColumns {
     public String getTimeString() {
         return new SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(dateTime.getTime());
     }
-
-    public String getPacketToSend() {
-        return getAccuracy() + "," + getPresentation() + "," + getTotal() + "," + getDateString() + "," + getTimeString();
-    }
 }
