@@ -1,21 +1,22 @@
 package it.frisoni.pabich.csenpoomsaescore.utils.server;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.support.v4.util.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.AckMessage;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.EmptyMessage;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.MessageTypes;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.StringMessage;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.ConnectionCheckMessage;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.DeviceAcceptedMessage;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.DeviceRejectedMessage;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.GenericMessage;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.WebSocketMessage;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.WebSocketMessageData;
-import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -25,76 +26,46 @@ import okio.ByteString;
 
 public class WebSocketHelper {
 
-    // Static variable to access the Singleton class
-    private static WebSocketHelper webSocketHelper;
+    // Internal variables
+    private final static long ACK_TIMEOUT = 6000;
+    public final static String DEFAULT_WEBSOCKET_IP = "192.168.1.3";
+    public final static String DEFAULT_WEBSOCKET_PORT = "25565";
 
-    // List of listeners attached to WebSocketHelper that will be informed when some message arrives
-    private List<MyWebSocketListener> myWebSocketListeners;
-
-
-
-    // Reference to WebSocket, when opened (can be null)
-    private WebSocket webSocketRef;
-
-    // Reference to IP, PORT and DeviceID, when server is reached
-    private String ipAddress, port;
-
-    private MyDevice myDevice;
-
-    // Reference to gson converter
+    // Reference to Gson converter
     private Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .create();
 
+    // Static variable to access the Singleton class
+    private static WebSocketHelper webSocketHelper;
+
+
+    // List of listeners attached to WebSocketHelper that will be informed when some message arrives
+    private Map<Integer, ResponseListener> pendingMessages;
+    private ConnectionStatusListener connectionStatusListener;
+
+    // Reference to WebSocket, when opened (can be null)
+    private WebSocket webSocketRef;
+
+
+    @SuppressLint("UseSparseArrays")
     private WebSocketHelper() {
-        this.myDevice = new MyDevice();
-        this.myWebSocketListeners = new ArrayList<>();
-        this.myWebSocketListeners.add(new MyWebSocketListener() {
+        this.pendingMessages = new HashMap<>();
+        this.connectionStatusListener = new ConnectionStatusListener() {
             @Override
-            public void onOpen(String senderIPAddress) {
-                super.onOpen(senderIPAddress);
-                System.out.println("OnOpen was called");
+            public void onConnectionStatusChanged(final ConnectionStatuses connectionStatus) {
+                if (connectionStatus == ConnectionStatuses.NOT_CONNECTED) {
+                    webSocketRef = null;
+                }
             }
+        };
 
-            @Override
-            public void onMessage(String senderIPAddress, String message) {
-                super.onMessage(senderIPAddress, message);
-                System.out.println("Message received from " + senderIPAddress + ": " + message);
-            }
+        ConnectionStatus.getInstance().addConnectionStatusListener(this.connectionStatusListener);
+    }
 
-            @Override
-            public void onMessage(String senderIPAddress, ByteString message) {
-                super.onMessage(senderIPAddress, message);
-            }
 
-            @Override
-            public void onFailure(String senderIPAddress, String reason) {
-                super.onFailure(senderIPAddress, reason);
-                System.out.println("Something failed " + senderIPAddress + ": " + reason);
-            }
-
-            @Override
-            public void onClosing(String senderIPAddress, String reason) {
-                super.onClosing(senderIPAddress, reason);
-                System.out.println("Closing... " + senderIPAddress + ": " + reason);
-            }
-
-            @Override
-            public void onClosed(String senderIPAddress, String reason) {
-                super.onClosed(senderIPAddress, reason);
-                System.out.println("Closed! " + senderIPAddress + ": " + reason);
-            }
-
-            @Override
-            public void onSetDeviceIDReceived(String senderIPAddress) {
-                System.out.println("SetDeviceID Received from " + senderIPAddress);
-            }
-
-            @Override
-            public void onSetDeviceIDAckReceived(String senderIPAddress, String deviceID) {
-                System.out.println("SetDeviceID Ack Received from " + senderIPAddress);
-            }
-        });
+    public boolean isServerAvailable() {
+        return webSocketRef != null && ConnectionStatus.getInstance().getCurrentConnectionStatus() == ConnectionStatuses.CONNECTED;
     }
 
     /**
@@ -117,57 +88,112 @@ public class WebSocketHelper {
      */
     public void configureWebSocket(final String ipAddress, final String port){
         // Save the reference for IP and PORT
-        this.ipAddress = ipAddress;
-        this.port = port;
+        ConnectionStatus.getInstance().configureConnection(ipAddress, port);
 
         // Create the client and the request call for the (insecure) WebSocket (secure = wss)
         final OkHttpClient client = new OkHttpClient();
-        final Request request = new Request.Builder().url("ws://" + this.ipAddress + ":" + this.port).build();
+        final Request request = new Request.Builder().url("ws://" + ConnectionStatus.getInstance().getServerIPAddress() + ":" + ConnectionStatus.getInstance().getServerPort()).build();
 
         // After creating the listener, make the request for the WebSocket, passing the listener on.
         this.webSocketRef = client.newWebSocket(request, this.createWebSocketListener());
         client.dispatcher().executorService().shutdown();
+
+        WebSocketLogger.Log("WebSocket configuration started");
+    }
+
+
+    /**
+     * Send an ACK to the server, informing that I received the message with specified ID
+     * @param ackMessageID MessageID of message that I ack
+     * @return TRUE if sending is possible, FALSE if I cannot send (server not configured / connected)
+     */
+    public boolean sendAckFor(final int ackMessageID) {
+        return this.sendMessage(new AckMessage(), ackMessageID, null);
     }
 
     /**
-     * Sends over WebSocket a generic message with data
-     * @param messageType type of the message
-     * @param data data of the message
-     * @return TRUE if server was configured to send messages, FALSE otherwise
+     * Send a PING to the server, to ask if it's still alive
+     * @param responseListener the listener triggered when response from server will arrive
+     * @return TRUE if sending is possible, FALSE if I cannot send (server not configured / connected)
      */
-    public <D extends WebSocketMessageData> boolean sendRequest(MessageTypes messageType, D data) {
-        if (webSocketRef != null && this.myDevice.getStatus() == MyDeviceStatus.CONNECTED) {
-            webSocketRef.send(new WebSocketMessage<D>(messageType, this.myDevice.getDeviceID(), data).toJson());
-            return true;
-        } else {
-            return false;
+    public boolean sendConnectionCheckRequest(final ResponseListener responseListener) {
+        return this.sendMessage(new ConnectionCheckMessage(), -1, responseListener);
+    }
+
+    /**
+     * Send a request to the server
+     * @param data type of WebSocketMessageData I want to send
+     * @param responseListener the listener triggered when response from server will arrive
+     * @param <D> any type that extends from WebSocketMessageData
+     * @return TRUE if sending is possible, FALSE if I cannot send (server not configured / connected)
+     */
+    public <D extends WebSocketMessageData> boolean sendRequest(final D data, final ResponseListener responseListener) {
+        return this.sendMessage(data, -1, responseListener);
+    }
+
+
+    /**
+     * Send a message to the server
+     * @param data type of WebSocketMessageData I want to send
+     * @param ackMessageID MessageID of the server message that I respond for
+     * @param responseListener the listener triggered when response from server will arrive
+     * @param <D> any type that extends from WebSocketMessageData
+     * @return TRUE if sending is possible, FALSE if I cannot send (server not configured / connected)
+     */
+    public <D extends WebSocketMessageData> boolean sendMessage(final D data, final int ackMessageID, final ResponseListener responseListener) {
+        synchronized (this) {
+            if (isServerAvailable()) {
+                // Prepare the message
+                final WebSocketMessage<D> message = new WebSocketMessage<>(
+                        MessageCounter.getInstance().getNextMessageID(),
+                        data,
+                        ackMessageID
+                );
+
+                // If I need a response for this particular message
+                if (responseListener != null) {
+                    // Put it in the pending messages
+                    this.pendingMessages.put(message.getMessageID(), responseListener);
+
+                    // Creates new thread that will check if message will arrive
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                // Sleep X time
+                                Thread.sleep(ACK_TIMEOUT);
+
+                                // If after X time the message is still on pendingMessages, timeout and delete
+                                final ResponseListener tmpResponseListener = pendingMessages.get(message.getMessageID());
+                                if (tmpResponseListener != null) {
+                                    tmpResponseListener.onTimeout();
+                                    pendingMessages.remove(message.getMessageID());
+                                }
+
+                                ConnectionStatus.getInstance().forceRefreshConnectionStatus();
+
+                            } catch (Exception e) { }
+                        }
+                    }).start();
+                }
+
+                // Send the message
+                webSocketRef.send(message.toJson());
+
+                // LOG
+                WebSocketLogger.Log(
+                        "Message sent",
+                        new Pair<>("MessageType", message.getMessageType().getDescription()),
+                        new Pair<>("Data", message.getData().toString()),
+                        new Pair<>("AckMessageID", String.valueOf(message.getAckMessageID())));
+
+                return true;
+            } else {
+                // LOG
+                WebSocketLogger.Log("Message was not sent: isServerAvailable() = false");
+                return false;
+            }
         }
-    }
-
-    /**
-     * Sends over WebSocket a PING request
-     * @return TRUE if server was configured to send messages, FALSE otherwise
-     */
-    public boolean sendPingRequest() {
-        return sendRequest(MessageTypes.PING, new EmptyMessage());
-    }
-
-    /**
-     * Add a listener to the WebSocket. When some message will arrive, listener will be informed.
-     * Remember to REMOVE THE LISTENER to avoid poor app performance! Best practice: save the listener
-     * into a class variable, so you can add and remove it easily.
-     * @param listener ad implemented webSocketListener
-     */
-    public void addListener(MyWebSocketListener listener){
-        this.myWebSocketListeners.add(listener);
-    }
-
-    /**
-     * Remove a listener from the WebSocket.
-     * @param listener listener to remove.
-     */
-    public void removeListener(MyWebSocketListener listener){
-        this.myWebSocketListeners.remove(listener);
     }
 
     /**
@@ -182,210 +208,92 @@ public class WebSocketHelper {
             public void onOpen(WebSocket webSocket, Response response) {
                 super.onOpen(webSocket, response);
 
-                for (MyWebSocketListener listener : myWebSocketListeners) {
-                    listener.onOpen(ipAddress);
-                }
+                // Force the Connecting status (I'm opening...)
+                ConnectionStatus.getInstance().setOnConnecting();
+
+                // LOG
+                WebSocketLogger.Log("Connection is opening...");
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
                 super.onMessage(webSocket, text);
 
-                // Inform all listeners that I received something
-                for (MyWebSocketListener listener : myWebSocketListeners) {
-                    listener.onMessage(ipAddress, text);
-                }
+                // Convert the message for future uses
+                final WebSocketMessage<GenericMessage> message = gson.fromJson(text, new TypeToken<WebSocketMessage<GenericMessage>>(){}.getType());
 
-                System.out.println("Listeners registered: " + myWebSocketListeners.size());
+                // Logger: I received a message!
+                WebSocketLogger.Log("Received a new message", new Pair<>(message.getMessageType().toString(), String.valueOf(message.getAckMessageID())));
 
-                WebSocketMessage<StringMessage> message = gson.fromJson(text, new TypeToken<WebSocketMessage<StringMessage>>(){}.getType());
+                // Check the type of the message
+                switch (message.getMessageType()) {
+                    //------------------------------------------------------------------------------------------------------------------------------------------------------------- Device Accepted
+                    case DEVICE_ACCEPTED:
+                        // Get the right message
+                        final WebSocketMessage<DeviceAcceptedMessage> wsmDeviceAccepted = gson.fromJson(text, new  TypeToken<WebSocketMessage<DeviceAcceptedMessage>>(){}.getType());
 
-                // Switch on message type
-                switch ((message.getMessageType())) {
-                    //----------------------------------------------------------------------------------------------------------------------------- SET_DEVICE_ID
-                    case SET_DEVICE_ID:
-                        // Save it
-                        myDevice.setAsConnectionPending();
+                        // Ack the server that I received the DEVICE_ACCEPTED
+                        sendAckFor(wsmDeviceAccepted.getMessageID());
 
-                        // Send an ack to server: yeah dude, I gotcha this!
-                        webSocketRef.send(new WebSocketMessage<>(MessageTypes.ACK, message.getDeviceID(), new AckMessage(MessageTypes.SET_DEVICE_ID, message.getDeviceID())).toJson());
-
-                        // Inform all the listeners I got the DeviceID (but I'm not ready yet)
-                        for (MyWebSocketListener listener : myWebSocketListeners) {
-                            listener.onSetDeviceIDReceived(ipAddress);
-                        }
-
-                        // Set a timeout: if ack will not be received, tablet will not be connected!
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(7000);
-                                    if (myDevice.getStatus() != MyDeviceStatus.CONNECTED) {
-                                        for (MyWebSocketListener listener : myWebSocketListeners) {
-                                            listener.onSetDeviceIDFailed();
-                                        }
-                                    }
-                                } catch (Exception e) { }
-                            }
-                        }).start();
-
+                        // Now I'm ready to be connected
+                        ConnectionStatus.getInstance().setOnConnected(wsmDeviceAccepted.getData().getDeviceID());
                         break;
 
-                    //----------------------------------------------------------------------------------------------------------------------------- REJECT_DEVICE
-                    case REJECT_DEVICE:
-                        myDevice.setAsNotConnected();
-                        webSocketRef.send(new WebSocketMessage<>(MessageTypes.ACK, message.getDeviceID(), new AckMessage(MessageTypes.REJECT_DEVICE, message.getDeviceID())).toJson());
+                    //------------------------------------------------------------------------------------------------------------------------------------------------------------- Device Rejected
+                    case DEVICE_REJECTED:
+                        // Got it, I cannot be accepted, send ACK that I know I'm rejected
+                        final WebSocketMessage<DeviceRejectedMessage> wsmDeviceRejected = gson.fromJson(text, new  TypeToken<WebSocketMessage<DeviceRejectedMessage>>(){}.getType());
+                        sendAckFor(wsmDeviceRejected.getMessageID());
 
-                        // Inform all the listeners I got the DeviceID (but I'm not ready yet)
-                        for (MyWebSocketListener listener : myWebSocketListeners) {
-                            listener.onSetDeviceIDFailed();
-                        }
-
+                        // I cannot be connected
+                        ConnectionStatus.getInstance().setOnNotConnected();
                         break;
 
-                    //----------------------------------------------------------------------------------------------------------------------------- ACK
+                    //------------------------------------------------------------------------------------------------------------------------------------------------------------- Ack
                     case ACK:
+                        synchronized (this) {
+                            final WebSocketMessage<AckMessage> wsmAck = gson.fromJson(text, new TypeToken<WebSocketMessage<AckMessage>>() {}.getType());
+                            final ResponseListener responseListener = pendingMessages.get(wsmAck.getAckMessageID());
 
-                        final WebSocketMessage<AckMessage> ackMessage = gson.fromJson(text, new TypeToken<WebSocketMessage<AckMessage>>(){}.getType());
-
-                        switch (ackMessage.getData().getAckType()) {
-
-                            case SET_DEVICE_ID:
-                                if (myDevice.getStatus() == MyDeviceStatus.PENDING) {
-                                    myDevice.setAsConnected(ackMessage.getDeviceID());
-
-                                    for (MyWebSocketListener listener : myWebSocketListeners) {
-                                        listener.onSetDeviceIDAckReceived(ipAddress, myDevice.getDeviceID());
-                                    }
-                                }
-                                break;
-
-                            case ATHLETE_SCORE:
-                                for (MyWebSocketListener listener : myWebSocketListeners) {
-                                    listener.onAthleteScoreAckReceived();
-                                }
-                            default:
-                                break;
+                            if (responseListener != null) {
+                                responseListener.onResponse();
+                                pendingMessages.remove(wsmAck.getAckMessageID());
+                            }
                         }
                         break;
 
-                    //----------------------------------------------------------------------------------------------------------------------------- PONG
-                    case PONG:
-                        // Inform all the listeners I got the DeviceID (but I'm not ready yet)
-                        for (MyWebSocketListener listener : myWebSocketListeners) {
-                            listener.onPong(ipAddress, myDevice.getDeviceID());
-                        }
-                        break;
-
-                    //----------------------------------------------------------------------------------------------------------------------------- PING
-                    case PING:
-                        // Send a PONG to server: yeah dude, I gotcha this!
-                        webSocketRef.send(new WebSocketMessage<>(MessageTypes.PONG, message.getDeviceID(), new EmptyMessage()).toJson());
+                    //------------------------------------------------------------------------------------------------------------------------------------------------------------- Connection Check
+                    case CONNECTION_CHECK:
+                        final WebSocketMessage<ConnectionCheckMessage> wsmConnectionCheck = gson.fromJson(text, new  TypeToken<WebSocketMessage<ConnectionCheckMessage>>(){}.getType());
+                        sendAckFor(wsmConnectionCheck.getAckMessageID());
                         break;
                     default:
                         break;
-
                 }
             }
 
             @Override
             public void onMessage(WebSocket webSocket, ByteString bytes) {
                 super.onMessage(webSocket, bytes);
-
-                for (MyWebSocketListener listener : myWebSocketListeners) {
-                    listener.onMessage(ipAddress, bytes);
-                }
             }
 
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 super.onClosing(webSocket, code, reason);
-
-                for (MyWebSocketListener listener : myWebSocketListeners) {
-                    listener.onClosed(ipAddress, reason);
-                }
-
-                // DO NOT SET webSocketRef = null;
-                // onClosed must be triggered yet!
             }
 
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
                 super.onClosed(webSocket, code, reason);
 
-                for (MyWebSocketListener listener : myWebSocketListeners) {
-                    listener.onClosed(ipAddress, reason);
-                }
-
                 webSocketRef = null;
-                myDevice.setAsNotConnected();
+                ConnectionStatus.getInstance().setOnNotConnected();
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                 super.onFailure(webSocket, t, response);
-
-                for (MyWebSocketListener listener : myWebSocketListeners) {
-                    listener.onFailure(ipAddress, t.getMessage());
-                }
             }
         };
-    }
-
-    public static MyWebSocketListener setNavBarListener(final Activity activity, final CustomNavBar customNavBar) {
-
-
-        final MyWebSocketListener webSocketListener = new MyWebSocketListener() {
-            @Override
-            public void onFailure(String senderIPAddress, String reason) {
-                super.onFailure(senderIPAddress, reason);
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        customNavBar.setTabletNotConnected();
-                    }
-                });
-
-            }
-
-            @Override
-            public void onPong(final String senderIPAddress, final String deviceID) {
-                super.onPong(senderIPAddress, deviceID);
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        customNavBar.setTabletConnected(senderIPAddress, deviceID);
-                    }
-                });
-            }
-        };
-
-        if (WebSocketHelper.getInstance().sendPingRequest()) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    customNavBar.setTabletConnecting();
-                }
-            });
-
-        } else {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    customNavBar.setTabletNotConnected();
-                }
-            });
-        }
-
-        WebSocketHelper.getInstance().addListener(webSocketListener);
-
-        return webSocketListener;
-    }
-
-    public enum ConnectionStatus {
-        WRONG_INPUT, NOT_CONNECTED, CONNECTING, WAITING_FOP_ACK, CONNECTED
     }
 }
