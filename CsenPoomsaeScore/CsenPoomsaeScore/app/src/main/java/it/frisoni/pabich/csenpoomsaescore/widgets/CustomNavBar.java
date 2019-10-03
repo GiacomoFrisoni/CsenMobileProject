@@ -1,34 +1,28 @@
 package it.frisoni.pabich.csenpoomsaescore.widgets;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.Console;
-
 import it.frisoni.pabich.csenpoomsaescore.R;
-import it.frisoni.pabich.csenpoomsaescore.utils.server.WebSocketHelper;
 
 /**
  * Created by marti on 21/04/2017.
- *
+ * <p>
  * Questa classe si occupa di gestire una navigation bar costituita da 3 elementi personalizzabili:
  * - un titolo
  * - un pulsante di back
  * - un pulsante di forward
  */
 
-public class CustomNavBar extends RelativeLayout implements  WidgetWithConnectionStatus {
+public class CustomNavBar extends RelativeLayout implements WidgetWithConnectionStatus {
 
     private Button backButton, forwardButton;
     private TextView title, txvTabletConnection;
@@ -128,37 +122,57 @@ public class CustomNavBar extends RelativeLayout implements  WidgetWithConnectio
 
     @Override
     public void setOnNotConnected() {
-        final Handler handler = new Handler();
-        handler.post(new Runnable() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 txvTabletConnection.setText(getContext().getText(R.string.tablet_not_connected));
-                txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_off), null, null, null);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    txvTabletConnection.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                    txvTabletConnection.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_wifi_off, 0, 0, 0);
+                } else {
+                    txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_off, 0, 0, 0);
+                }
             }
         });
     }
 
     @Override
     public void setOnConnecting() {
-        final Handler handler = new Handler();
-        handler.post(new Runnable() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 txvTabletConnection.setText(getContext().getText(R.string.tablet_check_connection));
-                txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_refresh), null, null, null);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    txvTabletConnection.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                    txvTabletConnection.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_refresh, 0, 0, 0);
+                } else {
+                    txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_refresh, 0, 0, 0);
+                }
             }
         });
+
     }
 
     @Override
     public void setOnConnected(final String ip, final String port, final String deviceID) {
-        final Handler handler = new Handler();
-        handler.post(new Runnable() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 txvTabletConnection.setText(getContext().getString(R.string.tablet_connected_device_id, ip, deviceID));
-                txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.ic_wifi_on), null, null, null);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    txvTabletConnection.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                    txvTabletConnection.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_wifi_on, 0, 0, 0);
+                } else {
+                    txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    txvTabletConnection.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_on, 0, 0, 0);
+                }
             }
         });
+
     }
 }
