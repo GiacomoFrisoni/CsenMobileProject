@@ -86,7 +86,7 @@ public class MenuFragment extends Fragment {
         txvAppVersion = (TextView) view.findViewById(R.id.txv_app_version);
 
         // Set version name
-        txvAppVersion.setText(BuildConfig.VERSION_NAME);
+        txvAppVersion.setText("V. " + BuildConfig.VERSION_NAME);
 
         String title = txvTitle.getText().toString();
         SpannableString spanString = new SpannableString(title);
