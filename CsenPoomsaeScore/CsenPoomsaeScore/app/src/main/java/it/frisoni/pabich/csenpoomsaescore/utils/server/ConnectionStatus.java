@@ -1,15 +1,15 @@
 package it.frisoni.pabich.csenpoomsaescore.utils.server;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
-import it.frisoni.pabich.csenpoomsaescore.widgets.CustomNavBar;
 import it.frisoni.pabich.csenpoomsaescore.widgets.WidgetWithConnectionStatus;
 
 public class ConnectionStatus {
 
     // Internal variables
-    private final static long PING_INTERVAL = 30000;
+    private final static long PING_INTERVAL = 20000;
+    private final static long TIMEOUT_TRESHOLD = 30000;
 
     // Static variable for singleton
     private static ConnectionStatus connectionStatusRef;
@@ -18,6 +18,7 @@ public class ConnectionStatus {
     private ConnectionStatuses currentConnectionStatus;
     private String serverIPAddress, serverPort, deviceIDRef;
     private List<ConnectionStatusListener> connectionStatusListeners;
+    private Calendar lastConnectionCheckFromServer;
     private Thread keepAliveThread;
 
     private ConnectionStatus() {
@@ -106,7 +107,9 @@ public class ConnectionStatus {
                 public void onResponse() {
                     // Ack received in time, inform all my subscribers is all ok
                     for (ConnectionStatusListener listener : connectionStatusListeners) {
+                        System.out.println("Try to update listener on connected");
                         listener.onConnectionStatusChanged(ConnectionStatuses.CONNECTED);
+                        System.out.println("Updated!");
                     }
                 }
 
@@ -116,14 +119,18 @@ public class ConnectionStatus {
                     setOnNotConnected();
 
                     for (ConnectionStatusListener listener : connectionStatusListeners) {
+                        System.out.println("Try to update listener on not connected");
                         listener.onConnectionStatusChanged(ConnectionStatuses.NOT_CONNECTED);
+                        System.out.println("Updated!");
                     }
                 }
             });
         } else {
             // Server is not alive, so there is no connection!
             for (ConnectionStatusListener listener : connectionStatusListeners) {
+                System.out.println("Try to update listener on not connected");
                 listener.onConnectionStatusChanged(ConnectionStatuses.NOT_CONNECTED);
+                System.out.println("Updated!");
             }
         }
     }
@@ -131,6 +138,11 @@ public class ConnectionStatus {
     public void setOnConnecting() {
         currentConnectionStatus = ConnectionStatuses.CONNECTING;
         deviceIDRef = "";
+
+        if (keepAliveThread != null) {
+            keepAliveThread.interrupt();
+            keepAliveThread = null;
+        }
 
         for (ConnectionStatusListener listener : connectionStatusListeners) {
             listener.onConnectionStatusChanged(ConnectionStatuses.CONNECTING);
@@ -142,7 +154,11 @@ public class ConnectionStatus {
         deviceIDRef = "";
         serverIPAddress = "";
         serverPort = "";
-        keepAliveThread.interrupt();
+
+        if (keepAliveThread != null) {
+            keepAliveThread.interrupt();
+            keepAliveThread = null;
+        }
 
         for (ConnectionStatusListener listener : connectionStatusListeners) {
             listener.onConnectionStatusChanged(ConnectionStatuses.NOT_CONNECTED);
@@ -163,19 +179,34 @@ public class ConnectionStatus {
         keepAliveThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (!Thread.interrupted()) {
+                boolean isDone = false;
+
+                while (!isDone) {
                     try {
                         // Sleep for X seconds
                         Thread.sleep(PING_INTERVAL);
 
-                        // Ask if server is still alive
-                        forceRefreshConnectionStatus();
-                    } catch (Exception e) {}
+                        final Calendar now = Calendar.getInstance();
+
+                        // If server didn't sent me a ping for a long time
+                        if (now.getTimeInMillis() - lastConnectionCheckFromServer.getTimeInMillis() > TIMEOUT_TRESHOLD)
+                            forceRefreshConnectionStatus();
+
+                        if (Thread.currentThread().isInterrupted() || Thread.interrupted())
+                            isDone = true;
+
+                    } catch (InterruptedException ie) {
+                        isDone = true;
+                    }
                 }
             }
         });
 
         keepAliveThread.start();
+    }
+
+    public void setLastConnectionCheckFromServer(final Calendar calendar) {
+        this.lastConnectionCheckFromServer = calendar;
     }
 
     public String getDeviceID() {
