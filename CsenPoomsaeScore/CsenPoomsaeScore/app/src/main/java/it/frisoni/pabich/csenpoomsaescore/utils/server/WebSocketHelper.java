@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.ConnectionCheckM
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.DeviceAcceptedMessage;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.DeviceRejectedMessage;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.GenericMessage;
+import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.MessageTypes;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.WebSocketMessage;
 import it.frisoni.pabich.csenpoomsaescore.utils.server.messages.WebSocketMessageData;
 import okhttp3.OkHttpClient;
@@ -163,14 +165,17 @@ public class WebSocketHelper {
                                 // Sleep X time
                                 Thread.sleep(ACK_TIMEOUT);
 
-                                // If after X time the message is still on pendingMessages, timeout and delete
+                                // If after X time the message is still on pendingMessages, timeout, delete and refresh connection
                                 final ResponseListener tmpResponseListener = pendingMessages.get(message.getMessageID());
+
                                 if (tmpResponseListener != null) {
                                     tmpResponseListener.onTimeout();
                                     pendingMessages.remove(message.getMessageID());
+                                    System.out.println("Timeout for message " + message.getMessageID());
                                 }
 
-                                ConnectionStatus.getInstance().forceRefreshConnectionStatus();
+                                if (message.getMessageType() != MessageTypes.CONNECTION_CHECK)
+                                    ConnectionStatus.getInstance().forceRefreshConnectionStatus();
 
                             } catch (Exception e) { }
                         }
@@ -183,6 +188,7 @@ public class WebSocketHelper {
                 // LOG
                 WebSocketLogger.Log(
                         "Message sent",
+                        new Pair<>("MessageID", String.valueOf(message.getMessageID())),
                         new Pair<>("MessageType", message.getMessageType().getDescription()),
                         new Pair<>("Data", message.getData().toString()),
                         new Pair<>("AckMessageID", String.valueOf(message.getAckMessageID())));
@@ -253,21 +259,24 @@ public class WebSocketHelper {
 
                     //------------------------------------------------------------------------------------------------------------------------------------------------------------- Ack
                     case ACK:
-                        synchronized (this) {
+                        //synchronized (this) {
                             final WebSocketMessage<AckMessage> wsmAck = gson.fromJson(text, new TypeToken<WebSocketMessage<AckMessage>>() {}.getType());
                             final ResponseListener responseListener = pendingMessages.get(wsmAck.getAckMessageID());
+                            System.out.println("Check if I received response...");
 
                             if (responseListener != null) {
+                                System.out.println("I received a response for my MessageID: " + wsmAck.getAckMessageID());
                                 responseListener.onResponse();
                                 pendingMessages.remove(wsmAck.getAckMessageID());
                             }
-                        }
+                        //}
                         break;
 
                     //------------------------------------------------------------------------------------------------------------------------------------------------------------- Connection Check
                     case CONNECTION_CHECK:
                         final WebSocketMessage<ConnectionCheckMessage> wsmConnectionCheck = gson.fromJson(text, new  TypeToken<WebSocketMessage<ConnectionCheckMessage>>(){}.getType());
                         sendAckFor(wsmConnectionCheck.getMessageID());
+                        ConnectionStatus.getInstance().setLastConnectionCheckFromServer(Calendar.getInstance());
                         break;
                     default:
                         break;
@@ -284,6 +293,7 @@ public class WebSocketHelper {
                 super.onClosing(webSocket, code, reason);
 
                 ConnectionStatus.getInstance().setOnNotConnected();
+                WebSocketLogger.Log("Connection on closing...");
             }
 
             @Override
@@ -292,11 +302,16 @@ public class WebSocketHelper {
 
                 webSocketRef = null;
                 ConnectionStatus.getInstance().setOnNotConnected();
+                WebSocketLogger.Log("Connection closed!");
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                 super.onFailure(webSocket, t, response);
+
+                webSocketRef = null;
+                ConnectionStatus.getInstance().setOnNotConnected();
+                WebSocketLogger.Log("Connection failed :(");
             }
         };
     }
